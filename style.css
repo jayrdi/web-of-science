@@ -1,0 +1,165 @@
+/* CSS reset for standard amongst different browsers */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td {
+	margin:0;
+	padding:0;
+}
+
+#mail {
+	color: #f4efdd !important;
+}
+
+a:link, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color: #f4efdd;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+ul {
+	list-style:none;
+	list-style-position:outside;
+}
+
+/* how to display html5 elements for old browsers */
+header, section, footer, article {
+	display: block;
+}
+
+body {
+	background-color: #052b00;
+	font-family: 'Raleway', sans-serif;
+	font-size: 12px;
+}
+
+p {
+	line-height: 150%;
+	color: #f4efdd;
+}
+
+.wrapper {
+	width: 100%;
+	margin: 0 auto;
+	margin-left: 60px;
+	display: inline-block;
+}
+
+header {
+	height: 100px;
+	background-color: #4f4f4f;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}
+
+h1.logo {
+	display: block;
+	float: top;
+	padding-top: 15px;
+	color: #00fc04;
+	font-size: 36px;
+}
+
+h2 {
+	color: #00ce00;
+	font-size: 24px;
+}
+
+#mainBlock {
+	display: block;
+	position: absolute;
+	z-index: -1;
+	margin-top: 200px;
+	margin-left: 60px;
+	margin-bottom: 200px;
+	/* height: 300px; */
+}
+
+.about {
+	float: top;
+	background-color: #303030;
+	border-top: 5px solid #218c03;
+	border-bottom: 5px solid #218c03;
+	padding: 5px;
+	font-family: 'Lora', serif;
+	position: fixed;
+	top: 100px;
+	width: 100%;
+}
+
+footer {
+	height: 70px;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	background-color: #303030;
+	border-top: 5px solid #218c03;
+	padding: 5px;
+	color: #f4efdd;
+	position: fixed;
+	display: inline-block;
+}
+
+.instruct {
+	font-weight: bold;
+	font-family: 'Raleway', sans-serif;
+}
+
+.credit {
+	background-color: #303030;
+	padding: 5px;
+	font-family: 'Lora', serif;
+	position: fixed;
+	top: 70px;
+	width: 100%;
+	top: 91.5%;
+	display: inline-block;
+}
+
+.input {
+	color: #f4efdd;
+	font-size: 1.8em;
+}
+
+h3 {
+	color: #00ce00;
+	display: inline-block;
+}
+
+select {
+	font-family: 'Lora', serif;
+	background-color: #303030;
+	color: #00fc04;
+	border: 2px solid #00fc04;
+	padding: 2px;
+}
+
+select option {
+	background-color: rgba(79,79,79,0.3);
+	color: #f4efdd;
+}
+
+img {
+	width: 100px;
+	display: inline-block;
+	float: right;
+	margin-right: 100px;
+	margin-bottom: 100px;
+}
+
+#links {
+	display: inline-block;
+}
+
+input {
+	width: 100px;
+	padding: 5px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 2em;
+	background-color: #00fc04;
+	color: #218c03;
+	border: 5px solid #218c03;
+	margin-top: 400px;
+}
