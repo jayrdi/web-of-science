@@ -73,7 +73,7 @@ h2 {
 	z-index: -1;
 	margin-top: 200px;
 	margin-left: 60px;
-	margin-bottom: 200px;
+	/* margin-bottom: 200px; */
 	/* height: 300px; */
 }
 
@@ -130,10 +130,11 @@ h3 {
 
 select {
 	font-family: 'Lora', serif;
-	background-color: #303030;
-	color: #00fc04;
+	background-color: #4f4f4f;
 	border: 2px solid #00fc04;
+	color: #00fc04;
 	padding: 2px;
+	padding-left: 8px;
 }
 
 select option {
@@ -153,13 +154,40 @@ img {
 	display: inline-block;
 }
 
-input {
+.submit {
 	width: 100px;
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
 	font-size: 2em;
-	background-color: #00fc04;
-	color: #218c03;
-	border: 5px solid #218c03;
-	margin-top: 400px;
+	color: #00fc04;
+	border: 2px solid #00fc04;
+	margin-top: 200px;
+}
+
+input {
+	background-color: #4f4f4f;
+	border: 2px solid #00fc04;
+}
+
+.field {
+	color: #00fc04;
+	font-family: 'Lora', serif;
+	padding: 10px;
+	font-size: 1.5em;
+}
+
+option {
+	color: #00fc04 !important;
+}
+
+#dropdown option:hover {
+	background-color: #303030 !important;
+	color: #00fc04 !important;
+}
+
+.date {
+	color: #00fc04;
+	font-family: 'Lora', serif;
+	padding: 2px;
+	text-align: center;
 }

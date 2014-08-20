@@ -41,11 +41,21 @@
 
 	<div id="mainBlock">
 
-		<form name="params">
+		<form name="submit">
 			<p class="input">Category</p></br>
+			<input type="text" name="category">
+			</br></br>
+
+			<p class="input">Search Type</p></br>
 			<select>
-			    <option value="nature">Nature</option>
-			    <option value="botany">Botany</option>
+			    <option value="TS">Topic</option>
+			    <option value="TI">Title</option>
+			    <option value="AU">Author</option>
+			    <option value="ED">Editor</option>
+			    <option value="SO">Publication Name</option>
+			    <option value="DO">DOI</option>
+			    <option value="PY">Year Published</option>
+			    <option value="AD">Address</option>
 			</select></br></br>
 
 			<p class="input">Sort By</p></br>
@@ -54,9 +64,10 @@
 			    <option value="citeddown">Cited Most -> Least</option>
 			    <option value="citedup">Cited Least -> Most</option>
 			</select>
+
+			<input type="button" onClick="" value="Go">
 		</form>
 
-		<input type="button" onClick="" value="Go">
 	</div>
 
 	<footer class="credit">

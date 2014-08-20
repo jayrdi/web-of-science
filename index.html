@@ -3,12 +3,14 @@
 <html>
 	<head>
 
-		<title>Research Beehive Data Collection</title>
+		<title>NCL Research Enterprises</title>
 
 		<!-- link to CSS stylesheet, fonts & plugins -->
 		<link rel="stylesheet" type="text/css" href="style.css"/>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+		<!-- favicon -->
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<!--[if lt IE 9] >
 			<script src="dist/html5shiv.js"></script>
 		<![endif]-->
@@ -19,7 +21,7 @@
 		<script src="script.js"/></script>
 
 		<meta charset="UTF-8"/>
-		<meta name="keywords" content="web of science, thomson reuters"/>
+		<meta name="keywords" content="web of science, thomson reuters, newcastle university research"/>
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson, Pete Wheldon"/>
 
@@ -41,20 +43,38 @@
 
 	<div id="mainBlock">
 
-		<form name="params">
-			<p class="input">Category</p></br>
-			<select>
-			    <option value="nature">Nature</option>
-			    <option value="botany">Botany</option>
+		<form name="params" action="wos.php" method="post">
+			<p class="input">Keyword(s)</p>
+			<input class="field" type="text" name="category">
+			</br></br>
+
+			<p class="input">Search Type</p>
+			<select id="dropdown" name="type">
+			    <option value="TS">Topic</option>
+			    <option value="TI">Title</option>
+			    <option value="AU">Author</option>
+			    <option value="ED">Editor</option>
+			    <option value="SO">Publication Name</option>
+			    <option value="DO">DOI</option>
+			    <option value="PY">Year Published</option>
+			    <option value="AD">Address</option>
 			</select></br></br>
 
-			<p class="input">Sort By</p></br>
-			<select>
-			    <option value="relevance">Relevance</option>
-			    <option value="citeddown">Cited Most -> Least</option>
-			    <option value="citedup">Cited Least -> Most</option>
-			</select></br>
-			<input type="button" onClick="" value="Go">
+			<p class="input">Sort By</p>
+			<select id="dropdown" name="sort">
+			    <option value="RS">Relevance</option>
+			    <option value="TC">Times Cited: Most -> Least</option>
+			    <option value="PY">Publication Year: Newest -> Oldest</option>
+			    <option value="AU">First Author: A -> Z</option>
+			    <option value="CF">Conference Title: A -> Z</option>
+			</select></br></br>
+
+			<!-- <p class="input">Timespan</p>
+			<p>From: <input class="date" type="date" name="time" placeholder="YYYY-MM-DD"></p></br>
+			<p>To: <input class="date" type="date" name="time" placeholder="YYYY-MM-DD"></p>
+			</br></br> -->
+
+			<input class="submit" type="submit" value="Go">
 		</form>
 
 	</div>
