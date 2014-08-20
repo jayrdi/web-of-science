@@ -102,13 +102,13 @@
 
     echo "STRING: </br></br>".($string);
 
-    $xml = new SimpleXmlElement($string);
+    $xml = simplexml_load_string($string);
+    $xml->registerXPathNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
+    $xml->registerXPathNamespace('ns2', 'http://woksearch.v3.wokmws.thomsonreuters.com');
+    $xml->registerXPathNamespace('xmlns', 'http://scientific.thomsonreuters.com/schema/wok5.4/public/FullRecord');
 
-    echo "</br>XML? </br>";
-    var_dump($xml[0]);
-
-    foreach ($xml->children() as $a => $b) {
-        echo ($a." = ".$b."</br>");
+    foreach ($xml->xpath('//records/REC/UID/text()') as $item) {
+        print_r($item);
     };
 
 ?>
