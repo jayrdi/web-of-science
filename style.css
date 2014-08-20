@@ -147,7 +147,7 @@ img {
 	display: inline-block;
 	float: right;
 	margin-right: 100px;
-	margin-bottom: 100px;
+	padding: 5px;
 }
 
 #links {
