@@ -13,11 +13,6 @@ a:link, a:visited, a:hover, a:active {
 	color: #f4efdd;
 }
 
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
 ul {
 	list-style:none;
 	list-style-position:outside;
@@ -188,6 +183,32 @@ option {
 .date {
 	color: #00fc04;
 	font-family: 'Lora', serif;
+	padding: 2px;
+	text-align: center;
+}
+
+#table {
+	width: 100%;
+	background-color: #303030;
+	padding: 2px;
+	border-collapse: collapse;
+
+}
+
+th {
+	height: 50px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 1.5em;
+	color: #00fc04;
+	padding: 5px;
+	border: 5px solid #00fc04;
+	background-color: black;
+}
+
+td {
+	font-family: 'Lora', serif;
+	color: #f4efdd;
+	border: 2px solid #00fc04;
 	padding: 2px;
 	text-align: center;
 }

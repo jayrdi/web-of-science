@@ -16,9 +16,13 @@
 		<![endif]-->
 
 		<!-- links to various javascript files used -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+		<!-- jquery & jquery ui -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+		<!-- local script -->
 		<script src="script.js"/></script>
+		<!-- angular js -->
+		<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script> -->
 
 		<meta charset="UTF-8"/>
 		<meta name="keywords" content="web of science, thomson reuters, newcastle university research"/>
@@ -77,7 +81,18 @@
 			<input class="submit" type="submit" value="Go">
 		</form>
 
-	</div>
+		<table id="table" class="hidden">
+		    <tr>
+		        <th>Journal Name</th>
+		        <th>Publication Name</th>
+		        <th>Author</th>
+		        <th>Address</th>
+		        <th>Number of Citations</th>
+		        <th>Unique Identifier</th>
+		    </tr>
+		</table>
+
+	</div> <!-- mainBlock -->
 
 	<footer class="credit">
 		<div class="wrapper">
