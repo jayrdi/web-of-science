@@ -27,6 +27,7 @@ body {
 	background-color: #052b00;
 	font-family: 'Raleway', sans-serif;
 	font-size: 12px;
+	color: #f4efdd;
 }
 
 p {
@@ -156,7 +157,8 @@ img {
 	font-size: 2em;
 	color: #00fc04;
 	border: 2px solid #00fc04;
-	margin-top: 200px;
+	margin-top: 100px;
+	position: absolute;
 }
 
 input {
@@ -189,26 +191,25 @@ option {
 
 #table {
 	width: 100%;
-	background-color: #303030;
 	padding: 2px;
 	border-collapse: collapse;
-
+	background-color: white;
 }
 
 th {
 	height: 50px;
 	font-family: 'Raleway', sans-serif;
-	font-size: 1.5em;
-	color: #00fc04;
+	font-size: 1em;
 	padding: 5px;
-	border: 5px solid #00fc04;
-	background-color: black;
+	border: 2px solid #303030;
+	color: black;
 }
 
 td {
 	font-family: 'Lora', serif;
-	color: #f4efdd;
-	border: 2px solid #00fc04;
-	padding: 2px;
+	border: 2px solid #303030;
+	padding: 3px;
 	text-align: center;
+	font-size: 0.8em;
+	color: black;
 }
