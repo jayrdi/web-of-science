@@ -145,6 +145,7 @@
     // print table with suitable headers
     echo '<table id="table" <tr>
                 <th>Batch Number</th>
+                <th>Unique Identifier</th>
                 <th>Journal Name</th>
                 <th>Publication Name</th>
                 <th>Publication Year</th>
@@ -153,7 +154,6 @@
                 <th>Author 2</th>
                 <th>Author 3</th>
                 <th>Number of Citations</th>
-                <th>Unique Identifier</th>
             </tr>>';
 
     // iterate through all records, perform search for each 100 records and tabulate data
@@ -186,32 +186,82 @@
         // turn Soap Client object from current response into SimpleXMLElement
         $xml = new SimpleXMLElement($search_response->return->records);
 
-        // SAVE RELEVANT BITS OF DATA AS VARIABLES TO PASS INTO MYSQL
-        // OR SET UP A MYSQL QUERY 'INSERT INTO' AFTER EACH DATA RETRIEVAL BELOW
+        // save variable names for global use
+        $uid = "";
+        $journal = "";
+        $publication = "";
+        $year = "";
+        $author1 = "";
+        $address = "";
+        $author2 = "";
+        $author3 = "";
+        $citations = "";
+        // create an array to store data for each record per iteration
+        $recordArray = array();
 
         // iterate through current data set and tabulate
         foreach($xml->REC as $record) {
+            // start table row
             echo '<tr>';
+            // batch number
             echo '<td>'.$i.'</td>';
-            echo '<td>'.$record->static_data->summary->titles->title[0].'</td>';
-            echo '<td>'.$record->static_data->summary->titles->title[5].'</td>';
-            echo '<td>'.(string)$record->static_data->summary->pub_info->attributes()->pubyear.'</td>';
-            echo '<td>'.$record->static_data->summary->names->name[0]->full_name.'</td>';
+            // store unique id for database and echo to html table
+            $uid = $record->UID;
+            echo '<td>'.$uid.'</td>';
+            // journal name
+            $journal = $record->static_data->summary->titles->title[0];
+            echo '<td>'.$journal.'</td>';
+            // publication name
+            $publication = $record->static_data->summary->titles->title[5];
+            echo '<td>'.$publication.'</td>';
+            // publication year
+            $year = (string)$record->static_data->summary->pub_info->attributes()->pubyear;
+            echo '<td>'.$year.'</td>';
+            // first author
+            $author1 = $record->static_data->summary->names->name[0]->full_name;
+            echo '<td>'.$author1.'</td>';
+            // address
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
-                echo '<td>'.$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address.'</td>';
+                $address = $record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
+                echo '<td>'.$address.'</td>';
             } else echo '<td>'."".'</td>';
+            // second author
             if (isset($record->static_data->summary->names->name[1]->full_name)) {
-                echo '<td>'.$record->static_data->summary->names->name[1]->full_name.'</td>';
+                $author2 = $record->static_data->summary->names->name[1]->full_name;
+                echo '<td>'.$author2.'</td>';
             } else echo '<td>'."".'</td>';
+            // third author
             if (isset($record->static_data->summary->names->name[2]->full_name)) {
-                echo '<td>'.$record->static_data->summary->names->name[2]->full_name.'</td>';
+                $author3 = $record->static_data->summary->names->name[2]->full_name;
+                echo '<td>'.$author3.'</td>';
             } else echo '<td>'."".'</td>';
-            echo '<td>'.$record->dynamic_data->citation_related->tc_list->silo_tc->attributes().'</td>';
-            echo '<td>'.$record->UID.'</td>';
+            // number of citations
+            $citations = $record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
+            echo '<td>'.$citations.'</td>';
+            // close table row
             echo '</tr>';
+
+            // for this iteration map all the values recorded into a temporary array variable, aRecord
+            $arecord = array("uid"=>$uid,
+                             "journal"=>$journal,
+                             "publication"=>$publication,
+                             "year"=>$year,
+                             "author1"=>$author1,
+                             "address"=>$address,
+                             "author2"=>$author2,
+                             "author3"=>$author3,
+                             "citations"=>$citations );
+
+            // pass the data from this iteration into the array variable 'record', after all iterations, each element in $record will be a single record or row of data for a single journal
+            array_push($recordArray, $arecord) ;
         }
     }    
     echo '</table>';
+
+    echo "</br>RECORD ARRAY: </br></br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre";
 
     // file_put_contents("wosData.json", $json);
 
