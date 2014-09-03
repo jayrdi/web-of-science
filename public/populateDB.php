@@ -1,66 +1,61 @@
 <?php
 
-// ========== CONNECT TO DATABASE ========== //
-
-
-// create variable to store connection details
-$connect = mysqli_connect( "localhost", "root", .$_ENV["USER"] );
-// check connection; quit if fail with error
-if (!$connect)
-{
-	die('Could not connect: ' . mysql_error());
-	exit();
-}
-
-// select database to work with using connection variable
-mysqli_select_db($connect, 'poeticarchive');
-
-
-// ========== COLLECT DATA FROM XML ========== //
+// ========== COLLECT DATA FROM SIMPLEXMLELEMENT ========== //
 
 
 // use xml file as a stored variable
-$xml = simplexml_load_file("edit.xml");
+// $xml = simplexml_load_file("edit.xml");
 
-// series 'Editorial'
-$apath = $xml->xpath('//c01');
-// series 'Published Poetry by Author'
-$c02 = $apath[0]->xpath('//c02')[0];
-
-//variables to store data for Person table
-$aID = "";
-$name = "";
-$bio = "";
-$books = "";
-$personArray = array();
+//variables to store data for searchResponse table
+$uid = "";
+$journal = "";
+$publication = "";
+$year = 0;
+$author1 = "";
+$address = "";
+$author2 = "";
+$author3 = "";
+$citations = 0;
+// create an array to store data for each record per iteration
+$record = array();
 
 foreach ($c02 as $c03) {
 	// finds 1st children of c02 node (under c01/c02[0], poetry by author) stored as variable $first_gen
 	foreach ($c03->children() as $first_gen) {
 		// unique identifier is found under xml tag <unitid> under the atttribute "identifier"
-		$aID == $first_gen->xpath('//ead/archdesc/dsc/c01//c02[1]/c03/did/unitid//@identifier');
-		$name == $first_gen->xpath('//ead/archdesc/dsc/c01/c02[1]/c03/did/unittitle[1]');
-		$bio == $first_gen->xpath('//ead/archdesc/dsc/c01/c02[1]/c03/bioghist//p');
-		$books == $first_gen->xpath('//ead/archdesc/dsc/c01//c02[1]/c03/c04/did//unittitle');
+		$uid == $first_gen->xpath('//ead/archdesc/dsc/c01//c02[1]/c03/did/unitid//@identifier');
+		$journal == $first_gen->xpath('//ead/archdesc/dsc/c01/c02[1]/c03/did/unittitle[1]');
+		$publication == $first_gen->xpath('//ead/archdesc/dsc/c01/c02[1]/c03/bioghist//p');
+		$year == $first_gen->xpath('//ead/archdesc/dsc/c01//c02[1]/c03/c04/did//unittitle');
+		$author1 ==
+		$address ==
+		$author2 ==
+		$author3 ==
+		$citations ==
 
 		// for this iteration map all the values recorded into a temporary array variable
-		$aperson = array("AuthorID"=>$aID,
-						 "Name"=>$name,
-						 "Biography"=>$bio,
-						 "Books"=>$books, );
+		$arecord = array("uid"=>$uid,
+						 "journal"=>$journal,
+						 "publication"=>$publication,
+						 "year"=>$year,
+						 "author1"=>$author1,
+						 "address"=>$address,
+						 "author2"=>$author2,
+						 "author3"=>$author3,
+						 "citations"=>$citations );
 
-		// pass the data from this iteration into the array variable 'personArray'
-		array_push($personArray, $aperson) ;
+		// pass the data from this iteration into the array variable 'record'
+		array_push($record, $arecord) ;
 	}
 }
 
-print_r($personArray);
+print_r($record);
 
 // ========== IMPORT DATA INTO DATABASE ========== //
 
-$personTable = implode("','",$personArray[1]);
+$recordTable = implode("','",$record[1]);
 
-mysql_query("INSERT INTO Person (AuthorID, Name, Biography, Books) VALUES ('$personTable')");
+mysql_query("INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES ('$recordTable')");
 
 
 // need to pass data stored in 'personArray' into the database 'poeticarchive' into table 'Person'

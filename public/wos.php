@@ -5,6 +5,8 @@
           <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
           <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
 
+    include '../config.php';
+
     // =================================================================== //
     // == Author: John Dawson                                           == //
     // == Date: 28/08/2014                                              == //
@@ -146,8 +148,10 @@
                 <th>Journal Name</th>
                 <th>Publication Name</th>
                 <th>Publication Year</th>
-                <th>Author</th>
+                <th>Author 1</th>
                 <th>Address</th>
+                <th>Author 2</th>
+                <th>Author 3</th>
                 <th>Number of Citations</th>
                 <th>Unique Identifier</th>
             </tr>>';
@@ -182,6 +186,9 @@
         // turn Soap Client object from current response into SimpleXMLElement
         $xml = new SimpleXMLElement($search_response->return->records);
 
+        // SAVE RELEVANT BITS OF DATA AS VARIABLES TO PASS INTO MYSQL
+        // OR SET UP A MYSQL QUERY 'INSERT INTO' AFTER EACH DATA RETRIEVAL BELOW
+
         // iterate through current data set and tabulate
         foreach($xml->REC as $record) {
             echo '<tr>';
@@ -193,6 +200,12 @@
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
                 echo '<td>'.$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address.'</td>';
             } else echo '<td>'."".'</td>';
+            if (isset($record->static_data->summary->names->name[1]->full_name)) {
+                echo '<td>'.$record->static_data->summary->names->name[1]->full_name.'</td>';
+            } else echo '<td>'."".'</td>';
+            if (isset($record->static_data->summary->names->name[2]->full_name)) {
+                echo '<td>'.$record->static_data->summary->names->name[2]->full_name.'</td>';
+            } else echo '<td>'."".'</td>';
             echo '<td>'.$record->dynamic_data->citation_related->tc_list->silo_tc->attributes().'</td>';
             echo '<td>'.$record->UID.'</td>';
             echo '</tr>';
@@ -202,5 +215,29 @@
 
     // file_put_contents("wosData.json", $json);
 
+
+    // =================================================================== //
+    // ===================== CONNECT TO DATABASE ========================= //
+    // =================================================================== //
+
+
+    // create variable to store connection details
+    $connect = mysqli_connect( "localhost", "root", $password );
+    // check connection; quit if fail with error
+    if (!$connect)
+    {
+        die('Could not connect: ' . mysql_error());
+        exit();
+    }
+
+    // check connection
+    if ($connect->ping()) {
+        printf ("</br></br>CONNECTED TO DATABASE!</br></br>");
+    } else {
+        printf ("ERROR: %s\n", $connect->error);
+    }
+
+    // select database to work with using connection variable
+    mysqli_select_db($connect, 'wos');
 
 ?>
