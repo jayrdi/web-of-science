@@ -156,6 +156,9 @@
                 <th>Number of Citations</th>
             </tr>>';
 
+    // create an array to store data for each record per iteration
+    $recordArray = array();
+
     // iterate through all records, perform search for each 100 records and tabulate data
     for ($i = 1; $i <= $len; $i+=100) {
 
@@ -196,8 +199,6 @@
         $author2 = "";
         $author3 = "";
         $citations = "";
-        // create an array to store data for each record per iteration
-        $recordArray = array();
 
         // iterate through current data set and tabulate
         foreach($xml->REC as $record) {
@@ -206,37 +207,37 @@
             // batch number
             echo '<td>'.$i.'</td>';
             // store unique id for database and echo to html table
-            $uid = $record->UID;
+            $uid = (string)$record->UID;
             echo '<td>'.$uid.'</td>';
             // journal name
-            $journal = $record->static_data->summary->titles->title[0];
+            $journal = (string)$record->static_data->summary->titles->title[0];
             echo '<td>'.$journal.'</td>';
             // publication name
-            $publication = $record->static_data->summary->titles->title[5];
+            $publication = (string)$record->static_data->summary->titles->title[5];
             echo '<td>'.$publication.'</td>';
             // publication year
             $year = (string)$record->static_data->summary->pub_info->attributes()->pubyear;
             echo '<td>'.$year.'</td>';
             // first author
-            $author1 = $record->static_data->summary->names->name[0]->full_name;
+            $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             echo '<td>'.$author1.'</td>';
             // address
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
-                $address = $record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
+                $address = (string)$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
                 echo '<td>'.$address.'</td>';
             } else echo '<td>'."".'</td>';
             // second author
             if (isset($record->static_data->summary->names->name[1]->full_name)) {
-                $author2 = $record->static_data->summary->names->name[1]->full_name;
+                $author2 = (string)$record->static_data->summary->names->name[1]->full_name;
                 echo '<td>'.$author2.'</td>';
             } else echo '<td>'."".'</td>';
             // third author
             if (isset($record->static_data->summary->names->name[2]->full_name)) {
-                $author3 = $record->static_data->summary->names->name[2]->full_name;
+                $author3 = (string)$record->static_data->summary->names->name[2]->full_name;
                 echo '<td>'.$author3.'</td>';
             } else echo '<td>'."".'</td>';
             // number of citations
-            $citations = $record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
+            $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
             echo '<td>'.$citations.'</td>';
             // close table row
             echo '</tr>';
@@ -258,10 +259,12 @@
     }    
     echo '</table>';
 
+    // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
     echo "</br>RECORD ARRAY: </br></br>";
     print "<pre>\n";
     print_r($recordArray);
     print "</pre";
+
 
     // file_put_contents("wosData.json", $json);
 
@@ -276,7 +279,7 @@
     // check connection; quit if fail with error
     if (!$connect)
     {
-        die('Could not connect: ' . mysql_error());
+        die('Could not connect: ' . mysqli_error());
         exit();
     }
 
@@ -289,5 +292,14 @@
 
     // select database to work with using connection variable
     mysqli_select_db($connect, 'wos');
+
+    $arrayString = mysql_escape_string(serialize($recordArray));
+
+    echo "</br>STRING FOR SQL: </br></br>";
+    print "<pre>\n";
+    print_r($arrayString);
+    print "</pre>";
+
+    mysqli_query($connect, "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES ('$arrayString')");
 
 ?>
