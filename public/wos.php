@@ -225,17 +225,26 @@
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
                 $address = (string)$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
                 echo '<td>'.$address.'</td>';
-            } else echo '<td>'."".'</td>';
+            } else {
+                echo '<td>'."no record".'</td>';
+                $address = "no record";
+            }
             // second author
             if (isset($record->static_data->summary->names->name[1]->full_name)) {
                 $author2 = (string)$record->static_data->summary->names->name[1]->full_name;
                 echo '<td>'.$author2.'</td>';
-            } else echo '<td>'."".'</td>';
+            } else {
+                echo '<td>'."no record".'</td>';
+                $author2 = "no record";
+            }
             // third author
             if (isset($record->static_data->summary->names->name[2]->full_name)) {
                 $author3 = (string)$record->static_data->summary->names->name[2]->full_name;
                 echo '<td>'.$author3.'</td>';
-            } else echo '<td>'."".'</td>';
+            } else {
+                echo '<td>'."no record".'</td>';
+                $author3 = "no record";
+            }
             // number of citations
             $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
             echo '<td>'.$citations.'</td>';
@@ -259,14 +268,25 @@
     }    
     echo '</table>';
 
+    $pattern = "/\'/";
+    $replace = '"';
+
+    /* $string = "Why can't I replace these bloody 'quotes?' FFS!";
+    $string =  preg_replace($pattern, $replace, $string);
+    echo $string; */
+
+    for ($i = 0; $i < count($recordArray); $i++) {
+        $recordArray[$i]['publication'] = preg_replace("#[^\\\]'#", '"', $recordArray[$i]['publication']);
+        $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
+        $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
+        $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
+    }
+
     // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
     echo "</br>RECORD ARRAY: </br></br>";
     print "<pre>\n";
     print_r($recordArray);
     print "</pre";
-
-
-    // file_put_contents("wosData.json", $json);
 
 
     // =================================================================== //
@@ -293,13 +313,22 @@
     // select database to work with using connection variable
     mysqli_select_db($connect, 'wos');
 
-    $arrayString = mysql_escape_string(serialize($recordArray));
+    // loop over the array
+    for ($row = 0; $row < count($recordArray); $row++) {
+        $sql = "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES (";
+        foreach ($recordArray[$row] as $key=>$value) {
+            // add to the query
+            $sql .= "'".$value."',";
+        }
+        $sql = rtrim($sql, ',');
+        $sql .= ");";
+        echo $sql;
+        mysqli_query($connect, $sql);
+    }
 
-    echo "</br>STRING FOR SQL: </br></br>";
-    print "<pre>\n";
-    print_r($arrayString);
-    print "</pre>";
+    // TEST to make sure that connection is working and data is being inserted into correct table
+    // mysqli_query($connect, "INSERT INTO searchresponse (uid, journal) VALUES ('WOS:123', 'journal1', 'WOS:456', 'journal2')");
 
-    mysqli_query($connect, "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES ('$arrayString')");
+    mysqli_close($connect);
 
 ?>
