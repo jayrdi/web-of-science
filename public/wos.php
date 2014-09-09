@@ -158,6 +158,8 @@
 
     // create an array to store data for each record per iteration
     $recordArray = array();
+    // create an array for top cited authors
+    $citedArray = array();
 
     // iterate through all records, perform search for each 100 records and tabulate data
     for ($i = 1; $i <= $len; $i+=100) {
@@ -200,7 +202,7 @@
         $author3 = "";
         $citations = "";
 
-        // iterate through current data set and tabulate
+        // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($xml->REC as $record) {
             // start table row
             echo '<tr>';
@@ -287,6 +289,20 @@
     print_r($recordArray);
     print "</pre";
 
+    // populate citedArray from recordArray, only first ten records
+    for ($i = 0; $i <= 10; $i++) {
+        array_push($citedArray, ($recordArray[$i]['author1']));
+        array_push($citedArray, ($recordArray[$i]['author1']));
+        array_push($citedArray, ($recordArray[$i]['author1']));
+    }
+
+    $singleAuthors = array_unique($citedArray);
+
+    echo "</br></br>CITED ARRAY: </br></br>";
+    print "<pre>\n";
+    print_r($singleAuthors);
+    print "</pre";
+
 
     // =================================================================== //
     // ===================== CONNECT TO DATABASE ========================= //
@@ -321,27 +337,62 @@
         }
         $sql = rtrim($sql, ',');
         $sql .= ");";
-        echo $sql;
+        // echo $sql;
         mysqli_query($connect, $sql);
     }
 
-    // $getAuthors = mysqli_query($connect, "SELECT author1, author2, author3, citations FROM searchresponse ORDER BY citations");
+    // echo "</br></br>";
 
-    $getAuthors = mysqli_query($connect, "SELECT
+    // set up query to select authors according to total citations
+    /* $getAuthors = mysqli_query($connect, "SELECT
                                           SUM(citations)
                                           AS citations_sum, author1
                                           FROM searchresponse
                                           GROUP BY author1
-                                          ORDER BY citations_sum DESC");
+                                          ORDER BY citations_sum DESC
+                                          LIMIT 0,10"); */
 
-    if ($getAuthors === FALSE) {
+    /* if ($getAuthors === FALSE) {
         echo mysql_error();
     }
 
     while ($row = mysqli_fetch_array($getAuthors)) {
-        echo $row['author1'] . " " . $row['citations'];
+        echo $row['author1'] . " " . $row['citations_sum'];
         echo "<br>";
+    } */
+
+    // create an array to store the summed citations
+    $citations_sum = array();
+    $result = 0;
+
+    // populate 'topcited' table
+    foreach ($singleAuthors as $value) {
+        // insert authors into table
+        // $sql = "INSERT INTO topcited (author) VALUES ('$value');";
+        // mysqli_query($connect, $sql);
+        for ($i = 0; $i < count($recordArray); $i++) {
+            // insert citations into array if author names match
+            if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
+                $result += ($recordArray[$i]['citations']);
+                // array_push($citations_sum, ($recordArray[$i]['citations']));
+            }
+        }
+        // array_push($citations_sum, $result);
+        $sql2 = "INSERT INTO topcited (author, citations_sum) VALUES ('$value','$result')";
+        mysqli_query($connect, $sql2);
+        $result = 0;
     }
+
+    echo "</br></br>CITATIONS_SUM: </br></br>";
+    print "<pre>\n";
+    print_r($citations_sum);
+    print "</pre";
+
+    // populate database table with summed citations
+    /* foreach ($citations_sum as $value) {
+        $sql = "INSERT INTO topcited (citations_sum) VALUES ('$value')";
+        mysqli_query($connect, $sql);
+    } */
 
     mysqli_close($connect);
 
