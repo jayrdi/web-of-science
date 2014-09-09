@@ -20,7 +20,7 @@
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
 
-    ini_set('max_execution_time', 1200);
+    ini_set('max_execution_time', 300);
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
@@ -268,18 +268,17 @@
     }    
     echo '</table>';
 
+    // need to replace single quotes in text to avoid escaping when inserting to mysql
     $pattern = "/\'/";
     $replace = '"';
 
-    /* $string = "Why can't I replace these bloody 'quotes?' FFS!";
-    $string =  preg_replace($pattern, $replace, $string);
-    echo $string; */
-
     for ($i = 0; $i < count($recordArray); $i++) {
         $recordArray[$i]['publication'] = preg_replace("#[^\\\]'#", '"', $recordArray[$i]['publication']);
+        $recordArray[$i]['journal'] = str_replace("'", "", $recordArray[$i]['journal']);
         $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
         $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
         $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
+        $recordArray[$i]['address'] = str_replace("'", "", $recordArray[$i]['address']);
     }
 
     // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
@@ -326,8 +325,23 @@
         mysqli_query($connect, $sql);
     }
 
-    // TEST to make sure that connection is working and data is being inserted into correct table
-    // mysqli_query($connect, "INSERT INTO searchresponse (uid, journal) VALUES ('WOS:123', 'journal1', 'WOS:456', 'journal2')");
+    // $getAuthors = mysqli_query($connect, "SELECT author1, author2, author3, citations FROM searchresponse ORDER BY citations");
+
+    $getAuthors = mysqli_query($connect, "SELECT
+                                          SUM(citations)
+                                          AS citations_sum, author1
+                                          FROM searchresponse
+                                          GROUP BY author1
+                                          ORDER BY citations_sum DESC");
+
+    if ($getAuthors === FALSE) {
+        echo mysql_error();
+    }
+
+    while ($row = mysqli_fetch_array($getAuthors)) {
+        echo $row['author1'] . " " . $row['citations'];
+        echo "<br>";
+    }
 
     mysqli_close($connect);
 
