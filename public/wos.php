@@ -1,11 +1,18 @@
 <?php
 
+    // css
     echo '<link rel="stylesheet" type="text/css" href="style.css"/>';
+    // fonts and favicon
     echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
           <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
           <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
+    // jquery
+    echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>';
 
+    // password and script file
     include '../config.php';
+    // include '/script.js';
 
     // =================================================================== //
     // == Author: John Dawson                                           == //
@@ -144,7 +151,7 @@
 
     // print table with suitable headers
     echo '<table id="table" <tr>
-                <th>Batch Number</th>
+                <th>Record Number</th>
                 <th>Unique Identifier</th>
                 <th>Journal Name</th>
                 <th>Publication Name</th>
@@ -160,6 +167,8 @@
     $recordArray = array();
     // create an array for top cited authors
     $citedArray = array();
+    // create a variable to store and display row number
+    $count = 1;
 
     // iterate through all records, perform search for each 100 records and tabulate data
     for ($i = 1; $i <= $len; $i+=100) {
@@ -207,7 +216,8 @@
             // start table row
             echo '<tr>';
             // batch number
-            echo '<td>'.$i.'</td>';
+            echo '<td>'.$count.'</td>';
+            $count++;
             // store unique id for database and echo to html table
             $uid = (string)$record->UID;
             echo '<td>'.$uid.'</td>';
@@ -284,10 +294,10 @@
     }
 
     // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
-    echo "</br>RECORD ARRAY: </br></br>";
+    /* echo "</br>RECORD ARRAY: </br></br>";
     print "<pre>\n";
     print_r($recordArray);
-    print "</pre";
+    print "</pre>"; */
 
     // populate citedArray from recordArray, only first ten records
     for ($i = 0; $i <= 10; $i++) {
@@ -297,11 +307,6 @@
     }
 
     $singleAuthors = array_unique($citedArray);
-
-    echo "</br></br>CITED ARRAY: </br></br>";
-    print "<pre>\n";
-    print_r($singleAuthors);
-    print "</pre";
 
 
     // =================================================================== //
@@ -341,8 +346,6 @@
         mysqli_query($connect, $sql);
     }
 
-    // echo "</br></br>";
-
     // set up query to select authors according to total citations
     /* $getAuthors = mysqli_query($connect, "SELECT
                                           SUM(citations)
@@ -352,47 +355,53 @@
                                           ORDER BY citations_sum DESC
                                           LIMIT 0,10"); */
 
-    /* if ($getAuthors === FALSE) {
-        echo mysql_error();
-    }
-
-    while ($row = mysqli_fetch_array($getAuthors)) {
+    /* while ($row = mysqli_fetch_array($getAuthors)) {
         echo $row['author1'] . " " . $row['citations_sum'];
         echo "<br>";
     } */
 
-    // create an array to store the summed citations
-    $citations_sum = array();
+    // create a 'result' variable to store the summed citation
     $result = 0;
 
-    // populate 'topcited' table
+    // populate 'topcited' table, first loop $singleAuthors (1-10)
     foreach ($singleAuthors as $value) {
-        // insert authors into table
-        // $sql = "INSERT INTO topcited (author) VALUES ('$value');";
-        // mysqli_query($connect, $sql);
+        // loop $recordArray
         for ($i = 0; $i < count($recordArray); $i++) {
             // insert citations into array if author names match
             if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
                 $result += ($recordArray[$i]['citations']);
-                // array_push($citations_sum, ($recordArray[$i]['citations']));
             }
         }
-        // array_push($citations_sum, $result);
-        $sql2 = "INSERT INTO topcited (author, citations_sum) VALUES ('$value','$result')";
-        mysqli_query($connect, $sql2);
+        // insert current author and summed citation into table
+        $sql = "INSERT INTO topcited (author, citations_sum) VALUES ('$value','$result')";
+        mysqli_query($connect, $sql);
         $result = 0;
     }
 
-    echo "</br></br>CITATIONS_SUM: </br></br>";
-    print "<pre>\n";
-    print_r($citations_sum);
-    print "</pre";
+    // turn 'topcited' into JSON file for displaying with JavaScript
+    $sql = "SELECT * FROM topcited ORDER BY citations_sum DESC";
+    $rows = array();
+    $jsonResult = mysqli_query($connect, $sql);
 
-    // populate database table with summed citations
-    /* foreach ($citations_sum as $value) {
-        $sql = "INSERT INTO topcited (citations_sum) VALUES ('$value')";
-        mysqli_query($connect, $sql);
-    } */
+    while ($r = mysqli_fetch_assoc($jsonResult)) {
+        $rows[] = $r;
+    }
+
+    // print table with suitable headers
+    echo '<table id="table"
+          <tr>
+          <th>Author</th>
+          <th>Total Citations</th>
+          </tr> >';
+
+    for ($i = 0; $i < 10; $i++) {
+        echo "<tr>";
+        echo "<td>".$rows[$i]['author']."</td>";
+        echo "<td>".$rows[$i]['citations_sum']."</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
 
     mysqli_close($connect);
 
