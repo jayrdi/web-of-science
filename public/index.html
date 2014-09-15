@@ -49,12 +49,12 @@
 
 		<form name="params" action="wos.php" method="post" class="form">
 			<p class="input">Keyword(s)</p>
-			<input class="field" type="text" name="category">
+			<input class="field" type="text" name="category1">
 			</br></br>
 
 			<!-- search params -->
 			<p class="input">Search Type</p>
-			<select id="dropdown" name="type">
+			<select id="dropdown" name="type1">
 			    <option value="TS">Topic</option>
 			    <option value="TI">Title</option>
 			    <option value="AU">Author</option>
@@ -68,12 +68,20 @@
 			<!-- extra search fields -->
 			<div id="extra" class="hidden">
 
+			<!-- logic gate -->
+			<select id="dropdown" name="logic">
+				<option value="AND">AND</option>
+				<option value="OR">OR</option>
+				<option value="NOT">NOT</option>
+			</select></br>
+
+			<!-- 2nd search params -->
 			<p class="input">Extra Keyword(s)</p>
-			<input class="field" type="text" name="category">
+			<input class="field" type="text" name="category2">
 			</br></br>
 
 			<p class="input">Search Type</p>
-			<select id="dropdown" name="type">
+			<select id="dropdown" name="type2">
 			    <option value="TS">Topic</option>
 			    <option value="TI">Title</option>
 			    <option value="AU">Author</option>
@@ -85,7 +93,7 @@
 			</select></br></br>
 
 			</div> <!-- extra -->
-
+			</br>
 			<!-- sort params -->
 			<p class="input">Sort By</p>
 			<select id="dropdown" name="sort">

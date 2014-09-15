@@ -65,15 +65,18 @@
     // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
     // =================================================================== //
 
-    $queryType = $_POST["type"];
-    $queryCategory = $_POST["category"];
+    $queryType1 = $_POST["type1"];
+    $queryType2 = $_POST["type2"];
+    $queryLogic = $_POST["logic"];
+    $queryCategory1 = $_POST["category1"];
+    $queryCategory2 = $_POST["category2"];
     $sortType = $_POST["sort"];
 
     // pass in relevant parameters for search
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryType.'='.$queryCategory,
+            'userQuery' => $queryType1.'='.$queryCategory1. " " .$queryLogic. " " .$queryType2.'='.$queryCategory2,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
             'queryLanguage' => 'en'
         ),
@@ -177,7 +180,7 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryType.'='.$queryCategory,
+                'userQuery' => $queryType1.'='.$queryCategory1. " " .$queryLogic. " " .$queryType2.'='.$queryCategory2,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
                 'queryLanguage' => 'en'
             ),
@@ -300,7 +303,7 @@
     print "</pre>"; */
 
     // populate citedArray from recordArray, only first ten records
-    for ($i = 0; $i <= 10; $i++) {
+    for ($i = 0; $i <= 10 && $i < count($recordArray); $i++) {
         array_push($citedArray, ($recordArray[$i]['author1']));
         array_push($citedArray, ($recordArray[$i]['author1']));
         array_push($citedArray, ($recordArray[$i]['author1']));
@@ -394,7 +397,7 @@
           <th>Total Citations</th>
           </tr> >';
 
-    for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 10 && $i < count($singleAuthors); $i++) {
         echo "<tr>";
         echo "<td>".$rows[$i]['author']."</td>";
         echo "<td>".$rows[$i]['citations_sum']."</td>";
