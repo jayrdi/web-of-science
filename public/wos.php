@@ -66,17 +66,24 @@
     // =================================================================== //
 
     $queryType1 = $_POST["type1"];
-    $queryType2 = $_POST["type2"];
-    $queryLogic = $_POST["logic"];
     $queryCategory1 = $_POST["category1"];
-    $queryCategory2 = $_POST["category2"];
     $sortType = $_POST["sort"];
-
+    // check if 'hidden' extra search facility is being used
+    if (!$_POST["category2"]) {
+        $queryLogic = "";
+        $queryType2 = "";
+        $queryCategory2 = "";
+    } else {
+        $queryLogic = $_POST["logic"];
+        $queryType2 = $_POST["type2"]."=";
+        $queryCategory2 = $_POST["category2"];
+    }
+    
     // pass in relevant parameters for search
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryType1.'='.$queryCategory1. " " .$queryLogic. " " .$queryType2.'='.$queryCategory2,
+            'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
             'queryLanguage' => 'en'
         ),
@@ -110,9 +117,9 @@
     /* echo "</br>SEARCH_RESPONSE: </br>";
     print "<pre>\n";
     print_r($search_response);
-    print "</pre>"; */
+    print "</pre>";
 
-    /* echo "</br>SEARCH_CLIENT: </br>";
+    echo "</br>SEARCH_CLIENT: </br>";
     print "<pre>\n";
     print_r($search_client);
     print "</pre>"; */
@@ -180,7 +187,7 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryType1.'='.$queryCategory1. " " .$queryLogic. " " .$queryType2.'='.$queryCategory2,
+                'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
                 'queryLanguage' => 'en'
             ),
