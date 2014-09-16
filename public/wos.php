@@ -29,7 +29,10 @@
 
     ini_set('max_execution_time', 300);
 
-    echo "</br></br><a href='javascript:' class='button'>Click here to display the top cited authors</a></br></br>";
+    echo "</br></br><a href='javascript:display()' class='button'>Click here to display the top cited authors</a></br></br>";
+
+    echo $_SERVER['SERVER_NAME'];
+    echo $_SERVER['WOS_MYSQL_DB'];
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
