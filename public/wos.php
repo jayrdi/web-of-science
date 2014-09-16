@@ -29,6 +29,8 @@
 
     ini_set('max_execution_time', 300);
 
+    echo "</br></br><a href='javascript:' class='button'>Click here to display the top cited authors</a></br></br>";
+
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
     // array options are temporary and used to track request & response data in printout below (line 25)
@@ -310,7 +312,7 @@
     print "</pre>"; */
 
     // populate citedArray from recordArray, only first ten records
-    for ($i = 0; $i <= 10 && $i < count($recordArray); $i++) {
+    for ($i = 0; $i < 10 && $i < count($recordArray); $i++) {
         array_push($citedArray, ($recordArray[$i]['author1']));
         array_push($citedArray, ($recordArray[$i]['author1']));
         array_push($citedArray, ($recordArray[$i]['author1']));
