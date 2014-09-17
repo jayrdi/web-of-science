@@ -6,9 +6,11 @@
     echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
           <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
           <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
-    // jquery
-    echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>';
+    // jquery & javascript
+    echo '<script src="script.js"/></script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+          <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>';
 
     // password and script file
     include '../config.php';
@@ -278,7 +280,7 @@
             // close table row
             echo '</tr>';
 
-            // for this iteration map all the values recorded into a temporary array variable, aRecord
+            // for this iteration map all the values recorded into a temporary array variable, aRecord (equivalent to one row of data in table)
             $arecord = array("uid"=>$uid,
                              "journal"=>$journal,
                              "publication"=>$publication,
@@ -289,7 +291,7 @@
                              "author3"=>$author3,
                              "citations"=>$citations );
 
-            // pass the data from this iteration into the array variable 'record', after all iterations, each element in $record will be a single record or row of data for a single journal
+            // pass the data from this iteration into the array variable '$recordArray', after all iterations, each element in $recordArray will be a single record or row of data for a single journal
             array_push($recordArray, $arecord) ;
         }
     }    
@@ -316,12 +318,37 @@
 
     // populate citedArray from recordArray, only first ten records
     for ($i = 0; $i < 10 && $i < count($recordArray); $i++) {
-        array_push($citedArray, ($recordArray[$i]['author1']));
-        array_push($citedArray, ($recordArray[$i]['author1']));
-        array_push($citedArray, ($recordArray[$i]['author1']));
-    }
+            array_push($citedArray, ($recordArray[$i]['author1']));
+            array_push($citedArray, ($recordArray[$i]['author2']));
+            array_push($citedArray, ($recordArray[$i]['author3']));
+    };
 
+    echo "</br>CITED ARRAY: </br></br>";
+    print "<pre>\n";
+    print_r($citedArray);
+    print "</pre>";
+
+    // get rid of duplicates
     $singleAuthors = array_unique($citedArray);
+
+    echo "</br>UNIQUE CITED ARRAY: </br></br>";
+    print "<pre>\n";
+    print_r($singleAuthors);
+    print "</pre>";
+
+    $length = count($singleAuthors);
+
+    // get rid of 'no record' values (useless data)
+    for ($i = 0; $i < $length; $i++) {
+        if ($singleAuthors[$i] == 'no record') {
+            unset($singleAuthors[$i]);
+        };
+    };
+
+    echo "</br>'NO RECORD' REMOVED: </br></br>";
+    print "<pre>\n";
+    print_r($singleAuthors);
+    print "</pre>";
 
 
     // =================================================================== //
@@ -378,11 +405,11 @@
     // create a 'result' variable to store the summed citation
     $result = 0;
 
-    // populate 'topcited' table, first loop $singleAuthors (1-10)
+    // populate 'topcited' table, first loop $singleAuthors
     foreach ($singleAuthors as $value) {
         // loop $recordArray
         for ($i = 0; $i < count($recordArray); $i++) {
-            // insert citations into array if author names match
+            // add citations into array if author names match
             if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
                 $result += ($recordArray[$i]['citations']);
             }
@@ -390,17 +417,21 @@
         // insert current author and summed citation into table
         $sql = "INSERT INTO topcited (author, citations_sum) VALUES ('$value','$result')";
         mysqli_query($connect, $sql);
+        // reset $result for next record
         $result = 0;
     }
 
-    // turn 'topcited' into JSON file for displaying with JavaScript
     $sql = "SELECT * FROM topcited ORDER BY citations_sum DESC";
     $rows = array();
-    $jsonResult = mysqli_query($connect, $sql);
+    $query = mysqli_query($connect, $sql);
 
-    while ($r = mysqli_fetch_assoc($jsonResult)) {
+    while ($r = mysqli_fetch_assoc($query)) {
         $rows[] = $r;
-    }
+    };
+
+    // turn top cited authors data into JSON file for displaying with JavaScript
+    $json = json_encode($rows);
+    print_r($json);
 
     // print table with suitable headers
     echo '<table id="table"
@@ -409,6 +440,7 @@
           <th>Total Citations</th>
           </tr> >';
 
+    // print data from $rows into table
     for ($i = 0; $i < 10 && $i < count($singleAuthors); $i++) {
         echo "<tr>";
         echo "<td>".$rows[$i]['author']."</td>";
