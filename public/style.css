@@ -14,8 +14,8 @@ a:link, a:visited, a:hover, a:active {
 }
 
 ul {
-	list-style:none;
-	list-style-position:outside;
+	list-style: decimal;
+	list-style-position: outside;
 }
 
 /* how to display html5 elements for old browsers */

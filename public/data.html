@@ -1,0 +1,48 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+
+	<title>NCL Research Enterprises</title>
+	<!-- link to CSS stylesheet, fonts & plugins -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'> -->
+	<!-- favicon -->
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<!-- scripts -->
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- metadata -->
+	<meta charset="UTF-8"/>
+	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+	<meta name="author" content="John Dawson"/>
+
+</head>
+
+<body>
+
+	<p>CONNECTED</p></br>
+
+	<!-- this list will be populated with data from JSON in wos.php -->
+	<ul></ul>
+
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+		/* call to 'data.json' created in wos.php */
+		$.getJSON('data.json', function(data) {
+			/* iterate associative data */
+			$.each(data, function(key, val) {
+				// append a 'list item' for each record with author and citations
+				$('ul').append('<li>' + key + ': ' + val.author + ' ' + val.citations_sum + '</li>');
+			});
+		});
+	});
+
+	</script>
+
+</body>
+
+</html>

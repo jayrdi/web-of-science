@@ -8,8 +8,8 @@
           <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
     // jquery & javascript
     echo '<script src="script.js"/></script>
-          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-          <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
           <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>';
 
     // password and script file
@@ -31,7 +31,7 @@
 
     ini_set('max_execution_time', 300);
 
-    echo "</br></br><a href='javascript:display()' class='button'>Click here to display the top cited authors</a></br></br>";
+    echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
 
     echo $_SERVER['SERVER_NAME'];
     echo $_SERVER['WOS_MYSQL_DB'];
@@ -328,6 +328,8 @@
     print_r($citedArray);
     print "</pre>";
 
+    // $citedArray = array_map('strtoupper', $citedArray);
+
     // get rid of duplicates
     $singleAuthors = array_unique($citedArray);
 
@@ -430,8 +432,7 @@
     };
 
     // turn top cited authors data into JSON file for displaying with JavaScript
-    $json = json_encode($rows);
-    print_r($json);
+    file_put_contents('data.json', json_encode($rows));
 
     // print table with suitable headers
     echo '<table id="table"
