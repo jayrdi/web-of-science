@@ -36,7 +36,7 @@
 			/* iterate associative data */
 			$.each(data, function(key, val) {
 				// append a 'list item' for each record with author and citations
-				$('ul').append('<li>' + key + ': ' + val.author + ' ' + val.citations_sum + '</li>');
+				$('ul').append('<li>' + val.author + ': ' + val.citations_sum + '</li>');
 			});
 		});
 	});
