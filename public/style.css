@@ -247,6 +247,54 @@ td {
 	width: 600px;
 }
 
-#extra {
+#citationsTable {
+	width: 400px;
+	position: static;
+	top: 0;
+	margin-bottom: 200px;
+	margin-left: 200px;
+	right: 0;
+	background-color: #303030;
+	color: #00fc04;
+}
 
+#citationsRow {
+	color: #00fc04;
+}
+
+#citationsData {
+	color: #00fc04;
+	font-size: 1.1em;
+	border: 2px solid white;
+}
+
+#citationsHeader {
+	font-size: 1.8em;
+	font-family: 'Raleway', sans-serif;
+	color: white;
+	border: 2px solid white;
+}
+
+/* .chart div {
+	font: 10px 'Lora' serif;
+	background-color: steelblue;
+	text-align: right;
+	padding: 3px;
+	margin: 3px;
+	margin-left: 100px;
+	color: white;
+} */
+
+.chart rect {
+	fill: steelblue;
+}
+
+.chart text {
+	fill: white;
+	font: 10px 'Lora' sans-serif;
+	text-anchor: end;
+}
+
+section {
+	margin-left: 100px;
 }

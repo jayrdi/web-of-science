@@ -13,6 +13,8 @@
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<!-- scripts -->
 	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- d3 -->
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<!-- metadata -->
 	<meta charset="UTF-8"/>
 	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
@@ -26,20 +28,100 @@
 	<p>CONNECTED</p></br>
 
 	<!-- this list will be populated with data from JSON in wos.php -->
-	<ul></ul>
+	<ul></ul></br></br>
+
+	<!-- <section><div class="chart"></div></section> -->
+
+	<section><svg class="chart"></svg></section>
 
 	<script type="text/javascript">
 
+	// when HTML document is ready (loaded) perform the following function(s):
 	$(document).ready(function() {
+		// create array to store imported JSON data as local array
+		var dataFields = new Array();
+
 		/* call to 'data.json' created in wos.php */
 		$.getJSON('data.json', function(data) {
 			/* iterate associative data */
 			$.each(data, function(key, val) {
 				// append a 'list item' for each record with author and citations
 				$('ul').append('<li>' + val.author + ': ' + val.citations_sum + '</li>');
+				// add data to array (just values)
+				dataFields.push([val.author, val.citations_sum]);
 			});
-		});
-	});
+
+			// should print number of citations for 1st element
+			// console.log(dataFields[0][1]);
+
+			var data = new Array();
+
+			for (i = 0; i < 10; i++) {
+				// add citations data to new array for graph
+				data.push(dataFields[i][1])
+			}
+
+			console.log(data);
+
+			/////////////////
+			// BASIC CHART //
+			/////////////////
+
+			// select chart container by class name
+			/* d3.select(".chart")
+			  // define selection to which we will join data (div)
+			  .selectAll("div")
+			    // join the data to the selection (citations values)
+			  	.data(data)
+			  .enter().append("div")
+			    .style("width", function(d) {
+			    	return d + "px";
+			    })
+			    .text(function(d) {
+			    	return d;
+			    }); */
+
+		///////////////
+		// SVG CHART //
+		///////////////
+
+		var width = 420,
+			barHeight = 20;
+
+		var x = d3.scale.linear()
+				  .domain([0, d3.max(data)])
+				  .range([0, width]);
+
+		var chart = d3.select(".chart")
+					  .attr("width", width)
+					  .attr("height", barHeight * data.length);
+
+		var bar = chart.selectAll("g")
+					   .data(data)
+					   .enter().append("g")
+					   .attr("transform", function(d, i) {
+					       return "translate(0," + i * barHeight + ")";	
+					   });
+
+		// set width and height for bar
+		bar.append("rect")
+		   .attr("width", x)
+		   .attr("height", barHeight - 3);
+
+		// set x and y coordinates for text on bar (values)
+		bar.append("text")
+		   .attr("x", function(d) {
+		       return x(d) - 3;
+		   })
+		   .attr("y", barHeight / 2.5)
+		   .attr("dy", ".35em")
+		   .text(function(d) {
+		       return d;	
+		   });
+
+		}); // end getSJON...
+
+	}); // end $(document).ready...
 
 	</script>
 

@@ -435,17 +435,17 @@
     file_put_contents('data.json', json_encode($rows));
 
     // print table with suitable headers
-    echo '<table id="table"
-          <tr>
-          <th>Author</th>
-          <th>Total Citations</th>
+    echo '<table id="citationsTable"
+          <tr id="citationsRow">
+          <th id="citationsHeader">Author</th>
+          <th id="citationsHeader">Total Citations</th>
           </tr> >';
 
     // print data from $rows into table
     for ($i = 0; $i < 10 && $i < count($singleAuthors); $i++) {
-        echo "<tr>";
-        echo "<td>".$rows[$i]['author']."</td>";
-        echo "<td>".$rows[$i]['citations_sum']."</td>";
+        echo "<tr id='citationsRow'>";
+        echo "<td id='citationsData'>".$rows[$i]['author']."</td>";
+        echo "<td id='citationsData'>".$rows[$i]['citations_sum']."</td>";
         echo "</tr>";
     }
 
