@@ -1,0 +1,97 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+
+	<title>NCL Research Enterprises</title>
+	<!-- link to CSS stylesheet, fonts & plugins -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'> -->
+	<!-- favicon -->
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<!-- scripts -->
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- d3 -->
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<!-- metadata -->
+	<meta charset="UTF-8"/>
+	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+	<meta name="author" content="John Dawson"/>
+
+</head>
+
+<body>
+
+	<h2>Authors With Largest Number of Citations</h2></br>
+
+	<div class="chart"></div>
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			// call to 'data.json' created in wos.php
+			$.getJSON('data.json', function(data) {
+
+				// javascript variable to store json data
+				var topCited = data;
+
+				console.log("TOPCITED OBJECT: ");
+				console.log(topCited);
+				console.log("FIRST ELEMENT OF TOPCITED: ")
+				console.log(topCited[0].author);
+				console.log(topCited[0].citations_sum);
+
+				// append data to document under series of paragraphs (test)
+				// enter() returns a reference to the placeholder elements for each data element that had no corresponding existing DOM element
+				// i.e. in this case there exist no <p> elements, enter references this from the data and then appends a <p> element for each element in the data set
+				d3.select("body").selectAll("p").data(topCited).enter().append("p");
+				// use D3 text operator to assign text values to the paragraph elements, creates anonymous function (no name as only used here)
+				// d refers to the current data attribut for the current element, i refers to the index of the current element
+				d3.selectAll("p").text(function(d, i) {
+					return i + ". " + d.author + "  =  " + d.citations_sum;
+				});
+
+				var height = 600;
+				var width = 900;
+
+				// create canvas for chart
+				var svgContainer = d3.select("body").append("svg")
+													.attr("width", width)
+													.attr("height", height)
+													.style("border", "1px solid green");
+
+				// bind the data to SVG rectangle elements
+				var bars = svgContainer.selectAll("rect")
+										  .data(topCited)
+										  .enter()
+										  .append("rect");
+
+				// set attributes for the rectangles (bars)
+				var rectAttributes = bars.attr("width", 50)
+										 // bars too high so divide by 2 to make better fit onto canvas
+										 .attr("height", function(d) {
+										 	return d.citations_sum / 2;
+										 })
+										 // index * 50 will move each bar one bar width along
+										 .attr("x", function(d, i) {
+										 	return i * 50;
+										 })
+										 // this is determined from the top left corner so to get the bar at the bottom, take the bar height from the canvas height
+										 .attr("y", function(d) {
+										 	return height - (d.citations_sum / 2);
+										 })
+										 .style("fill", "steelblue");
+
+			});
+		});
+
+	</script>
+
+	<h3>Try to find these authors on <a href="https://uk.linkedin.com/">LinkedIn</a> or the <a href="http://gtr.rcuk.ac.uk/">Gateway to Research</a> sites</h3></br></br>
+
+</body>
+
+</html>

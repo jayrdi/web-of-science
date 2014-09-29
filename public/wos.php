@@ -31,7 +31,7 @@
 
     ini_set('max_execution_time', 300);
 
-    echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
+    echo "</br></br><a href='data3.html' class='button'>Click here to display the top cited authors</a></br></br>";
 
     echo $_SERVER['SERVER_NAME'];
     echo $_SERVER['WOS_MYSQL_DB'];
@@ -323,34 +323,35 @@
             array_push($citedArray, ($recordArray[$i]['author3']));
     };
 
-    echo "</br>CITED ARRAY: </br></br>";
+    /* echo "</br>CITED ARRAY: </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>";
-
-    // $citedArray = array_map('strtoupper', $citedArray);
+    print "</pre>"; */
 
     // get rid of duplicates
-    $singleAuthors = array_unique($citedArray);
+    // $singleAuthors = array_unique($citedArray);
+    // print_r($singleAuthors);
 
-    echo "</br>UNIQUE CITED ARRAY: </br></br>";
+    /* echo "</br>UNIQUE CITED ARRAY: </br></br>";
     print "<pre>\n";
     print_r($singleAuthors);
-    print "</pre>";
+    print "</pre>"; */
 
-    $length = count($singleAuthors);
+    $length = count($citedArray);
 
     // get rid of 'no record' values (useless data)
     for ($i = 0; $i < $length; $i++) {
-        if ($singleAuthors[$i] == 'no record') {
-            unset($singleAuthors[$i]);
+        if ($citedArray[$i] == 'no record') {
+            unset($citedArray[$i]);
         };
     };
 
-    echo "</br>'NO RECORD' REMOVED: </br></br>";
+    // $singleAuthors = array_map('strtoupper', $singleAuthors);
+
+    /* echo "</br>'NO RECORD' REMOVED: </br></br>";
     print "<pre>\n";
-    print_r($singleAuthors);
-    print "</pre>";
+    print_r($citedArray);
+    print "</pre>"; */
 
 
     // =================================================================== //
@@ -377,15 +378,15 @@
     // select database to work with using connection variable
     mysqli_select_db($connect, 'wos');
 
-    // loop over the array
+    // loop over the $recordArray (full data)
     for ($row = 0; $row < count($recordArray); $row++) {
         $sql = "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES (";
         foreach ($recordArray[$row] as $key=>$value) {
-            // add to the query
+            // add to the query as 'value',
             $sql .= "'".$value."',";
         }
-        $sql = rtrim($sql, ',');
-        $sql .= ");";
+        $sql = rtrim($sql, ','); // remove the comma from the final value entry
+        $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
         // echo $sql;
         mysqli_query($connect, $sql);
     }
@@ -404,11 +405,11 @@
         echo "<br>";
     } */
 
-    // create a 'result' variable to store the summed citation
+    // create a 'result' variable to store the summed citation throughout the iterations
     $result = 0;
 
     // populate 'topcited' table, first loop $singleAuthors
-    foreach ($singleAuthors as $value) {
+    foreach ($citedArray as $value) {
         // loop $recordArray
         for ($i = 0; $i < count($recordArray); $i++) {
             // add citations into array if author names match
@@ -423,13 +424,41 @@
         $result = 0;
     }
 
-    $sql = "SELECT * FROM topcited ORDER BY citations_sum DESC";
+    // select DB table, ignore duplicate authors, insert into $rows array ordered by citations sum
+    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC";
     $rows = array();
     $query = mysqli_query($connect, $sql);
 
     while ($r = mysqli_fetch_assoc($query)) {
         $rows[] = $r;
     };
+
+    // iterate array and make all author names uppercase (to merge same authors with names in different cases)
+    for ($i = 0; $i < count($rows); $i++) {
+        $rows[$i]['author'] = strtoupper($rows[$i]['author']);
+    };
+
+    $tempArray = $rows;
+
+    // if authors are same, sum citations to first instance and delete second instance
+    // iterate original array sequentially
+    for ($i = 0; $i < count($rows)-1; $i++) {
+        // iterate temp array to compare with original, hence start at 1 (don't need to compare values at same index as we know they are the same)
+        for ($j = $i + 1; $j < count($tempArray); $j++) {
+            // check each author in $rows with $tempArray
+            if ($rows[$i]['author'] === $tempArray[$j]['author']) {
+                // sum citations for duplicate from both tables into $rows
+                $rows[$i]['citations_sum'] += $rows[$j]['citations_sum'];
+                // delete duplicate in $rows at position $j from location found in $tempArray
+                unset($rows[$j]);
+            };  // end if
+        }; // end internal for-loop ($j)
+    }; // end external for-loop ($i)
+
+    /* echo "</br>NO DUPLICATES: </br></br>";
+    print "<pre>\n";
+    print_r($rows);
+    print "</pre>"; */
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($rows));
@@ -442,12 +471,13 @@
           </tr> >';
 
     // print data from $rows into table
-    for ($i = 0; $i < 10 && $i < count($singleAuthors); $i++) {
+    // for ($i = 0; $i < 10 && $i < count($citedArray); $i++) {
+    foreach ($rows as $row) {
         echo "<tr id='citationsRow'>";
-        echo "<td id='citationsData'>".$rows[$i]['author']."</td>";
-        echo "<td id='citationsData'>".$rows[$i]['citations_sum']."</td>";
+        echo "<td id='citationsData'>".$row['author']."</td>";
+        echo "<td id='citationsData'>".$row['citations_sum']."</td>";
         echo "</tr>";
-    }
+    };
 
     echo "</table>";
 

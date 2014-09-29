@@ -51,8 +51,8 @@
 				dataFields.push([val.author, val.citations_sum]);
 			});
 
-			// should print number of citations for 1st element
-			// console.log(dataFields[0][1]);
+			// should print data for 1st element
+			// console.log(dataFields[0]);
 
 			var data = new Array();
 
@@ -85,12 +85,13 @@
 		// SVG CHART //
 		///////////////
 
-		var width = 420,
-			barHeight = 20;
+		var width = 0,
+			barHeight = 30;
 
+		// keep the scale of the chart within the range of the data to stop bars going outside chart
 		var x = d3.scale.linear()
 				  .domain([0, d3.max(data)])
-				  .range([0, width]);
+				  .range([0, d3.max(data)]);
 
 		var chart = d3.select(".chart")
 					  .attr("width", width)
@@ -99,6 +100,7 @@
 		var bar = chart.selectAll("g")
 					   .data(data)
 					   .enter().append("g")
+					   // d = data value, i = data index, translates each bar on its y-axis so that it goes underneath previous bar (translate(x,y))
 					   .attr("transform", function(d, i) {
 					       return "translate(0," + i * barHeight + ")";	
 					   });

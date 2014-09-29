@@ -285,9 +285,21 @@ td {
 	color: white;
 } */
 
+/* .chart {
+	width: 100%;
+} */
+
 .chart rect {
-	fill: steelblue;
+	fill: #4aaeea;
 }
+
+.chart rect:hover {
+	fill: brown;
+}
+
+/* .chart text:hover {
+	fill: brown;
+} */
 
 .chart text {
 	fill: white;
@@ -295,6 +307,16 @@ td {
 	text-anchor: end;
 }
 
-section {
+div {
 	margin-left: 100px;
+}
+
+.axis text {
+	font: 10px 'Raleway' serif;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: white;
+	shape-rendering: crispEdges;
 }
