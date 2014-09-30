@@ -8,9 +8,7 @@
           <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
     // jquery & javascript
     echo '<script src="script.js"/></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-          <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>';
+          <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
     // password and script file
     include '../config.php';
@@ -455,10 +453,10 @@
         }; // end internal for-loop ($j)
     }; // end external for-loop ($i)
 
-    /* echo "</br>NO DUPLICATES: </br></br>";
+    echo "</br>NO DUPLICATES: </br></br>";
     print "<pre>\n";
     print_r($rows);
-    print "</pre>"; */
+    print "</pre>";
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($rows));
@@ -472,10 +470,10 @@
 
     // print data from $rows into table
     // for ($i = 0; $i < 10 && $i < count($citedArray); $i++) {
-    foreach ($rows as $row) {
+    for ($i = 0; $i < 10; $i++) {
         echo "<tr id='citationsRow'>";
-        echo "<td id='citationsData'>".$row['author']."</td>";
-        echo "<td id='citationsData'>".$row['citations_sum']."</td>";
+        echo "<td id='citationsData'>".$rows[$i]['author']."</td>";
+        echo "<td id='citationsData'>".$rows[$i]['citations_sum']."</td>";
         echo "</tr>";
     };
 

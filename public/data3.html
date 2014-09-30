@@ -8,11 +8,11 @@
 	<!-- link to CSS stylesheet, fonts & plugins -->
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'> -->
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
 	<!-- favicon -->
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 	<!-- scripts -->
-	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type='text/javascript' src="http://code.jquery.com/jquery-latest.min.js "></script>
 	<!-- d3 -->
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<!-- metadata -->
@@ -43,6 +43,7 @@
 				console.log("FIRST ELEMENT OF TOPCITED: ")
 				console.log(topCited[0].author);
 				console.log(topCited[0].citations_sum);
+				console.log(topCited[1].citations_sum);
 
 				// append data to document under series of paragraphs (test)
 				// enter() returns a reference to the placeholder elements for each data element that had no corresponding existing DOM element
@@ -54,43 +55,62 @@
 					return i + ". " + d.author + "  =  " + d.citations_sum;
 				});
 
+				// initiate variables for max width and height of canvas for chart
+				// 10 bars at 50px each plus 3px padding
 				var height = 600;
-				var width = 900;
+				var width = 780;
+				var maxY = topCited[0].citations_sum;
+
+				// set scale to alter data set so that it fits well in the canvas space
+				// map the domain (actual data range) to the range (size of canvas)
+				var linearScale = d3.scale.linear()
+										  // 0 -> largest citations value
+										  .domain([0, maxY])
+										  // 0 -> 600
+										  .range([0, height]);
+
+				// should = 600
+				console.log(linearScale(maxY));
+				console.log(linearScale(100));
 
 				// create canvas for chart
-				var svgContainer = d3.select("body").append("svg")
+				var svgContainer = d3.select(".chart").append("svg")
 													.attr("width", width)
+													// max size from data set plus 20px margin
 													.attr("height", height)
-													.style("border", "1px solid green");
+													// .style("border", "1px solid green");
+
+				// create an SVG Grouped Element (<g>) to contain all the 'bars' of the graph
+				var barGroup = svgContainer.append("g");
 
 				// bind the data to SVG rectangle elements
-				var bars = svgContainer.selectAll("rect")
+				var bar = barGroup.selectAll("rect")
 										  .data(topCited)
 										  .enter()
 										  .append("rect");
 
 				// set attributes for the rectangles (bars)
-				var rectAttributes = bars.attr("width", 50)
-										 // bars too high so divide by 2 to make better fit onto canvas
-										 .attr("height", function(d) {
-										 	return d.citations_sum / 2;
-										 })
-										 // index * 50 will move each bar one bar width along
-										 .attr("x", function(d, i) {
-										 	return i * 50;
-										 })
-										 // this is determined from the top left corner so to get the bar at the bottom, take the bar height from the canvas height
-										 .attr("y", function(d) {
-										 	return height - (d.citations_sum / 2);
-										 })
-										 .style("fill", "steelblue");
+				var rectAttributes = bar.attr("width", 75)
+										// set bar height by value of citations_sum
+										.attr("height", function(d) {
+										    return linearScale(d.citations_sum);
+										})
+										// index * 78 will move each bar one bar width along and leave 3px padding
+										.attr("x", function(d, i) {
+										    return i * 78;
+										})
+										// this is determined from the top left corner so to get the bar at the bottom, take the bar height from the canvas height
+										.attr("y", function(d) {
+										    return height - linearScale(d.citations_sum);
+										})
+										// .style("fill", "steelblue");
 
 			});
 		});
 
 	</script>
 
-	<h3>Try to find these authors on <a href="https://uk.linkedin.com/">LinkedIn</a> or the <a href="http://gtr.rcuk.ac.uk/">Gateway to Research</a> sites</h3></br></br>
+	</br></br><h3>Try to find these authors on <a href="https://uk.linkedin.com/">LinkedIn</a> or the <a href="http://gtr.rcuk.ac.uk/">Gateway to Research</a> sites</h3></br></br>
 
 </body>
 
