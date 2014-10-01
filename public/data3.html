@@ -25,7 +25,7 @@
 
 <body>
 
-	<h2>Authors With Largest Number of Citations</h2></br>
+	<h2>Authors With Largest Number of Citations</h2></br></br>
 
 	<div class="chart"></div>
 
@@ -33,25 +33,30 @@
 
 		$(document).ready(function() {
 			// call to 'data.json' created in wos.php
-			$.getJSON('data.json', function(data) {
+			$.getJSON('data.json', function (data) {
 
 				// javascript variable to store json data
 				var topCited = data;
 
-				console.log("TOPCITED OBJECT: ");
+				// TESTS: 
+				/* console.log("TOPCITED OBJECT: ");
 				console.log(topCited);
 				console.log("FIRST ELEMENT OF TOPCITED: ")
 				console.log(topCited[0].author);
 				console.log(topCited[0].citations_sum);
-				console.log(topCited[1].citations_sum);
+				console.log(topCited[1].citations_sum); */
 
 				// append data to document under series of paragraphs (test)
 				// enter() returns a reference to the placeholder elements for each data element that had no corresponding existing DOM element
 				// i.e. in this case there exist no <p> elements, enter references this from the data and then appends a <p> element for each element in the data set
-				d3.select("body").selectAll("p").data(topCited).enter().append("p");
+				d3.select("body").selectAll("p")
+								 .data(topCited)
+								 .enter()
+								 .append("p");
+
 				// use D3 text operator to assign text values to the paragraph elements, creates anonymous function (no name as only used here)
 				// d refers to the current data attribut for the current element, i refers to the index of the current element
-				d3.selectAll("p").text(function(d, i) {
+				d3.selectAll("p").text(function (d, i) {
 					return i + ". " + d.author + "  =  " + d.citations_sum;
 				});
 
@@ -69,41 +74,97 @@
 										  // 0 -> 600
 										  .range([0, height]);
 
-				// should = 600
-				console.log(linearScale(maxY));
-				console.log(linearScale(100));
+				// TESTS: should = 600
+				// console.log(linearScale(maxY));
+				// console.log(linearScale(100));
 
 				// create canvas for chart
 				var svgContainer = d3.select(".chart").append("svg")
-													.attr("width", width)
-													// max size from data set plus 20px margin
-													.attr("height", height)
-													// .style("border", "1px solid green");
+												      .attr("width", width)
+									  				  // max size from data set plus 20px margin
+									  				  .attr("height", height)
+									  				  // .style("border", "1px solid green");
 
 				// create an SVG Grouped Element (<g>) to contain all the 'bars' of the graph
 				var barGroup = svgContainer.append("g");
 
-				// bind the data to SVG rectangle elements
+				// bind the data to SVG Rectangle elements
 				var bar = barGroup.selectAll("rect")
-										  .data(topCited)
-										  .enter()
-										  .append("rect");
+								  .data(topCited)
+								  .enter()
+								  .append("rect");
+
+				// set variable to store bar width + padding
+				var barWidth = 78;
 
 				// set attributes for the rectangles (bars)
 				var rectAttributes = bar.attr("width", 75)
 										// set bar height by value of citations_sum
-										.attr("height", function(d) {
+										.attr("height", function (d) {
 										    return linearScale(d.citations_sum);
 										})
-										// index * 78 will move each bar one bar width along and leave 3px padding
-										.attr("x", function(d, i) {
-										    return i * 78;
+										// index * 78 will move each bar (width, 75px) one bar width along and leave 3px padding
+										.attr("x", function (d, i) {
+										    return i * barWidth;
 										})
 										// this is determined from the top left corner so to get the bar at the bottom, take the bar height from the canvas height
-										.attr("y", function(d) {
+										.attr("y", function (d) {
 										    return height - linearScale(d.citations_sum);
 										})
 										// .style("fill", "steelblue");
+
+				// bind the data to SVG Text elements
+				var text = barGroup.selectAll("text")
+								   .data(topCited)
+								   .enter()
+								   .append("text");
+
+				// set attributes for the text on bars (citation values)
+				var barLabels = text.attr("x", function (d, i) {
+									     return (barWidth * i) + 37.5; // sets to halfway between each bar horizontally
+									 })
+									 .attr("y", function (d) {
+									     return height - (linearScale(d.citations_sum)) + 50; // sets to top of each bar + 50 to drop slightly inside top of bar to make legible
+									 })
+									 .text(function (d) {
+									     return d.citations_sum; // value to display, citations value (number)	
+									 })
+									 .style("text-anchor", "middle")
+									 .attr("font-family", "Raleway")
+									 .attr("font-size", "20px")
+									 .attr("fill", "white");
+
+				var xScale = d3.scale.ordinal()
+									 .domain(data.map(function (d) {
+									 	return d.author;
+									 }))
+									 .rangeRoundBands([0, width], 3);
+
+				// define x-axis
+				var xAxis = d3.svg.axis()
+								  .scale(xScale)
+								  .orient("bottom")
+								  .ticks(10);
+
+				// define y-axis
+				var yAxis = d3.svg.axis()
+							  .scale(linearScale)
+							  .orient("left")
+							  .ticks(10);
+
+				// create x-axis
+				svgContainer.append("g")
+							.attr("class", "axis")
+							.attr("transform", function (d, i) {
+							    return "translate(" + (barWidth * i + 37.5) + "," + height + ")";
+							})
+							.call(xAxis);
+
+				// create y-axis
+				svgContainer.append("g")
+							.attr("class", "axis")
+							// .attr("transform", "translate(3,0)")
+							.call(yAxis);
 
 			});
 		});

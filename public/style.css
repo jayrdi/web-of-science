@@ -285,9 +285,9 @@ td {
 	color: white;
 } */
 
-/* .chart {
-	width: 100%;
-} */
+svg {
+	overflow: visible;
+}
 
 .chart rect {
 	fill: #4aaeea;
@@ -312,10 +312,11 @@ div {
 }
 
 .axis text {
-	font: 10px 'Raleway' serif;
+	font: 10px 'Lora' sans-serif;
+	color: white;
 }
 
-.axis path, .axis line {
+.axis g, .axis line {
 	fill: none;
 	stroke: white;
 	shape-rendering: crispEdges;
