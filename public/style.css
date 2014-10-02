@@ -301,23 +301,26 @@ svg {
 	fill: brown;
 } */
 
-.chart text {
-	fill: white;
+/* .chart text {
 	font: 10px 'Lora' sans-serif;
 	text-anchor: end;
-}
+} */
 
 div {
 	margin-left: 100px;
 }
 
-.axis text {
-	font: 10px 'Lora' sans-serif;
+/* .axis text {
+	font: 20px 'Lora' sans-serif;
 	color: white;
-}
+} */
 
 .axis g, .axis line {
-	fill: none;
-	stroke: white;
+	fill: white;
 	shape-rendering: crispEdges;
+	font-size: 18px;
+}
+
+.domain {
+	fill: white;
 }

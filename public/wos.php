@@ -423,7 +423,7 @@
     }
 
     // select DB table, ignore duplicate authors, insert into $rows array ordered by citations sum
-    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC";
+    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC LIMIT 10";
     $rows = array();
     $query = mysqli_query($connect, $sql);
 
