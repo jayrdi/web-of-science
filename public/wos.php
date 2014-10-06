@@ -12,7 +12,6 @@
 
     // password and script file
     include '../config.php';
-    // include '/script.js';
 
     // =================================================================== //
     // == Author: John Dawson                                           == //
@@ -27,16 +26,21 @@
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
 
+    // set processing time for browser before timeout
     ini_set('max_execution_time', 300);
 
-    echo "</br></br><a href='data3.html' class='button'>Click here to display the top cited authors</a></br></br>";
+    // button to display top ten cited authors in bar chart
+    echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
 
     echo $_SERVER['SERVER_NAME'];
     echo $_SERVER['WOS_MYSQL_DB'];
 
+    // ensures anything dumped out will be caught
+    ob_start();
+
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
-    // array options are temporary and used to track request & response data in printout below (line 25)
+    // array options are temporary and used to track request & response data in printout below (line 65)
     $auth_client = @new SoapClient($auth_url, array(
                      "trace" => 1,
                      "exceptions" => 0));
@@ -45,7 +49,7 @@
 
     // set WSDL for search and create new SOAP client
     $search_url = "http://search.webofknowledge.com/esti/wokmws/ws/WokSearch?wsdl";
-    // array options are temporary and used to track request & response data in printout below (line 58)
+    // array options are temporary and used to track request & response data in printout below (line 130)
     $search_client = @new SoapClient($search_url, array(
                      "trace" => 1,
                      "exceptions" => 0));
@@ -309,7 +313,7 @@
     }
 
     // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
-    /* echo "</br>RECORD ARRAY: </br></br>";
+    /* echo "</br>RECORD ARRAY (full data): </br></br>";
     print "<pre>\n";
     print_r($recordArray);
     print "</pre>"; */
@@ -321,10 +325,10 @@
             array_push($citedArray, ($recordArray[$i]['author3']));
     };
 
-    /* echo "</br>CITED ARRAY: </br></br>";
+    echo "</br>CITED ARRAY (30 records, author names): </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>"; */
+    print "</pre>";
 
     // get rid of duplicates
     // $singleAuthors = array_unique($citedArray);
@@ -346,10 +350,17 @@
 
     // $singleAuthors = array_map('strtoupper', $singleAuthors);
 
-    /* echo "</br>'NO RECORD' REMOVED: </br></br>";
+    echo "</br>'no record' REMOVED: </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>"; */
+    print "</pre>";
+
+    // get rid of duplicates
+    $singleAuthors = array_unique($citedArray);
+    echo "</br>NO DUPLICATES: </br></br>";
+    print "<pre>\n";
+    print_r($singleAuthors);
+    print "</pre>";
 
 
     // =================================================================== //
@@ -375,6 +386,10 @@
 
     // select database to work with using connection variable
     mysqli_select_db($connect, 'wos');
+
+    // empty tables ready for new data
+    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
+    mysqli_query($connect, "TRUNCATE TABLE topcited");
 
     // loop over the $recordArray (full data)
     for ($row = 0; $row < count($recordArray); $row++) {
@@ -407,10 +422,10 @@
     $result = 0;
 
     // populate 'topcited' table, first loop $singleAuthors
-    foreach ($citedArray as $value) {
+    foreach ($singleAuthors as $value) {
         // loop $recordArray
         for ($i = 0; $i < count($recordArray); $i++) {
-            // add citations into array if author names match
+            // add citations into variable if author names match
             if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
                 $result += ($recordArray[$i]['citations']);
             }
@@ -423,7 +438,7 @@
     }
 
     // select DB table, ignore duplicate authors, insert into $rows array ordered by citations sum
-    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC LIMIT 10";
+    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC";
     $rows = array();
     $query = mysqli_query($connect, $sql);
 
@@ -436,7 +451,14 @@
         $rows[$i]['author'] = strtoupper($rows[$i]['author']);
     };
 
+    // create temporary array to compare $rows with itself
     $tempArray = $rows;
+
+    // tests
+    echo "</br>WITH DUPLICATES (uppercase): </br></br>";
+    print "<pre>\n";
+    print_r($rows);
+    print "</pre>";
 
     // if authors are same, sum citations to first instance and delete second instance
     // iterate original array sequentially
@@ -452,6 +474,17 @@
             };  // end if
         }; // end internal for-loop ($j)
     }; // end external for-loop ($i)
+
+    // reset indices that were messed up by 'unset'
+    $rows = array_values($rows);
+
+    // make sure that data is sorted correctly (citations_sum, high -> low)
+    usort($rows, function ($a, $b) {
+        return $b['citations_sum'] - $a['citations_sum'];
+    });
+
+    // only include first ten elements in array
+    $rows = array_slice($rows, 0, 10);
 
     echo "</br>NO DUPLICATES: </br></br>";
     print "<pre>\n";
@@ -469,7 +502,7 @@
           </tr> >';
 
     // print data from $rows into table
-    // for ($i = 0; $i < 10 && $i < count($citedArray); $i++) {
+    // for ($i = 0; $i < 10; $i++) {
     for ($i = 0; $i < 10; $i++) {
         echo "<tr id='citationsRow'>";
         echo "<td id='citationsData'>".$rows[$i]['author']."</td>";
@@ -480,5 +513,15 @@
     echo "</table>";
 
     mysqli_close($connect);
+
+    $url = 'data.html';
+
+    // clear the output buffer
+    while (ob_get_status()) {
+        ob_end_clean();
+    }
+
+    // no redirect
+    header("Location: data.html");
 
 ?>

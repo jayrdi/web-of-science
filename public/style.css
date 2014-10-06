@@ -289,13 +289,13 @@ svg {
 	overflow: visible;
 }
 
-.chart rect {
+/* .chart rect {
 	fill: #4aaeea;
-}
+} */
 
-.chart rect:hover {
+/* .chart rect:hover {
 	fill: brown;
-}
+} */
 
 /* .chart text:hover {
 	fill: brown;
