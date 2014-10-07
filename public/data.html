@@ -25,9 +25,7 @@
 
 <body>
 
-	<h2>Authors With Largest Number of Citations</h2></br></br>
-
-	<h3>Search Parameters:</h3></br></br>
+	<h2>Authors With Largest Number of Citations</h2></br></br></br>
 
 	<div class="chart"></div>
 
@@ -64,7 +62,7 @@
 
 				// establish some margins for the graph area to avoid overlap with other HTML elements
 				var margin = {
-								top: 20,
+								top: 30,
 								right: 30,
 								bottom: 150,
 								left: 40
@@ -113,7 +111,7 @@
 								  // highlight each bar as you hover over it
 								  .on("mouseover", function () {
 								      d3.select(this)
-								        .attr("fill", "brown");	
+								        .attr("fill", "darkblue");	
 								  })
 								  // transition to remove highlight from bar
 								  .on("mouseout", function() {
@@ -153,15 +151,15 @@
 									     return (barWidth * i) + 37.5; // sets to halfway between each bar horizontally
 									 })
 									 .attr("y", function (d) {
-									     return height - (linearScale(d.citations_sum)) + 50; // sets to top of each bar + 50 to drop slightly inside top of bar to make legible
+									     return height - (linearScale(d.citations_sum)) - 3; // sets to top of each bar + 5 to sit just above bar
 									 })
 									 .text(function (d) {
 									     return d.citations_sum; // value to display, citations value (number)	
 									 })
 									 .style("text-anchor", "middle")
 									 .attr("font-family", "Raleway")
-									 .attr("font-size", "20px")
-									 .attr("fill", "white");
+									 .attr("font-size", "26px")
+									 .attr("fill", "#4aaeea");
 
 				// create a scale for the horizontal axis
 				var xScale = d3.scale.ordinal()
@@ -206,7 +204,16 @@
 				svgContainer.append("g")
 							.attr("class", "axis")
 							// .attr("transform", "translate(3,0)")
-							.call(yAxis);
+							.call(yAxis)
+							// append a title to the y-axis
+							.append("text")
+							.attr("transform", "rotate(-90)")
+							.attr("y", -70)
+							.attr("x", -200)
+							.style("text-anchor", "end")
+							.attr("fill", "white")
+							.attr("font-size", "24px")
+							.text("Citations");
 
 				// create link when user clicks on a single bar of data
 				d3.selectAll("rect")

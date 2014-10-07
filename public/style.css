@@ -273,15 +273,9 @@ td {
 	border: 2px solid white;
 }
 
-/* .chart div {
-	font: 10px 'Lora' serif;
-	background-color: steelblue;
-	text-align: right;
-	padding: 3px;
-	margin: 3px;
-	margin-left: 100px;
-	color: white;
-} */
+.chart {
+	margin-left: 150px;
+}
 
 svg {
 	overflow: visible;
@@ -320,7 +314,7 @@ div {
 }
 
 .domain {
-	fill: white;
+	fill: darkblue;
 }
 
 #loading {
