@@ -5,7 +5,7 @@
     // fonts and favicon
     echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
           <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
-          <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>';
+          <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>';
     // jquery & javascript
     echo '<script src="script.js"/></script>
           <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
@@ -384,8 +384,39 @@
         printf ("ERROR: %s\n", $connect->error);
     }
 
+    // create the database if it doesn't already exist
+    mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
+
     // select database to work with using connection variable
     mysqli_select_db($connect, 'wos');
+
+    // create the tables if they don't exist
+    // check if 'uid' can be selected (if it exists)
+    $selectTest1 = "SELECT uid FROM searchresponse";
+    $con1 = mysqli_query($connect, $selectTest1);
+
+    if (empty($con1)) {
+        $query = "CREATE TABLE searchresponse (uid VARCHAR(20) NOT NULL,
+                                               journal VARCHAR(100) NOT NULL,
+                                               publication VARCHAR(100) NULL,
+                                               year INT(4),
+                                               author1 VARCHAR(100) NOT NULL,
+                                               address VARCHAR(200) NULL,
+                                               author2 VARCHAR(100) NULL,
+                                               author3 VARCHAR(100) NULL,
+                                               citations INT(4) NOT NULL)";
+        $result = mysqli_query($connect, $query);
+    }
+
+    // check if 'author' can be selected (if it exists)
+    $selectTest2 = "SELECT author FROM topcited";
+    $con2 = mysqli_query($connect, $selectTest2);
+
+    if (empty($con2)) {
+        $query = "CREATE TABLE topcited (author VARCHAR(30) NOT NULL,
+                                         citations_sum INT(4) NOT NULL)";
+        $result = mysqli_query($connect, $query);
+    }
 
     // empty tables ready for new data
     mysqli_query($connect, "TRUNCATE TABLE searchresponse");

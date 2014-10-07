@@ -10,7 +10,7 @@
 		<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
 		<!-- favicon -->
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 		<!-- links to various javascript files used -->
 		<!-- jquery & jquery ui -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -50,6 +50,7 @@
 		<form name="params" action="wos.php" method="post" class="form">
 			<p class="input">Keyword(s)</p>
 			<input class="field" type="text" name="category1">
+
 			</br></br>
 
 			<!-- search params -->
@@ -112,7 +113,8 @@
 			</br></br> -->
 
 			<!-- execute search -->
-			<input class="submit" type="submit" value="Go">
+			<input class="submit" type="submit" value="Go" onclick="$('#loading').show();"/>
+			<div id="loading" style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
 		</form>
 
 		</br>
@@ -120,11 +122,16 @@
 
 	</div> <!-- mainBlock -->
 
+	<article id="instructions">
+		<h2>Instructions</h2>
+		<p id="instructText">This is what you do</p>
+	</article>
+
 	<footer class="credit">
 		<div class="wrapper">
 			<h3 class="instruct">Credit</h3>
 			<!-- newcastle university logo -->
-			<img src="images/ncl logo.jpg"></img></br>
+			<img id="ncl" src="images/ncl logo.jpg"></img></br>
 			<!-- links to author and department -->
 			<p id="links"><a href="mailto:john@artgecko.co.uk" id="mail">John Dawson</a> @ <a href="http://www.ncl.ac.uk/res/about/office/research/" id="mail">Research & Enterprise Services, Newcastle University</a></p>
 		</div> <!-- wrapper -->

@@ -7,7 +7,7 @@ function unhide(divID) {
 }
 
 function display() {
-	document.write("ACCESS, BITCHES!");
+	document.write("ACCESS!");
 	/* $.ajax({
 		type: "GET",
 		url: "wos.php",
