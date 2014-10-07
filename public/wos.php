@@ -545,7 +545,7 @@
 
     mysqli_close($connect);
 
-    /* $url = 'data.html';
+    $url = 'data.html';
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -553,6 +553,6 @@
     }
 
     // no redirect
-    header("Location: data.html"); */
+    header("Location: data.html");
 
 ?>
