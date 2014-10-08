@@ -5,7 +5,9 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquot
 }
 
 #mail {
-	color: #f4efdd !important;
+	color: #ffd700;
+	font-weight: thick;
+	font-family: 'Raleway';
 }
 
 a:link, a:visited, a:hover, a:active {
@@ -55,6 +57,10 @@ header {
 	width: 100%;
 }
 
+html {
+	width: 100%;
+}
+
 h1.logo {
 	display: block;
 	float: top;
@@ -67,7 +73,6 @@ h1.logo {
 h2 {
 	color: #00ce00;
 	font-size: 24px;
-	width: 100%;
 }
 
 #mainBlock {
@@ -99,7 +104,6 @@ footer {
 	border-top: 5px solid #218c03;
 	padding: 5px;
 	color: #f4efdd;
-	position: fixed;
 	display: block;
 }
 
@@ -113,8 +117,6 @@ footer {
 	padding: 5px;
 	font-family: 'Lora', serif;
 	position: fixed;
-	top: 70px;
-	width: 100%;
 	top: 91.5%;
 	display: inline-block;
 }
@@ -160,8 +162,8 @@ select option {
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
 	font-size: 2em;
-	color: #f4efdd;
-	border: 4px solid #f4efdd;
+	color: #ffd700;
+	border: 4px solid #ffd700;
 	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
@@ -289,7 +291,7 @@ td {
 }
 
 #info {
-	display: inline;
+	display: inline-block;
 	float: top;
 }
 

@@ -32,8 +32,11 @@
     // button to display top ten cited authors in bar chart
     echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
 
-    echo $_SERVER['SERVER_NAME'];
-    echo $_SERVER['WOS_MYSQL_DB'];
+    $db_host = (isset($_SERVER['WOS_MYSQL_HOST'])) ? $_SERVER['WOS_MYSQL_HOST'] : 'localhost';
+    $db_user = (isset($_SERVER['WOS_MYSQL_USER'])) ? $_SERVER['WOS_MYSQL_USER'] : 'root';
+    $db_password = (isset($_SERVER['WOS_MYSQL_PASS'])) ? $_SERVER['WOS_MYSQL_PASS'] : $local_password;
+    $db_database = (isset($_SERVER['WOS_MYSQL_DB'])) ? $_SERVER['WOS_MYSQL_DB'] : 'wos';
+
 
     // ensures anything dumped out will be caught
     ob_start();
@@ -369,7 +372,7 @@
 
 
     // create variable to store connection details
-    $connect = mysqli_connect( "localhost", "root", $password );
+    $connect = mysqli_connect( $db_host, $db_user, $db_password );
     // check connection; quit if fail with error
     if (!$connect)
     {
@@ -388,7 +391,7 @@
     mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
 
     // select database to work with using connection variable
-    mysqli_select_db($connect, 'wos');
+    mysqli_select_db($connect, $db_database);
 
     // create the tables if they don't exist
     // check if 'uid' can be selected (if it exists)
