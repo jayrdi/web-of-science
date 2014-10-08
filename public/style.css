@@ -45,7 +45,6 @@ p {
 
 .wrapper {
 	margin-left: 60px;
-	width: 100%;
 }
 
 header {
@@ -77,8 +76,7 @@ h2 {
 	z-index: -1;
 	margin-top: 20px;
 	margin-left: 60px;
-	/* margin-bottom: 200px; */
-	/* height: 300px; */
+	margin-bottom: 180px; */
 }
 
 .about {
@@ -101,6 +99,8 @@ footer {
 	border-top: 5px solid #218c03;
 	padding: 5px;
 	color: #f4efdd;
+	position: fixed;
+	display: block;
 }
 
 .instruct {
@@ -162,7 +162,7 @@ select option {
 	font-size: 2em;
 	color: #f4efdd;
 	border: 4px solid #f4efdd;
-	margin-top: 100px;
+	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
 	cursor: pointer;
@@ -188,6 +188,10 @@ option {
 #dropdown option:hover {
 	background-color: #303030 !important;
 	color: #00fc04 !important;
+}
+
+#dropdown {
+	margin-bottom: 20px;
 }
 
 .date {
@@ -222,7 +226,7 @@ td {
 	color: black;
 }
 
-.button {
+#button {
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
 	color: #f4efdd;
@@ -230,6 +234,8 @@ td {
 	background-color: #303030;
 	border-radius: 7px;
 	cursor: pointer;
+	display: block;
+
 }
 
 .hidden {
@@ -237,7 +243,8 @@ td {
 }
 
 .unhidden {
-	display: inline-block;
+	display: block;
+	margin-top: 0px !important;
 }
 
 .form {
@@ -307,9 +314,9 @@ svg {
 	text-anchor: end;
 } */
 
-div {
+/* div {
 	margin-left: 100px;
-}
+} */
 
 /* .axis text {
 	font: 20px 'Lora' sans-serif;
@@ -330,6 +337,7 @@ div {
 	position: relative;
 	top: 100px;
 	left: 30px;
+	margin-left: 100px;
 }
 
 #instructions {
@@ -351,3 +359,8 @@ div {
 	color: #00fc04;
 	font-size: 36px;
 }
+
+/* #addField {
+	display: block;
+	margin-top: 40px;
+} */

@@ -105,7 +105,7 @@
 			    <option value="PY">Publication Year: Newest -> Oldest</option>
 			    <option value="AU">First Author: A -> Z</option>
 			    <option value="CF">Conference Title: A -> Z</option>
-			</select></br></br>
+			</select></br>
 
 			<!-- <p class="input">Timespan</p>
 			<p>From: <input class="date" type="date" name="time" placeholder="YYYY-MM-DD"></p></br>
@@ -117,20 +117,21 @@
 			<div id="loading" style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
 		</form>
 
-		</br>
-		<a href="javascript:unhide('extra')" class="button" id="addField" title="Fields entered in the additional search boxes above WILL NOT be cleared by clicking this button">Click here to add more search parameters</a>
+		<a href="javascript:unhide('extra')" id="button" title="Fields entered in the additional search boxes above WILL NOT be cleared by clicking this button">Click here to add more search parameters</a>
 
 	</div> <!-- mainBlock -->
 
 	<article id="instructions">
 		<h2>Instructions</h2></br>
-		<p id="instructText">1. In order to find the most cited publications by an author in a particular category,
-							 please enter the relevant keyword(s) in the box to the left.</br></br>
-							 2. Select the search type from the 'Search Type' drop down menu.</br></br>
-							 3. Select the way in which the data should be sorted from the 'Sort By' drop down menu.</br></br>
-							 4. If you want to add further keywords to refine your search, click the 'add more search parameters' button.</br>
-							 Choose the options as before and then state the logical relationship between the search parameters, AND, OR or NOT from the drop down menu.</br></br>
-							 5. When you have selected all the search parameters, click the 'Go' button and wait for the data to load.</br></p>	
+		<div id="instructText">
+		<p><h3>1.</h3> In order to find the most cited publications by an author in a particular category,</br>
+					   please enter the relevant keyword(s) in the box to the left.</br></br>
+		   <h3>2.</h3> Select the search type from the 'Search Type' drop down menu.</br></br>
+		   <h3>3.</h3> Select the way in which the data should be sorted from the 'Sort By' drop down menu.</br></br>
+		   <h3>4.</h3> If you want to add further keywords to refine your search, click the 'add more search</br>parameters' button.
+					   Choose the options as before and then state the logical relationship</br>between the search parameters, AND, OR or NOT from the drop down menu.</br></br>
+		   <h3>5.</h3> When you have selected all the search parameters, click the 'Go' button and wait</br>for the data to load.</br></p>	
+		</div>
 	</article>
 
 	<footer class="credit">
