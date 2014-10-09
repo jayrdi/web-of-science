@@ -372,7 +372,7 @@
 
 
     // create variable to store connection details
-    $connect = mysqli_connect( $db_host, $db_user, $db_password );
+    $connect = mysqli_connect($db_host, $db_user, $db_password, $db_database);
     // check connection; quit if fail with error
     if (!$connect)
     {
@@ -391,7 +391,7 @@
     mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
 
     // select database to work with using connection variable
-    mysqli_select_db($connect, $db_database);
+    // mysqli_select_db($connect, $db_database);
 
     // create the tables if they don't exist
     // check if 'uid' can be selected (if it exists)
