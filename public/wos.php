@@ -374,11 +374,11 @@
     // create variable to store connection details
     $connect = mysqli_connect($db_host, $db_user, $db_password, $db_database);
     // check connection; quit if fail with error
-    if (!$connect)
+    /* if (!$connect)
     {
         die('Could not connect: ' . mysqli_error($connect));
         exit();
-    }
+    } */
 
     // check connection
     if ($connect->ping()) {
