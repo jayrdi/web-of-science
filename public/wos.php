@@ -381,11 +381,11 @@
     } */
 
     // check connection
-    if ($connect->ping()) {
+    /* if ($connect->ping()) {
         printf ("</br></br>CONNECTED TO DATABASE!</br></br>");
     } else {
         printf ("ERROR: %s\n", $connect->error);
-    }
+    } */
 
     // create the database if it doesn't already exist
     mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
