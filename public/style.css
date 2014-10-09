@@ -59,6 +59,7 @@ header {
 
 html {
 	width: 100%;
+	height: 100%;
 }
 
 h1.logo {
@@ -96,29 +97,21 @@ h2 {
 }
 
 footer {
-	height: 70px;
-	left: 0px;
-	float: bottom;
 	width: 100%;
+	bottom: 0;
+	height: 90px;
 	background-color: #303030;
 	border-top: 5px solid #218c03;
 	padding: 5px;
 	color: #f4efdd;
-	display: block;
-}
-
-.instruct {
-	font-weight: bold;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Lora', serif;
+	position: absolute;
 }
 
 .credit {
-	background-color: #303030;
-	padding: 5px;
-	font-family: 'Lora', serif;
-	position: fixed;
-	top: 91.5%;
-	display: inline-block;
+	font-weight: bold;
+	font-family: 'Raleway', sans-serif;
+	margin-top: 15px;
 }
 
 .input {
@@ -146,11 +139,11 @@ select option {
 }
 
 #ncl {
-	width: 100px;
 	display: inline-block;
 	float: right;
-	margin-right: 100px;
-	padding: 5px;
+	margin-right: 1px;
+	padding: 15px;
+	width: 173px;
 }
 
 #links {

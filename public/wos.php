@@ -10,7 +10,7 @@
     echo '<script src="script.js"/></script>
           <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
-    // password and script file
+    // local password file
     include '../config.php';
 
     // =================================================================== //
@@ -376,7 +376,7 @@
     // check connection; quit if fail with error
     if (!$connect)
     {
-        die('Could not connect: ' . mysqli_error());
+        die('Could not connect: ' . mysqli_error($connect));
         exit();
     }
 
