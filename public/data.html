@@ -63,7 +63,7 @@
 				// use D3 text operator to assign text values to the paragraph elements, creates anonymous function (no name as only used here)
 				// d refers to the current data attribut for the current element, i refers to the index of the current element
 				d3.selectAll("p").text(function (d, i) {
-					return i + ". " + d.author + "  =  " + d.citations_sum;
+					return (i+1) + ". " + d.author + "  =  " + d.citations_sum;
 				});
 
 				// establish some margins for the graph area to avoid overlap with other HTML elements
