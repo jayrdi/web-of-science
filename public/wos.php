@@ -11,7 +11,11 @@
           <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
     // local password file
-    include '../config.php';
+    $fileName = '../config.php';
+    // check if it exists before attempting to include it (i.e. is it localhost or server?)
+    if (file_exists($fileName)) {
+        include $fileName;
+    };
 
     // =================================================================== //
     // == Author: John Dawson                                           == //
@@ -370,6 +374,8 @@
     // ===================== CONNECT TO DATABASE ========================= //
     // =================================================================== //
 
+    // settings for unix socket on server
+    ini_set('mysqli.default_socket',$_ENV['WOS_MYSQL_SOCKET']);
 
     // create variable to store connection details
     $connect = mysqli_connect($db_host, $db_user, $db_password, $db_database);
