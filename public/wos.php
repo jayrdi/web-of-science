@@ -552,7 +552,7 @@
 
     echo "</table>";
 
-    /* mysqli_close($connect);
+    mysqli_close($connect);
 
     $url = 'data.html';
 
@@ -562,6 +562,6 @@
     }
 
     // no redirect
-    header("Location: data.html"); */
+    header("Location: data.html");
 
 ?>
