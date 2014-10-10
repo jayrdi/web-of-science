@@ -59,7 +59,8 @@ header {
 
 html {
 	width: 100%;
-	height: 100%;
+	position: static;
+	height: 840px;
 }
 
 h1.logo {
@@ -82,7 +83,7 @@ h2 {
 	z-index: -1;
 	margin-top: 20px;
 	margin-left: 60px;
-	margin-bottom: 180px; */
+	margin-bottom: 180px;
 }
 
 .about {
@@ -105,7 +106,8 @@ footer {
 	padding: 5px;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
-	position: absolute;
+	position: fixed;
+	margin-top: 20px;
 }
 
 .credit {
