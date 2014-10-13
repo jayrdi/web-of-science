@@ -26,6 +26,14 @@ ul {
 	line-height: 200%;
 	border: 3px solid #00fc04;
 }
+<<<<<<< HEAD
+/* */
+/* how to display html5 elements for old browsers */
+/* header, section, footer, article {
+	display: block;
+} */
+=======
+>>>>>>> ade134ba09e813ace0c2cc8d93f389c5e1653d3b
 
 body {
 	background-color: #052b00;
