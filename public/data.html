@@ -21,9 +21,58 @@
 	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 	<meta name="author" content="John Dawson"/>
 
+	<!-- JAVASCRIPT for navigation bar -->
+	<script type="text/javascript"> 
+	$(document).ready(function(){
+
+		// Requried: Navigation bar drop-down
+		$("nav ul li").hover(function() {
+			$(this).addClass("active");
+			$(this).find("ul").show().animate({opacity: 1}, 400);
+			},function() {
+			$(this).find("ul").hide().animate({opacity: 0}, 200);
+			$(this).removeClass("active");
+		});
+		
+		// Requried: Addtional styling elements
+		$('nav ul li ul li:first-child').prepend('<li class="arrow"></li>');
+		$('nav ul li:first-child').addClass('first');
+		$('nav ul li:last-child').addClass('last');
+		$('nav ul li ul').parent().append('<span class="dropdown"></span>').addClass('drop');
+
+	});
+	</script>
+	<!-- end javascript -->
+
 </head>
 
 <body>
+
+	<header>
+		<div class="wrapper">
+			<h1 class="logo">Academic Intelligence</h1>
+			<h2 id="subhead">Web of Science Database Query</h2>
+		</div> <!-- wrapper --> 
+	</header>
+
+	<article class="about">
+		<div class="wrapper">
+			<nav class="nav">
+				<ul class="clear">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Tab</a></li>
+					<li><a href="#">Tab</a>
+						<ul>
+							<li><a href="#">Sub</a></li>
+							<li><a href="#">Sub</a></li>
+						</ul>
+					</li>
+					<li><a href="index.html">Academic Intelligence</a></li>
+					<li><a href="#">Tab</a></li>
+				</ul>
+			</nav>
+		</div> <!-- wrapper -->
+	</article> <!-- about -->
 
 	</br><h1 id="graphHeader">Authors With Largest Number of Citations</h1></br></br></br>
 
@@ -113,18 +162,18 @@
 								  .data(topCited)
 								  .enter()
 								  .append("rect")
-								  .attr("fill", "#4aaeea")
+								  .attr("fill", "#7bafd4")
 								  // highlight each bar as you hover over it
 								  .on("mouseover", function () {
 								      d3.select(this)
-								        .attr("fill", "darkblue");	
+								        .attr("fill", "#003c71");	
 								  })
 								  // transition to remove highlight from bar
 								  .on("mouseout", function() {
 								      d3.select(this)
 								        .transition()
 								        .duration(250)
-								        .attr("fill", "#4aaeea");
+								        .attr("fill", "#7bafd4");
 								  });
 
 				// set variable to store bar width + padding
@@ -165,7 +214,7 @@
 									 .style("text-anchor", "middle")
 									 .attr("font-family", "Raleway")
 									 .attr("font-size", "26px")
-									 .attr("fill", "#4aaeea");
+									 .attr("fill", "#7bafd4");
 
 				// create a scale for the horizontal axis
 				var xScale = d3.scale.ordinal()
@@ -217,7 +266,7 @@
 							.attr("y", -70)
 							.attr("x", -200)
 							.style("text-anchor", "end")
-							.attr("fill", "white")
+							.attr("fill", "#000")
 							.attr("font-size", "24px")
 							.text("Citations");
 
@@ -236,7 +285,7 @@
 
 	</script>
 
-	</br></br></br></br><h3>Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3></br></br></br>
+	</br></br></br></br><h3 id="links">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3></br></br></br>
 
 </body>
 

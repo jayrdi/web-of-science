@@ -5,7 +5,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquot
 }
 
 #mail {
-	color: #ffd700;
+	color: #7bafd4;
 	font-weight: thick;
 	font-family: 'Raleway';
 }
@@ -15,49 +15,40 @@ a:link, a:visited, a:hover, a:active {
 	color: #f4efdd;
 }
 
-ul {
+/* ul {
 	list-style: decimal;
 	list-style-position: inside;
 	background-color: #303030;
-	color: #00fc04;
+	color: #7bafd4;
 	width: 300px;
 	padding: 5px;
 	margin-left: 40px;
 	line-height: 200%;
 	border: 3px solid #00fc04;
-}
-<<<<<<< HEAD
-/* */
-/* how to display html5 elements for old browsers */
-/* header, section, footer, article {
-	display: block;
 } */
-=======
->>>>>>> ade134ba09e813ace0c2cc8d93f389c5e1653d3b
 
 body {
-	background-color: #052b00;
+	background-color: #fff;
 	font-family: 'Raleway', sans-serif;
 	font-size: 12px;
 	color: #f4efdd;
-	width: 100%;
 }
 
 p {
 	line-height: 150%;
-	color: #f4efdd;
+	color: #000;
 }
 
 .wrapper {
 	margin-left: 60px;
+	/* width: 470px; */
 }
 
 header {
 	height: 100px;
-	background-color: #4f4f4f;
+	background-color: #003c71;
 	float: top;
 	top: 0px;
-	width: 100%;
 }
 
 html {
@@ -71,12 +62,17 @@ h1.logo {
 	float: top;
 	width: 100%;
 	padding-top: 15px;
-	color: #00fc04;
+	color: #c8102e;
 	font-size: 36px;
 }
 
 h2 {
-	color: #00ce00;
+	color: #fff;
+	font-size: 24px;
+}
+
+#instructHeader {
+	color: #000;
 	font-size: 24px;
 }
 
@@ -92,20 +88,21 @@ h2 {
 .about {
 	float: top;
 	background-color: #303030;
-	border-top: 5px solid #218c03;
-	border-bottom: 5px solid #218c03;
+	border-top: 5px solid #7bafd4;
+	border-bottom: 5px solid #7bafd4;
 	padding: 5px;
-	font-family: 'Lora', serif;
+	font-family: 'Raleway', sans-serif;
 	top: 100px;
 	width: 100%;
+	margin-left: 
 }
 
 footer {
 	width: 100%;
 	bottom: 0;
 	height: 90px;
-	background-color: #303030;
-	border-top: 5px solid #218c03;
+	background-color: #003c71;
+	border-top: 5px solid #7bafd4;
 	padding: 5px;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
@@ -120,22 +117,23 @@ footer {
 }
 
 .input {
-	color: #f4efdd;
+	color: #000;
 	font-size: 1.8em;
 }
 
 h3 {
-	color: #00ce00;
+	color: #fff;
 	display: inline-block;
 }
 
 select {
 	font-family: 'Lora', serif;
-	background-color: #4f4f4f;
-	border: 2px solid #00fc04;
-	color: #00fc04;
+	background-color: #7bafd4;
+	border: 3px solid #003c71;
+	color: #003c71;
 	padding: 2px;
 	padding-left: 8px;
+	font-weight: bold;
 }
 
 select option {
@@ -153,6 +151,7 @@ select option {
 
 #links {
 	display: inline-block;
+	color: #fff;
 }
 
 .submit {
@@ -160,38 +159,43 @@ select option {
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
 	font-size: 2em;
-	color: #ffd700;
-	border: 4px solid #ffd700;
+	color: #fff;
+	border: 4px solid #c8102e;
 	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
 	cursor: pointer;
-	background-color: #303030;
+	background-color: #003c71;
 }
 
 input {
-	background-color: #4f4f4f;
-	border: 2px solid #00fc04;
+	background-color: #7bafd4;
+	border: 3px solid #003c71;
 }
 
 .field {
-	color: #00fc04;
+	color: #003c71;
 	font-family: 'Lora', serif;
 	padding: 10px;
 	font-size: 1.5em;
+	font-weight: bold;
+	border-radius: 7px;
 }
 
 option {
-	color: #00fc04 !important;
+	color: #003c71 !important;
+	font-weight: bold;
+	background-color: #7bafd4;
 }
 
 #dropdown option:hover {
-	background-color: #303030 !important;
-	color: #00fc04 !important;
+	background-color: #7bafd4 !important;
+	color: #003c71 !important;
 }
 
 #dropdown {
 	margin-bottom: 20px;
+	border-radius: 7px;
 }
 
 .date {
@@ -227,10 +231,10 @@ td {
 }
 
 #button {
-	padding: 5px;
+	padding: 10px;
 	font-family: 'Raleway', sans-serif;
-	color: #f4efdd;
-	border: 2px solid #f4efdd;
+	color: #fff;
+	/* border: 3px solid #000; */
 	background-color: #303030;
 	border-radius: 7px;
 	cursor: pointer;
@@ -324,13 +328,13 @@ svg {
 } */
 
 .axis g, .axis line {
-	fill: white;
+	fill: #000;
 	shape-rendering: crispEdges;
 	font-size: 18px;
 }
 
 .domain {
-	fill: darkblue;
+	fill: navblue;
 }
 
 #loading {
@@ -338,6 +342,7 @@ svg {
 	top: 100px;
 	left: 30px;
 	margin-left: 100px;
+	color: #000;
 }
 
 #instructions {
@@ -348,15 +353,15 @@ svg {
 }
 
 #instructText {
-	border: 5px solid #218c03;
+	/* border: 5px solid #218c03; */
 	padding: 10px;
 	background-color: #303030;
 	border-radius: 7px;
 }
 
 #graphHeader {
-	margin-left: 30px;
-	color: #00fc04;
+	margin-left: 60px;
+	color: #c8102e;
 	font-size: 36px;
 }
 
@@ -364,3 +369,149 @@ svg {
 	display: block;
 	margin-top: 40px;
 } */
+
+h4 {
+	color: #000;
+}
+
+/***** BEGIN nav Menu Styles *****/
+.clear:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+html[xmlns] .clear {
+	display: block;
+}
+
+* html .clear {
+	height: 1%;
+}
+
+nav {
+	margin-left: 55px;
+	width: 480px;
+}
+
+nav.nav {
+	border-top: 1px solid #282c2f;
+	border-bottom: 1px solid #121317;
+	border-radius: 3px;
+	display: block!important;
+}
+
+nav.nav ul {
+	margin: 0px;
+	padding: 0px;
+	border-left: 1px solid #2e3235;
+}
+
+/* Top level */
+nav.nav li {
+	list-style: none;
+	float: left;
+	border-right: 1px solid #2e3235;
+	position: relative;
+}
+
+nav.nav li.first, nav li.first a {
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
+	-moz-border-top-left-radius: 2px;
+	-moz-border-bottom-left-radius: 2px;
+}
+
+nav.nav li.last, nav li.last a {
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+	-moz-border-top-right-radius: 2px;
+	-moz-border-bottom-right-radius: 2px;
+}
+
+nav.nav li.drop a {
+	padding-right: 30px;
+}
+
+nav.nav li a {
+	display: block;
+	padding: 9px 23px 10px;
+	text-decoration: none;
+	background-image: url(/beehive/public/images/navigation-sprite.png);
+	background-repeat: repeat-x;
+	font-size: 12px;
+	color: #fff;
+	border-top: 1px solid #5a5d60;
+	border-left: 1px solid #525659;
+	text-shadow: 0px -1px 0px #000;
+}
+
+nav.nav li a {
+	background-position: 0px 0px;
+}
+
+nav.nav li a:hover, nav li.active a {
+	background-position: 0px -36px;
+}
+
+nav.nav li a:active {
+	background-position: 0px -72px;
+}
+
+nav.nav .dropdown {
+	display: block;
+	float: right;
+	width: 7px;
+	height: 5px;
+	background: url(/beehive/public/images/drop-down.png) no-repeat;
+	margin: -20px 15px 0px 12px;
+}
+
+/* Drop down */
+nav.nav li ul {
+	opacity: 0;
+	position: absolute;
+	top: 45px;
+	left: -26px;
+	padding: 12px 15px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: #222;
+	display: none;
+	z-index: 100;
+}
+
+nav.nav li ul li {
+	border-right: 0px;
+	float: none!important;
+	border-bottom: 1px solid #444;
+	width: 125px;
+}
+
+nav.nav li ul li:last-child {
+	border-bottom: 0px;
+}
+
+nav.nav li ul li a {
+	background: none!important;
+	border-left: 0px;
+	border-top: 0px;
+	padding: 10px 0px;
+	font-size: 11px;
+}
+
+nav.nav li ul li a:hover {
+	opacity: 0.5;
+}
+
+nav.nav li ul li.arrow {
+	background: url(/beehive/public/images/arrowtop.png) top left no-repeat;
+	border-bottom: 0px;
+	height: 10px;
+	margin-top: -22px;
+	margin-bottom: 10px;
+}
+
+/***** END nav Menu Styles *****/

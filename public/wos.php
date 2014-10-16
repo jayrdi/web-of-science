@@ -36,6 +36,7 @@
     // button to display top ten cited authors in bar chart
     echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
 
+    // retrieve credentials for database login from $_SERVER variable if not running from localhost
     $db_host = (isset($_SERVER['WOS_MYSQL_HOST'])) ? $_SERVER['WOS_MYSQL_HOST'] : 'localhost';
     $db_user = (isset($_SERVER['WOS_MYSQL_USER'])) ? $_SERVER['WOS_MYSQL_USER'] : 'root';
     $db_password = (isset($_SERVER['WOS_MYSQL_PASS'])) ? $_SERVER['WOS_MYSQL_PASS'] : $local_password;

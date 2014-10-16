@@ -3,7 +3,7 @@
 <html>
 	<head>
 
-		<title>NCL Research Enterprises</title>
+		<title>Academic Intelligence</title>
 
 		<!-- link to CSS stylesheet, fonts & plugins -->
 		<link rel="stylesheet" type="text/css" href="style.css"/>
@@ -25,20 +25,53 @@
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson"/>
 
+		<!-- JAVASCRIPT for navigation bar -->
+		<script type="text/javascript"> 
+		$(document).ready(function(){
+
+			// Requried: Navigation bar drop-down
+			$("nav ul li").hover(function() {
+				$(this).addClass("active");
+				$(this).find("ul").show().animate({opacity: 1}, 400);
+				},function() {
+				$(this).find("ul").hide().animate({opacity: 0}, 200);
+				$(this).removeClass("active");
+			});
+			
+			// Requried: Addtional styling elements
+			$('nav ul li ul li:first-child').prepend('<li class="arrow"></li>');
+			$('nav ul li:first-child').addClass('first');
+			$('nav ul li:last-child').addClass('last');
+			$('nav ul li ul').parent().append('<span class="dropdown"></span>').addClass('drop');
+
+		});
+		</script>
+		<!-- end javascript -->
+
 	</head>
 	
 	<header>
 		<div class="wrapper">
-			<h1 class="logo">Research & Enterprise Services</h1>
+			<h1 class="logo">Academic Intelligence</h1>
 			<h2 id="subhead">Web of Science Database Query</h2>
 		</div> <!-- wrapper --> 
 	</header>
 
 	<article class="about">
-		<div class="wrapper">
-			<p>The aim of this site is to retrieve data from the <a href="http://en.wikipedia.org/wiki/Web_of_Science" id="mail">Thomson Reuters Web of Science</a> database according to a user-defined set of search parameters</p>
-			<p class="instruct">Please complete the necessary fields for your search and click 'Go'</p>
-		</div> <!-- wrapper -->
+		<nav class="nav">
+			<ul class="clear">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Tab</a></li>
+				<li><a href="#">Tab</a>
+					<ul>
+						<li><a href="#">Sub</a></li>
+						<li><a href="#">Sub</a></li>
+					</ul>
+				</li>
+				<li><a href="index.html">Academic Intelligence</a></li>
+				<li><a href="#">Tab</a></li>
+			</ul>
+		</nav>
 	</article> <!-- about -->
 
 	<div id="mainBlock">
@@ -120,7 +153,7 @@
 	</div> <!-- mainBlock -->
 
 	<article id="instructions">
-		<h2>Instructions</h2></br>
+		<h2 id="instructHeader">Instructions</h2></br>
 		<div id="instructText">
 		<p><h3>1.</h3> In order to find the most cited publications by an author in a particular category,</br>
 					   please enter the relevant keyword(s) in the box to the left.</br></br>
