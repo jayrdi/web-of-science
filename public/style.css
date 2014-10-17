@@ -362,7 +362,8 @@ svg {
 
 #graphHeader {
 	margin-left: 60px;
-	color: #000;
+	color: #c8102e;
+	text-decoration: underline;
 }
 
 /* #addField {
