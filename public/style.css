@@ -100,7 +100,7 @@ footer {
 	width: 100%;
 	bottom: 0;
 	height: 50px;
-	/* background-color: #152d6d; */
+	background-color: #fff;
 	border-top: 2px solid #c8102e;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
@@ -362,8 +362,7 @@ svg {
 
 #graphHeader {
 	margin-left: 60px;
-	color: #c8102e;
-	font-size: 36px;
+	color: #000;
 }
 
 /* #addField {
@@ -372,6 +371,10 @@ svg {
 } */
 
 h4 {
+	color: #000;
+}
+
+#prompt {
 	color: #000;
 }
 

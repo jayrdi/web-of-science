@@ -56,25 +56,23 @@
 	</header>
 
 	<article class="about">
-		<div class="wrapper">
-			<nav class="nav">
-				<ul class="clear">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Tab</a></li>
-					<li><a href="#">Tab</a>
-						<ul>
-							<li><a href="#">Sub</a></li>
-							<li><a href="#">Sub</a></li>
-						</ul>
-					</li>
-					<li><a href="index.html">Academic Intelligence</a></li>
-					<li><a href="#">Tab</a></li>
-				</ul>
-			</nav>
-		</div> <!-- wrapper -->
+		<nav class="nav">
+			<ul class="clear">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Tab</a></li>
+				<li><a href="#">Tab</a>
+					<ul>
+						<li><a href="#">Sub</a></li>
+						<li><a href="#">Sub</a></li>
+					</ul>
+				</li>
+				<li><a href="index.html">Academic Intelligence</a></li>
+				<li><a href="#">Tab</a></li>
+			</ul>
+		</nav>
 	</article> <!-- about -->
 
-	</br><h1 id="graphHeader">Authors With Largest Number of Citations</h1></br></br></br>
+	</br><h2 id="graphHeader">Authors With Largest Number of Citations</h2>
 
 	<div class="chart"></div>
 
@@ -94,7 +92,7 @@
 				var topCited = data;
 
 				// TESTS: 
-				console.log("TOPCITED OBJECT: ");
+				/* console.log("TOPCITED OBJECT: ");
 				console.log(topCited);
 				console.log("FIRST ELEMENT OF TOPCITED: ")
 				console.log(topCited[0].author);
@@ -113,13 +111,13 @@
 				// d refers to the current data attribut for the current element, i refers to the index of the current element
 				d3.selectAll("p").text(function (d, i) {
 					return i + ". " + d.author + "  =  " + d.citations_sum;
-				});
+				}); */
 
 				// establish some margins for the graph area to avoid overlap with other HTML elements
 				var margin = {
-								top: 30,
+								top: 10,
 								right: 30,
-								bottom: 150,
+								bottom: 250,
 								left: 40
 					 		 };
 
@@ -285,7 +283,15 @@
 
 	</script>
 
-	</br></br></br></br><h3 id="links">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3></br></br></br>
+	</br></br></br></br><h3 id="prompt">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3></br></br></br>
+
+	<footer>
+		<div class="wrapper">
+			<h3 class="credit">Credit</h3></br>
+			<!-- links to author and department -->
+			<p id="links"><a href="mailto:john@artgecko.co.uk" id="mail">John Dawson</a> @ <a href="http://www.ncl.ac.uk/res/about/office/research/" id="mail">Research & Enterprise Services</a>, Newcastle University</p>
+		</div> <!-- wrapper -->
+	</footer>
 
 </body>
 
