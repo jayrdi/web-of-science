@@ -41,12 +41,14 @@ p {
 
 .wrapper {
 	margin-left: 60px;
+	display: inline-block;
 	/* width: 470px; */
 }
 
 header {
 	height: 100px;
-	background-color: #003c71;
+	background-color: #152d6d;
+	background-image: url('images/cvi_globalnav.jpg');
 	float: top;
 	top: 0px;
 }
@@ -58,11 +60,8 @@ html {
 }
 
 h1.logo {
-	display: block;
-	float: top;
-	width: 100%;
 	padding-top: 15px;
-	color: #c8102e;
+	color: #fff;
 	font-size: 36px;
 }
 
@@ -88,8 +87,8 @@ h2 {
 .about {
 	float: top;
 	background-color: #303030;
-	border-top: 5px solid #7bafd4;
-	border-bottom: 5px solid #7bafd4;
+	border-top: 2px solid #c8102e;
+	/* border-bottom: 2px solid #7bafd4; */
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
 	top: 100px;
@@ -100,20 +99,20 @@ h2 {
 footer {
 	width: 100%;
 	bottom: 0;
-	height: 90px;
-	background-color: #003c71;
-	border-top: 5px solid #7bafd4;
-	padding: 5px;
+	height: 50px;
+	/* background-color: #152d6d; */
+	border-top: 2px solid #c8102e;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
 	position: fixed;
-	margin-top: 20px;
+	text-align: center;
+	padding: 1em;
 }
 
 .credit {
+	color: #000;
 	font-weight: bold;
 	font-family: 'Raleway', sans-serif;
-	margin-top: 15px;
 }
 
 .input {
@@ -128,8 +127,8 @@ h3 {
 
 select {
 	font-family: 'Lora', serif;
-	background-color: #7bafd4;
-	border: 3px solid #003c71;
+	background-color: #cadfee;
+	border: 2px solid #003c71;
 	color: #003c71;
 	padding: 2px;
 	padding-left: 8px;
@@ -142,16 +141,17 @@ select option {
 }
 
 #ncl {
-	display: inline-block;
-	float: right;
-	margin-right: 1px;
-	padding: 15px;
+	top: 15px;
+	right: 30px;
 	width: 173px;
+	position: absolute;
+	z-index: 500;
+	display: inline-block;
 }
 
 #links {
 	display: inline-block;
-	color: #fff;
+	color: #000;
 }
 
 .submit {
@@ -160,17 +160,18 @@ select option {
 	font-family: 'Raleway', sans-serif;
 	font-size: 2em;
 	color: #fff;
-	border: 4px solid #c8102e;
+	border: 2px solid #c8102e;
 	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
 	cursor: pointer;
-	background-color: #003c71;
+	background-image: url('images/cvi_globalnav.jpg');
+	background-color: #152d6d;
 }
 
 input {
-	background-color: #7bafd4;
-	border: 3px solid #003c71;
+	background-color: #cadfee;
+	border: 2px solid #003c71;
 }
 
 .field {
@@ -189,7 +190,7 @@ option {
 }
 
 #dropdown option:hover {
-	background-color: #7bafd4 !important;
+	background-color: #cadfee !important;
 	color: #003c71 !important;
 }
 
