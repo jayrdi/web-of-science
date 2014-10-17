@@ -76,8 +76,8 @@
 
 	<div class="chart"></div>
 
+	<h2 id="instructHeader">Information</h2></br>
 	<div id="info">
-		<h2>Information</h2></br>
 		<h4>The y-axis represents the number of citations</br>for publications for the author on the x-axis.</br></br>
 			Click on one of the bars to load the name</br>of the associated author in Google.</br></h4>
 	</div>
@@ -243,6 +243,7 @@
 							.attr("class", "axis")
 							.attr("transform", "translate(0, " + height + ")")
 							.call(xAxis)
+							// select author names
 							.selectAll("text")
 							.style("text-anchor", "end")
 							// spacing

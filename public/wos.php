@@ -31,7 +31,7 @@
     // =================================================================== //
 
     // set processing time for browser before timeout
-    ini_set('max_execution_time', 300);
+    ini_set('max_execution_time', 600);
 
     // button to display top ten cited authors in bar chart
     echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";

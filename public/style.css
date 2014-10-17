@@ -36,7 +36,7 @@ body {
 
 p {
 	line-height: 150%;
-	color: #000;
+	color: #303030;
 }
 
 .wrapper {
@@ -47,8 +47,10 @@ p {
 
 header {
 	height: 100px;
-	background-color: #152d6d;
+	/* background-color: #152d6d; */
 	background-image: url('images/cvi_globalnav.jpg');
+	background-position: center;
+	background-size: 10px 94px;
 	float: top;
 	top: 0px;
 }
@@ -63,16 +65,25 @@ h1.logo {
 	padding-top: 15px;
 	color: #fff;
 	font-size: 36px;
+	text-shadow: -1px -1px 0 #000,
+				  1px -1px 0 #000,
+				 -1px  1px 0 #000,
+				  1px  1px 0 #000;
 }
 
 h2 {
 	color: #fff;
 	font-size: 24px;
+	text-shadow: -1px -1px 0 #000,
+				  1px -1px 0 #000,
+				 -1px  1px 0 #000,
+				  1px  1px 0 #000;
 }
 
 #instructHeader {
-	color: #000;
+	color: #303030;
 	font-size: 24px;
+	text-shadow: none;
 }
 
 #mainBlock {
@@ -86,7 +97,10 @@ h2 {
 
 .about {
 	float: top;
-	background-color: #303030;
+	/* background-color: #303030; */
+	background-image: url('images/cvi_globalnav_grey.jpg');
+	background-position: center;
+	background-size: 10px 43px;
 	border-top: 2px solid #c8102e;
 	/* border-bottom: 2px solid #7bafd4; */
 	padding: 5px;
@@ -100,7 +114,10 @@ footer {
 	width: 100%;
 	bottom: 0;
 	height: 50px;
-	background-color: #fff;
+	/* background-color: #fff; */
+	background-image: url('images/cvi_globalnav_grey.jpg');
+	background-position: center;
+	background-size: 10px 70px;
 	border-top: 2px solid #c8102e;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
@@ -110,13 +127,13 @@ footer {
 }
 
 .credit {
-	color: #000;
+	color: #fff;
 	font-weight: bold;
 	font-family: 'Raleway', sans-serif;
 }
 
 .input {
-	color: #000;
+	color: #303030;
 	font-size: 1.8em;
 }
 
@@ -151,7 +168,7 @@ select option {
 
 #links {
 	display: inline-block;
-	color: #000;
+	color: #fff;
 }
 
 .submit {
@@ -166,7 +183,9 @@ select option {
 	border-radius: 7px;
 	cursor: pointer;
 	background-image: url('images/cvi_globalnav.jpg');
-	background-color: #152d6d;
+	background-position: center;
+	background-size: 10px 35px;
+	/* background-color: #152d6d; */
 }
 
 input {
@@ -236,7 +255,10 @@ td {
 	font-family: 'Raleway', sans-serif;
 	color: #fff;
 	/* border: 3px solid #000; */
-	background-color: #303030;
+	/* background-color: #303030; */
+	background-image: url('images/cvi_globalnav_grey.jpg');
+	background-position: center;
+	background-size: 10px 30px;
 	border-radius: 7px;
 	cursor: pointer;
 	display: block;
@@ -296,6 +318,11 @@ td {
 #info {
 	display: inline-block;
 	float: top;
+	padding: 8px;
+	background-image: url('images/cvi_globalnav_grey.jpg');
+	background-position: center;
+	background-size: 10px 86px;
+	border-radius: 7px;
 }
 
 svg {
@@ -343,7 +370,7 @@ svg {
 	top: 100px;
 	left: 30px;
 	margin-left: 100px;
-	color: #000;
+	color: #303030;
 }
 
 #instructions {
@@ -356,14 +383,17 @@ svg {
 #instructText {
 	/* border: 5px solid #218c03; */
 	padding: 10px;
-	background-color: #303030;
+	/* background-color: #303030; */
+	background-image: url('images/cvi_globalnav_grey.jpg');
+	background-position: center;
+	background-size: 10px 225px;
 	border-radius: 7px;
 }
 
 #graphHeader {
 	margin-left: 60px;
 	color: #c8102e;
-	text-decoration: underline;
+	text-shadow: none;
 }
 
 /* #addField {
@@ -372,11 +402,11 @@ svg {
 } */
 
 h4 {
-	color: #000;
+	color: #fff;
 }
 
 #prompt {
-	color: #000;
+	color: #303030;
 }
 
 /***** BEGIN nav Menu Styles *****/
@@ -398,7 +428,7 @@ html[xmlns] .clear {
 
 nav {
 	margin-left: 55px;
-	width: 480px;
+	width: 476px;
 }
 
 nav.nav {
