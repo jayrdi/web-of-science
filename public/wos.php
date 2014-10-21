@@ -82,10 +82,18 @@
     // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
     // =================================================================== //
 
+    // search type
     $queryType1 = $_POST["type1"];
+    // keyword(s)
     $queryCategory1 = $_POST["category1"];
+    // sort type
     $sortType = $_POST["sort"];
-    // check if 'hidden' extra search facility is being used
+    // timespan start
+    $timeStart = $_POST["timeStart"];
+    //timespan end
+    $timeEnd = $_POST["timeEnd"];
+
+    // check if 'hidden' extra search facility is being used, if it is, populate variables
     if (!$_POST["category2"]) {
         $queryLogic = "";
         $queryType2 = "";
@@ -102,6 +110,7 @@
             'databaseId' => 'WOS',
             'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
+            'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
             'queryLanguage' => 'en'
         ),
         'retrieveParameters' => array(
@@ -555,7 +564,7 @@
 
     mysqli_close($connect);
 
-    $url = 'data.html';
+    /* $url = 'data.html';
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -563,6 +572,6 @@
     }
 
     // no redirect
-    header("Location: data.html");
+    header("Location: data.html"); */
 
 ?>
