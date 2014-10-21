@@ -1,7 +1,7 @@
 <?php
 
     // css
-    echo '<link rel="stylesheet" type="text/css" href="style.css"/>';
+    echo '<link rel="stylesheet" type="text/css" href="style2.css"/>';
     // fonts and favicon
     echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
           <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
@@ -215,6 +215,7 @@
                 'databaseId' => 'WOS',
                 'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
+                'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
                 'queryLanguage' => 'en'
             ),
             'retrieveParameters' => array(
