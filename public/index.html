@@ -29,16 +29,20 @@
 		<script type="text/javascript"> 
 		$(document).ready(function(){
 
-			// Requried: Navigation bar drop-down
+			// Required: Navigation bar drop-down
 			$("nav ul li").hover(function() {
 				$(this).addClass("active");
-				$(this).find("ul").show().animate({opacity: 1}, 400);
-				},function() {
-				$(this).find("ul").hide().animate({opacity: 0}, 200);
+				$(this).find("ul").show().animate({
+					opacity: 1
+				}, 400);
+			}, function() {
+				$(this).find("ul").hide().animate({
+					opacity: 0
+				}, 200);
 				$(this).removeClass("active");
 			});
 			
-			// Requried: Addtional styling elements
+			// Required: Addtional styling elements
 			$('nav ul li ul li:first-child').prepend('<li class="arrow"></li>');
 			$('nav ul li:first-child').addClass('first');
 			$('nav ul li:last-child').addClass('last');
@@ -120,6 +124,7 @@
 			    <option value="TI">Title</option>
 			    <option value="AU">Author</option>
 			    <option value="ED">Editor</option>
+			    <option value="CU">Country</option>
 			    <option value="SO">Publication Name</option>
 			    <option value="DO">DOI</option>
 			    <option value="PY">Year Published</option>
