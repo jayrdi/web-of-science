@@ -188,6 +188,10 @@ select option {
 	/* background-color: #152d6d; */
 }
 
+.submit:hover {
+	color: #c8102e;
+}
+
 input {
 	background-color: #cadfee;
 	border: 2px solid #003c71;
@@ -429,7 +433,7 @@ html[xmlns] .clear {
 
 nav {
 	margin-left: 55px;
-	width: 476px;
+	width: 585px;
 }
 
 nav.nav {
@@ -490,6 +494,7 @@ nav.nav li a {
 
 nav.nav li a:hover, nav li.active a {
 	background-position: 0px -36px;
+	color: #c8102e;
 }
 
 nav.nav li a:active {
@@ -505,16 +510,16 @@ nav.nav .dropdown {
 	margin: -20px 15px 0px 12px;
 }
 
-/* Drop down */
+/* drop down box */
 nav.nav li ul {
 	opacity: 0;
 	position: absolute;
 	top: 45px;
-	left: -26px;
+	left: 30px;
 	padding: 12px 15px;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
-	background: #222;
+	background: #303030;
 	display: none;
 	z-index: 100;
 }
@@ -542,8 +547,9 @@ nav.nav li ul li a:hover {
 	opacity: 0.5;
 }
 
+/* arrow above drop down */
 nav.nav li ul li.arrow {
-	background: url(/beehive/public/images/arrowtop.png) top left no-repeat;
+	background: url(/beehive/public/images/arrowtop.png) top right no-repeat;
 	border-bottom: 0px;
 	height: 10px;
 	margin-top: -22px;
