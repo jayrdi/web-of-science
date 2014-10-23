@@ -10,6 +10,12 @@
     echo '<script src="script.js"/></script>
           <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
+    // TIMING
+    $mtime = microtime();
+    $mtime = explode(" ",$mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    $starttime = $mtime; 
+
     // local password file
     $fileName = '../config.php';
     // check if it exists before attempting to include it (i.e. is it localhost or server?)
@@ -31,7 +37,9 @@
     // =================================================================== //
 
     // set processing time for browser before timeout
-    ini_set('max_execution_time', 600);
+    ini_set('max_execution_time', 3600);
+    // override default PHP memory limit
+    ini_set('memory_limit', '-1');
 
     // button to display top ten cited authors in bar chart
     echo "</br></br><a href='data.html' class='button'>Click here to display the top cited authors</a></br></br>";
@@ -88,10 +96,6 @@
     $queryCategory1 = $_POST["category1"];
     // sort type
     $sortType = $_POST["sort"];
-    // timespan start
-    $timeStart = $_POST["timeStart"];
-    //timespan end
-    $timeEnd = $_POST["timeEnd"];
 
     // check if 'hidden' extra search facility is being used, if it is, populate variables
     if (!$_POST["category2"]) {
@@ -103,6 +107,35 @@
         $queryType2 = $_POST["type2"]."=";
         $queryCategory2 = $_POST["category2"];
     }
+
+    // check if timespan fields have been populated
+    if (!$_POST["timeStart"]) {
+        $timeStart = "1864-01-01";
+        $timeEnd = "2080-01-01";
+    } else {
+        $timeStart = $_POST["timeStart"];
+        $timeEnd = $_POST["timeEnd"];
+    }
+
+    // create an array to store all the search parameters to pass to data.html to display with the graph
+    $searchParams = array('keyword1' => $queryCategory1,
+                          'searchType1' => $queryType1,
+                          'logic' => $queryLogic,
+                          'keyword2' => $queryCategory2,
+                          'searchType2' => $queryType2,
+                          'from' => $timeStart,
+                          'to' => $timeEnd,
+                          'sortby' => $sortType
+                    );
+
+    // test data
+    echo "</br>SEARCH_PARAMETERS: </br>";
+    print "<pre>\n";
+    print_r($searchParams);
+    print "</pre>";
+
+    // turn top cited authors data into JSON file for displaying with JavaScript
+    file_put_contents('search.json', json_encode($searchParams));
     
     // pass in relevant parameters for search
     $search_array = array(
@@ -574,5 +607,13 @@
 
     // no redirect
     header("Location: data.html"); */
+
+    // TIMING
+    $mtime = microtime();
+    $mtime = explode(" ",$mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    $endtime = $mtime;
+    $totaltime = ($endtime - $starttime);
+    echo "This page was created in ".$totaltime." seconds";
 
 ?>

@@ -190,6 +190,9 @@ select option {
 
 .submit:hover {
 	color: #c8102e;
+	border: 5px solid #c8102e;
+	font-size: 2.1em;
+	margin-top: 77px;
 }
 
 input {
@@ -412,6 +415,13 @@ h4 {
 
 #prompt {
 	color: #303030;
+}
+
+#searchData {
+	display: inline-block;
+	float: right;
+	margin-top: 30px;
+	border: 1px solid black;
 }
 
 /***** BEGIN nav Menu Styles *****/

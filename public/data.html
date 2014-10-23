@@ -65,8 +65,8 @@
 		<nav class="nav">
 			<ul class="clear">
 				<li><a href="https://resviz.ncl.ac.uk/">Home</a></li>
-				<li><a href="#">Tab</a>
-				<li><a href="https://resviz.ncl.ac.uk/app/#/chordstmp2">Research Visualisation</a></li>
+				<li><a href="#">Tab</a></li>
+				<li><a href="https://resviz.ncl.ac.uk/app/#/chordstmp2">Research Visualisation</a>
 					<ul>
 						<li><a href="https://resviz.ncl.ac.uk/demo/#/help">Chords V1</a></li>
 						<li><a href="#">Chords V2</a></li>
@@ -137,7 +137,7 @@
 
 				var maxY = topCited[0].citations_sum;
 
-				console.log("maxY: " + maxY);
+				// console.log("maxY: " + maxY);
 
 				// set scale to alter data set so that it fits well in the canvas space
 				// map the domain (actual data range) to the range (size of canvas)
@@ -285,12 +285,94 @@
 				      window.location = url;
 				  });
 
+			})
+			// call to 'search.json' created in wos.php
+			$.getJSON('search.json', function (json) {
+
+				/* var searchParams = json;
+				console.log(searchParams);
+				console.log(searchParams.keyword1); */
+
+				// select location by HTML table id
+				var tbody = document.getElementById('searchData');
+				var tr = "<tr>";
+				// header row
+				tr += "<td>Keyword 1</td>" +
+					  "<td>Search Type 1</td>" + 
+					  "<td>Logic</td>" + 
+					  "<td>Keyword 2</td>" + 
+					  "<td>Search Type 2</td>" + 
+					  "<td>From</td>" + 
+					  "<td>To</td>" + 
+					  "<td>Sorted By</td>" + 
+					  "</tr>";
+
+				// add data row
+				tr += "<td>" + json.keyword1 + "</td>" + 
+					  "<td>" + json.searchType1 + "</td>" + 
+					  "<td>" + json.logic + "</td>" +
+					  "<td>" + json.keyword2 + "</td>" +
+					  "<td>" + json.searchType2 + "</td>" +
+					  "<td>" + json.from + "</td>" +
+					  "<td>" + json.to + "</td>" +
+					  "<td>" + json.sortby + "</td>" +
+					  "</tr>";
+				// add row to body of table
+				tbody.innerHTML += tr;
+				
+				/* function tabulate(data, columns) {
+					var table = d3.select("body")
+								  .append("table")
+								  .attr("style", "margin-left: 1000px"),
+								  thead = table.append("thead"),
+								  tbody = table.append("tbody");
+
+					// append header row
+					thead.append("tr")
+						 .selectAll("th")
+						 .data(columns)
+						 .enter()
+						 .append("th")
+						 .text(function (column) {
+						     return column;	
+						 });
+
+					// create a row for each object in the data
+					var rows = tbody.selectAll("tr")
+									.data(searchParams)
+									.enter()
+									.append("tr");
+
+					// create a cell in each row for each column
+					var cells = rows.selectAll("td")
+									.data(function (row) {
+										return columns.map(function (column) {
+											return {
+												column: column, value: row[column]
+											};
+										});
+									})
+									.enter()
+									.append("td")
+									.html(function (d) {
+										return d.keyword1;
+									});
+
+					return table;
+				}
+
+				//render the table
+				var searchTable = tabulate(data, ["keyword1", "searchType1", "logic", "keyword2", "searchType2", "from", "to", "sortby"]); */
 			});
 		});
 
 	</script>
 
-	</br></br></br></br><h3 id="prompt">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3></br></br></br>
+	</br></br></br></br><h3 id="prompt">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3>
+
+	<table>
+		<tbody id="searchData"></tbody>
+	</table>
 
 	<footer>
 		<div class="wrapper">
