@@ -278,8 +278,8 @@ td {
 }
 
 .unhidden {
-	display: block;
-	margin-top: 0px !important;
+	display: inline;
+	margin-top: -20px !important;
 }
 
 .form {
@@ -443,7 +443,7 @@ html[xmlns] .clear {
 
 nav {
 	margin-left: 55px;
-	width: 585px;
+	width: 587px;
 }
 
 nav.nav {

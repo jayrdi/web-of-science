@@ -1,16 +1,17 @@
 <?php
 
+    // =================================================================== //
+    // == Author: John Dawson                                           == //
+    // == Date: 28/08/2014                                              == //
+    // == Description: Processing for a website to query Web of Science == //
+    // ==              Web Service using their API and return relevant  == //
+    // ==              data                                             == //
+    // =================================================================== //
+
     // css
     echo '<link rel="stylesheet" type="text/css" href="style2.css"/>';
-    // fonts and favicon
-    echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
-          <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
-          <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>';
-    // jquery & javascript
-    echo '<script src="script.js"/></script>
-          <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
-    // TIMING
+    // TIMING INITIALISE
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
@@ -22,15 +23,6 @@
     if (file_exists($fileName)) {
         include $fileName;
     };
-
-    // =================================================================== //
-    // == Author: John Dawson                                           == //
-    // == Date: 28/08/2014                                              == //
-    // == Description: Processing for a website to query Web of Science == //
-    // ==              Web Service using their API and return relevant  == //
-    // ==              data                                             == //
-    // =================================================================== //
-
     
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
@@ -134,7 +126,7 @@
     print_r($searchParams);
     print "</pre>";
 
-    // turn top cited authors data into JSON file for displaying with JavaScript
+    // turn top cited authors data into JSON file for displaying with JavaScript in data.html
     file_put_contents('search.json', json_encode($searchParams));
     
     // pass in relevant parameters for search
@@ -183,15 +175,7 @@
     print_r($search_client);
     print "</pre>"; */
 
-
-    // =================================================================== //
-    // ================= TURN SOAP RESPONSE STRING INTO ================== //
-    // ================== SIMPLE XML ELEMENT OBJECT TO =================== //
-    // ========== TRAVERSE AND EXTRACT INDIVIDUAL DATA ELEMENTS ========== //
-    // =================================================================== //
-
-
-    // number of records found by search
+    // number of records found by search, used to finish loop
     $len = $search_response->return->recordsFound;
 
     echo "</br>RECORDS FOUND: </br>";
@@ -303,7 +287,7 @@
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             echo '<td>'.$author1.'</td>';
-            // address
+            // address, CHECK if there is a value (sometimes empty), in which case populate, else 'no record'
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
                 $address = (string)$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
                 echo '<td>'.$address.'</td>';
@@ -327,9 +311,14 @@
                 echo '<td>'."no record".'</td>';
                 $author3 = "no record";
             }
-            // number of citations
-            $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
-            echo '<td>'.$citations.'</td>';
+            // number of citations, if zero then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
+            if ($record->dynamic_data->citation_related->tc_list->silo_tc->attributes() != 0) {
+                $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
+                echo '<td>'.$citations.'</td>';
+            } else {
+                echo '<td>0</td>';
+                break 2;
+            }
             // close table row
             echo '</tr>';
 

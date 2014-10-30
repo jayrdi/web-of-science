@@ -1,0 +1,132 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+
+	<title>NCL Research Enterprises</title>
+	<!-- link to CSS stylesheet, fonts & plugins -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'> -->
+	<!-- favicon -->
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<!-- scripts -->
+	<script type='text/javascript' src="http://code.jquery.com/jquery-latest.min.js "></script>
+	<!-- d3 -->
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<!-- metadata -->
+	<meta charset="UTF-8"/>
+	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+	<meta name="author" content="John Dawson"/>
+
+</head>
+
+<body>
+
+	<p>CONNECTED</p></br>
+
+	<!-- this list will be populated with data from JSON in wos.php -->
+	<ul></ul></br></br>
+
+	<!-- <section><div class="chart"></div></section> -->
+
+	<section><svg class="chart"></svg></section>
+
+	<script type="text/javascript">
+
+	// when HTML document is ready (loaded) perform the following function(s):
+	$(document).ready(function() {
+		// create array to store imported JSON data as local array
+		var dataFields = new Array();
+
+		/* call to 'data.json' created in wos.php */
+		$.getJSON('data.json', function(data) {
+			/* iterate associative data */
+			$.each(data, function(key, val) {
+				// append a 'list item' for each record with author and citations
+				$('ul').append('<li>' + val.author + ': ' + val.citations_sum + '</li>');
+				// add data to array (just values)
+				dataFields.push([val.author, val.citations_sum]);
+			});
+
+			// should print data for 1st element
+			// console.log(dataFields[0]);
+
+			var data = new Array();
+
+			for (i = 0; i < 10; i++) {
+				// add citations data to new array for graph
+				data.push(dataFields[i][1])
+			}
+
+			console.log(data);
+
+			/////////////////
+			// BASIC CHART //
+			/////////////////
+
+			// select chart container by class name
+			/* d3.select(".chart")
+			  // define selection to which we will join data (div)
+			  .selectAll("div")
+			    // join the data to the selection (citations values)
+			  	.data(data)
+			  .enter().append("div")
+			    .style("width", function(d) {
+			    	return d + "px";
+			    })
+			    .text(function(d) {
+			    	return d;
+			    }); */
+
+		///////////////
+		// SVG CHART //
+		///////////////
+
+		var width = 0,
+			barHeight = 30;
+
+		// keep the scale of the chart within the range of the data to stop bars going outside chart
+		var x = d3.scale.linear()
+				  .domain([0, d3.max(data)])
+				  .range([0, d3.max(data)]);
+
+		var chart = d3.select(".chart")
+					  .attr("width", width)
+					  .attr("height", barHeight * data.length);
+
+		var bar = chart.selectAll("g")
+					   .data(data)
+					   .enter().append("g")
+					   // d = data value, i = data index, translates each bar on its y-axis so that it goes underneath previous bar (translate(x,y))
+					   .attr("transform", function(d, i) {
+					       return "translate(0," + i * barHeight + ")";	
+					   });
+
+		// set width and height for bar
+		bar.append("rect")
+		   .attr("width", x)
+		   .attr("height", barHeight - 3);
+
+		// set x and y coordinates for text on bar (values)
+		bar.append("text")
+		   .attr("x", function(d) {
+		       return x(d) - 3;
+		   })
+		   .attr("y", barHeight / 2.5)
+		   .attr("dy", ".35em")
+		   .text(function(d) {
+		       return d;	
+		   });
+
+		}); // end getSJON...
+
+	}); // end $(document).ready...
+
+	</script>
+
+</body>
+
+</html>

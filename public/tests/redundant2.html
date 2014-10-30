@@ -1,0 +1,134 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+
+	<title>NCL Research Enterprises</title>
+	<!-- link to CSS stylesheet, fonts & plugins -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'> -->
+	<!-- favicon -->
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<!-- scripts -->
+	<script type='text/javascript' src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<!-- d3 -->
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<!-- metadata -->
+	<meta charset="UTF-8"/>
+	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+	<meta name="author" content="John Dawson"/>
+
+</head>
+
+<body>
+
+	<h2>Authors With Largest Number of Citations</h2></br>
+
+	<div class="chart"></div>
+
+	<script type="text/javascript">
+
+		var margin = {
+						top: 20,
+						right: 30,
+						bottom: 80,
+						left: 40
+					 },
+			width = 960 - ((margin.left) - (margin.right)), // 890
+			height = 700 - ((margin.top) - (margin.bottom)); // 450
+
+		// scale to ordinal because x-axis is not numerical (authors), range of bars from 0 to width with 0.1 padding between bars
+		var x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
+
+		// scale to numerical value by height (citations_sum)
+		var y = d3.scale.linear().range([height, 550]);
+
+		var chart = d3.select(".chart")
+					  .append("svg") // append svg element within .chart
+					  .attr("width", width + (2 * margin.left) + margin.right) // set width of canvas for table
+					  .attr("height", height + margin.top + margin.bottom); // set height of canvas for table
+
+		var xAxis = d3.svg.axis()
+					  .scale(x)
+					  .orient("bottom"); // x-axis will appear below the bars
+
+		var yAxis = d3.svg.axis()
+					  .scale(y)
+					  .orient("left"); // y axis will appear to left of bars
+
+		d3.json("data.json", function(error, data) {
+			console.log(data);
+			x.domain(data.map(function(d) {
+				return d.author
+			}));
+			y.domain([0, d3.max(data, function(d) {
+				return d.citations_sum
+			})]);
+
+			var bar = chart.selectAll("g")
+						   .data(data)
+						   .enter()
+						   .append("g")
+						   .attr("transform", function(d, i) {
+						       return "translate(" + x(d.author) + ", 0)";	
+						   });
+
+			bar.append("rect")
+			   .attr("y", function(d) {
+			       return y(d.citations_sum);	
+			   })
+			   .attr("x", function(d, i) {
+			       return x.rangeBand() + (margin.left / 4);	
+			   })
+			   .attr("height", function(d) {
+			       return height - y(d.citations_sum);	
+			   })
+			   .attr("width", x.rangeBand()); // set width base on range on ordinal data
+
+			bar.append("text")
+			   .attr("x", x.rangeBand() + margin.left)
+			   .attr("y", function(d) {
+			       return y(d.citations_sum) - 15;	
+			   })
+			   .attr("dy", ".75em")
+			   .text(function(d) {
+			       return d.citations_sum;	
+			   });
+
+			chart.append("g")
+				 .attr("class", "x axis")
+				 .attr("transform", "translate(" + margin.left + "," + height + ")")
+				 .call(xAxis)
+				 .selectAll("text")
+				 .attr("transform", function(d) {
+				     return "rotate(-65)"	
+				 })
+				 .attr("x", -50)
+				 .style("fill", "brown");
+
+			chart.append("g")
+				 .attr("class", "y axis")
+				 // .attr("transform", "translate(" + -margin.left + ", 0")
+				 .call(yAxis)
+
+				 .append("text")
+				 .attr("transform", "rotate(-90)")
+				 .attr("y", 20)
+				 .attr("dy", ".71em")
+				 .style("text-anchor", "end")
+				 .text("Total Citations");
+		});
+
+		function type(d) {
+			d.author = +d.author; // coerce to number
+			return d;
+		}
+
+	</script>
+
+</body>
+
+</html>
