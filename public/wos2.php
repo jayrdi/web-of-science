@@ -8,6 +8,7 @@
     // ==              data                                             == //
     // =================================================================== //
 
+
     // css
     echo '<link rel="stylesheet" type="text/css" href="style2.css"/>';
 
@@ -24,9 +25,11 @@
         include $fileName;
     };
     
+
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
+
 
     // set processing time for browser before timeout
     ini_set('max_execution_time', 3600);
@@ -68,6 +71,7 @@
     // =================================================================== //
     // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
     // =================================================================== //
+
 
     // search type
     $queryType1 = $_POST["type1"];
@@ -180,6 +184,8 @@
     $recordArray = array();
     // create an array for top cited authors
     $citedArray = array();
+    // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 2 citations
+    $ignore = array(0, 1, 2, 3, 4);
     // create a variable to store and display row number
     $count = 1;
 
@@ -272,7 +278,8 @@
                 $author3 = "no record";
             }
             // number of citations, if zero then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
-            if ($record->dynamic_data->citation_related->tc_list->silo_tc->attributes() != 0) {
+            // if ($record->dynamic_data->citation_related->tc_list->silo_tc->attributes() != 0) {
+            if (!in_array($record->dynamic_data->citation_related->tc_list->silo_tc->attributes(), $ignore)) {
                 $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
                 echo '<td>'.$citations.'</td>';
             } else {
@@ -317,20 +324,222 @@
     print_r($recordArray);
     print "</pre>";
 
+    // populate citedArray from recordArray, only first ten records
     for ($i = 0; $i < count($recordArray); $i++) {
-        // for ($j = 0; $j < 9; $j++) {
-            array_push($citedArray, $recordArray[$i]['author1']);
-            array_push($citedArray, $recordArray[$i]['author2']);
-            array_push($citedArray, $recordArray[$i]['author3']);
-        // }
-    }
+            array_push($citedArray, ($recordArray[$i]['author1']));
+            array_push($citedArray, ($recordArray[$i]['author2']));
+            array_push($citedArray, ($recordArray[$i]['author3']));
+    };
 
-    echo "</br>Cited Array: </br>";
+    /* echo "</br>CITED ARRAY (all author names): </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>";
+    print "</pre>"; */
 
-    // TIMING
+    $length = count($citedArray);
+
+    // get rid of 'no record' values (useless data)
+    for ($i = 0; $i < $length; $i++) {
+        if ($citedArray[$i] == 'no record') {
+            unset($citedArray[$i]);
+        };
+    };
+
+    /* echo "</br>CITED ARRAY ('no record' removed): </br></br>";
+    print "<pre>\n";
+    print_r($citedArray);
+    print "</pre>"; */
+
+    // get rid of duplicates
+    /* $singleAuthors = array_unique($citedArray);
+    echo "</br>NO DUPLICATES: </br></br>";
+    print "<pre>\n";
+    print_r($singleAuthors);
+    print "</pre>"; */
+
+
+    // =================================================================== //
+    // ===================== CONNECT TO DATABASE ========================= //
+    // =================================================================== //
+
+
+    // settings for unix socket on server, check if on server first
+    if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
+        ini_set('mysqli.default_socket', $_ENV['WOS_MYSQL_SOCKET']);
+    }
+
+    // create variable to store connection details, variables declared at start
+    $connect = mysqli_connect($db_host, $db_user, $db_password);
+    // check connection; quit if fail with error
+    if (!$connect)
+    {
+        die('Could not connect: ' . mysqli_error($connect));
+        exit();
+    }
+
+    // create the database if it doesn't already exist
+    mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
+
+    // select database to work with using connection variable
+    mysqli_select_db($connect, 'wos');
+
+    // create the tables if they don't exist
+    // check if 'uid' can be selected (if it exists)
+    $selectTest1 = "SELECT uid FROM searchresponse";
+    $con1 = mysqli_query($connect, $selectTest1);
+
+    if (empty($con1)) {
+        $query = "CREATE TABLE searchresponse (uid VARCHAR(20) NOT NULL,
+                                               journal VARCHAR(100) NOT NULL,
+                                               publication VARCHAR(100) NULL,
+                                               year INT(4),
+                                               author1 VARCHAR(100) NOT NULL,
+                                               address VARCHAR(200) NULL,
+                                               author2 VARCHAR(100) NULL,
+                                               author3 VARCHAR(100) NULL,
+                                               citations INT(4) NOT NULL)";
+        $result = mysqli_query($connect, $query);
+    }
+
+    // check if 'author' can be selected (if it exists)
+    $selectTest2 = "SELECT author FROM topcited";
+    $con2 = mysqli_query($connect, $selectTest2);
+
+    if (empty($con2)) {
+        $query = "CREATE TABLE topcited (author VARCHAR(30) NOT NULL,
+                                         citations_sum INT(4) NOT NULL)";
+        $result = mysqli_query($connect, $query);
+    }
+
+    // empty tables ready for new data, otherwise subsequent searches append data to end of existing
+    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
+    mysqli_query($connect, "TRUNCATE TABLE topcited");
+
+    // loop over the $recordArray (full data) and add data to MySQL table
+    for ($row = 0; $row < count($recordArray); $row++) {
+        $sql = "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES (";
+        foreach ($recordArray[$row] as $key=>$value) {
+            // add to the query as 'value',
+            $sql .= "'".$value."',";
+        }
+        $sql = rtrim($sql, ','); // remove the comma from the final value entry
+        $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
+        // echo $sql;
+        mysqli_query($connect, $sql);
+    }
+
+    // create a 'result' variable to store the summed citation throughout the iterations
+    $result = 0;
+
+    // populate 'topcited' table, first loop $citedArray
+    foreach ($citedArray as $value) {
+        // loop $recordArray
+        for ($i = 0; $i < count($recordArray); $i++) {
+            // add citations into variable if author names match
+            if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
+                $result += ($recordArray[$i]['citations']);
+            }
+        }
+        // insert current author and summed citation into table
+        $sql = "INSERT INTO topcited (author, citations_sum) VALUES ('$value','$result')";
+        mysqli_query($connect, $sql);
+        // reset $result for next record
+        $result = 0;
+    }
+
+    // select DB table, ignore duplicate authors, insert into $rows array ordered by citations sum
+    $sql = "SELECT DISTINCT author, citations_sum FROM topcited ORDER BY citations_sum DESC";
+    $rows = array();
+    $query = mysqli_query($connect, $sql);
+
+    while ($r = mysqli_fetch_assoc($query)) {
+        $rows[] = $r;
+    };
+
+    // iterate array and make all author names uppercase (to merge same authors with names in different cases)
+    for ($i = 0; $i < count($rows); $i++) {
+        $rows[$i]['author'] = strtoupper($rows[$i]['author']);
+    };
+
+    // create temporary array to compare $rows with itself
+    $tempArray = $rows;
+
+    // tests
+    /* echo "</br>WITH DUPLICATES (uppercase): </br></br>";
+    print "<pre>\n";
+    print_r($rows);
+    print "</pre>"; */
+
+    // if authors are same, sum citations to first instance and delete second instance
+    // iterate original array sequentially
+    for ($i = 0; $i < count($rows)-1; $i++) {
+        // iterate temp array to compare with original, hence start at 1 (don't need to compare values at same index as we know they are the same)
+        for ($j = $i + 1; $j < count($tempArray); $j++) {
+            // check each author in $rows with $tempArray
+            if ($rows[$i]['author'] === $tempArray[$j]['author']) {
+                // sum citations for duplicate from both tables into $rows
+                $rows[$i]['citations_sum'] += $rows[$j]['citations_sum'];
+                // delete duplicate in $rows at position $j from location found in $tempArray
+                unset($rows[$j]);
+            };  // end if
+        }; // end internal for-loop ($j)
+    }; // end external for-loop ($i)
+
+    // reset indices that were messed up by 'unset'
+    $rows = array_values($rows);
+
+    // make sure that data is sorted correctly (citations_sum, high -> low)
+    usort($rows, function ($a, $b) {
+        return $b['citations_sum'] - $a['citations_sum'];
+    });
+
+    // only include first ten elements in array
+    $rows = array_slice($rows, 0, 10);
+
+    /* echo "</br>NO DUPLICATES: </br></br>";
+    print "<pre>\n";
+    print_r($rows);
+    print "</pre>"; */
+
+    // turn top cited authors data into JSON file for displaying with JavaScript
+    file_put_contents('data.json', json_encode($rows));
+
+    // print table with suitable headers
+    echo '<table id="citationsTable"
+          <tr id="citationsRow">
+          <th id="citationsHeader">Author</th>
+          <th id="citationsHeader">Total Citations</th>
+          </tr> >';
+
+    // print data from $rows into table
+    // for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 10; $i++) {
+        echo "<tr id='citationsRow'>";
+        echo "<td id='citationsData'>".$rows[$i]['author']."</td>";
+        echo "<td id='citationsData'>".$rows[$i]['citations_sum']."</td>";
+        echo "</tr>";
+    };
+
+    echo "</table>";
+
+    mysqli_close($connect);
+
+    /* $url = 'data.html';
+
+    // clear the output buffer
+    while (ob_get_status()) {
+        ob_end_clean();
+    }
+
+    // no redirect
+    header("Location: data.html"); */
+
+
+    // =================================================== //
+    // ================ TIMING END ======================= //
+    // =================================================== //
+
+
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];

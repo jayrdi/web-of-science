@@ -250,7 +250,7 @@ td {
 	color: black;
 }
 
-#button {
+.button {
 	padding: 10px;
 	font-family: 'Raleway', sans-serif;
 	color: #fff;
@@ -261,8 +261,9 @@ td {
 	background-size: 10px 30px;
 	border-radius: 7px;
 	cursor: pointer;
-	display: block;
-
+	display: inline-block;
+	width: 245px;
+	margin-left: 30px;
 }
 
 .hidden {

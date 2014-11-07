@@ -1,16 +1,18 @@
 <?php
 
+    // =================================================================== //
+    // == Author: John Dawson                                           == //
+    // == Date: 28/08/2014                                              == //
+    // == Description: Processing for a website to query Web of Science == //
+    // ==              Web Service using their API and return relevant  == //
+    // ==              data                                             == //
+    // =================================================================== //
+
+
     // css
     echo '<link rel="stylesheet" type="text/css" href="style2.css"/>';
-    // fonts and favicon
-    echo '<link href="http://fonts.googleapis.com/css?family=Raleway:700" rel="stylesheet" type="text/css">
-          <link href="http://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet" type="text/css">
-          <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>';
-    // jquery & javascript
-    echo '<script src="script.js"/></script>
-          <script src="http://code.jquery.com/jquery-latest.min.js "></script>';
 
-    // TIMING
+    // TIMING INITIALISE
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
@@ -22,19 +24,12 @@
     if (file_exists($fileName)) {
         include $fileName;
     };
-
-    // =================================================================== //
-    // == Author: John Dawson                                           == //
-    // == Date: 28/08/2014                                              == //
-    // == Description: Processing for a website to query Web of Science == //
-    // ==              Web Service using their API and return relevant  == //
-    // ==              data                                             == //
-    // =================================================================== //
-
     
+
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
+
 
     // set processing time for browser before timeout
     ini_set('max_execution_time', 3600);
@@ -74,21 +69,9 @@
 
 
     // =================================================================== //
-    // ================= PRINT OUT REQUEST & RESPONSE ==================== //
-    // ====================== OF AUTHORISATION =========================== //
-    // =================================================================== // 
-
-
-    // print details of XML request and response data for Authentication exchange
-    /* print "<pre>\n";
-    print "<br />\n Request : ".htmlspecialchars($auth_client->__getLastRequest());
-    print "<br />\n Response: ".htmlspecialchars($auth_client->__getLastResponse());
-    print "</pre>"; */
-
-
-    // =================================================================== //
     // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
     // =================================================================== //
+
 
     // search type
     $queryType1 = $_POST["type1"];
@@ -134,22 +117,22 @@
     print_r($searchParams);
     print "</pre>";
 
-    // turn top cited authors data into JSON file for displaying with JavaScript
+    // turn top cited authors data into JSON file for displaying with JavaScript in data.html
     file_put_contents('search.json', json_encode($searchParams));
     
     // pass in relevant parameters for search
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
+            'userQuery' => 'TI=badgers',
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-            'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
+            'timeSpan' => array('begin' => '1864-01-01', 'end' => '2014-11-06'),
             'queryLanguage' => 'en'
         ),
         'retrieveParameters' => array(
             'count' => '100',
             'sortField' => array(
-                array('name' => $sortType, 'sort' => 'D')
+                array('name' => 'TC', 'sort' => 'D')
             ),
             'firstRecord' => '1'
         )
@@ -168,48 +151,13 @@
         echo $e->getMessage(); 
     };
 
-
-    // =================================================================== //
-    // ================ PRINT VALUES TO CHECK DATA ======================= //
-    // =================================================================== //
-
-    /* echo "</br>SEARCH_RESPONSE: </br>";
-    print "<pre>\n";
-    print_r($search_response);
-    print "</pre>";
-
-    echo "</br>SEARCH_CLIENT: </br>";
-    print "<pre>\n";
-    print_r($search_client);
-    print "</pre>"; */
-
-
-    // =================================================================== //
-    // ================= TURN SOAP RESPONSE STRING INTO ================== //
-    // ================== SIMPLE XML ELEMENT OBJECT TO =================== //
-    // ========== TRAVERSE AND EXTRACT INDIVIDUAL DATA ELEMENTS ========== //
-    // =================================================================== //
-
-
-    // number of records found by search
+    // number of records found by search, used to finish loop
     $len = $search_response->return->recordsFound;
 
     echo "</br>RECORDS FOUND: </br>";
     print "<pre>\n";
     print $len;
     print "</pre>";
-
-    /* echo "</br>SIMPLE XML ELEMENT OBJECT: </br>";
-    print "<pre>\n";
-    print_r($xml);
-    print "</pre>"; */
-
-    // encode XML data as JSON for use with Javascript
-    // $json = json_encode($xml);
-    /* echo "</br>JSON: </br>";
-    print "<pre>\n";
-    print_r($json);
-    print "</pre>"; */
 
 
     // =================================================================== //
@@ -220,22 +168,24 @@
 
     // print table with suitable headers
     echo '<table id="table" <tr>
-                <th>Record Number</th>
-                <th>Unique Identifier</th>
-                <th>Journal Name</th>
-                <th>Publication Name</th>
-                <th>Publication Year</th>
-                <th>Author 1</th>
-                <th>Address</th>
-                <th>Author 2</th>
-                <th>Author 3</th>
-                <th>Number of Citations</th>
-            </tr>>';
+             <th>Record Number</th>
+             <th>Unique Identifier</th>
+             <th>Journal Name</th>
+             <th>Publication Name</th>
+             <th>Publication Year</th>
+             <th>Author 1</th>
+             <th>Address</th>
+             <th>Author 2</th>
+             <th>Author 3</th>
+             <th>Number of Citations</th>
+         </tr>>';
 
     // create an array to store data for each record per iteration
     $recordArray = array();
     // create an array for top cited authors
     $citedArray = array();
+    // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 2 citations
+    $ignore = array(0, 1, 2, 3, 4);
     // create a variable to store and display row number
     $count = 1;
 
@@ -246,15 +196,15 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
+                'userQuery' => 'TI=badgers',
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-                'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
+                'timeSpan' => array('begin' => '1864-01-01', 'end' => '2014-11-06'),
                 'queryLanguage' => 'en'
             ),
             'retrieveParameters' => array(
                 'count' => '100',
                 'sortField' => array(
-                    array('name' => $sortType, 'sort' => 'D')
+                    array('name' => 'TC', 'sort' => 'D')
                 ),
                 'firstRecord' => $i
             )
@@ -303,7 +253,7 @@
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             echo '<td>'.$author1.'</td>';
-            // address
+            // address, CHECK if there is a value (sometimes empty), in which case populate, else 'no record'
             if (isset($record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address)) {
                 $address = (string)$record->static_data->fullrecord_metadata->addresses->address_name->address_spec->full_address;
                 echo '<td>'.$address.'</td>';
@@ -327,9 +277,14 @@
                 echo '<td>'."no record".'</td>';
                 $author3 = "no record";
             }
-            // number of citations
-            $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
-            echo '<td>'.$citations.'</td>';
+            // number of citations, if zero or one then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
+            if (!in_array($record->dynamic_data->citation_related->tc_list->silo_tc->attributes(), $ignore)) {
+                $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
+                echo '<td>'.$citations.'</td>';
+            } else {
+                echo '<td>0</td>';
+                break 2;
+            }
             // close table row
             echo '</tr>';
 
@@ -355,7 +310,7 @@
     $replace = '"';
 
     for ($i = 0; $i < count($recordArray); $i++) {
-        $recordArray[$i]['publication'] = preg_replace("#[^\\\]'#", '"', $recordArray[$i]['publication']);
+        $recordArray[$i]['publication'] = str_replace("'", "", $recordArray[$i]['publication']);
         $recordArray[$i]['journal'] = str_replace("'", "", $recordArray[$i]['journal']);
         $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
         $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
@@ -363,32 +318,12 @@
         $recordArray[$i]['address'] = str_replace("'", "", $recordArray[$i]['address']);
     }
 
-    // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
-    /* echo "</br>RECORD ARRAY (full data): </br></br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>"; */
-
     // populate citedArray from recordArray, only first ten records
-    for ($i = 0; $i < 10 && $i < count($recordArray); $i++) {
+    for ($i = 0; $i < count($recordArray); $i++) {
             array_push($citedArray, ($recordArray[$i]['author1']));
-            array_push($citedArray, ($recordArray[$i]['author2']));
-            array_push($citedArray, ($recordArray[$i]['author3']));
+            // array_push($citedArray, ($recordArray[$i]['author2']));
+            // array_push($citedArray, ($recordArray[$i]['author3']));
     };
-
-    echo "</br>CITED ARRAY (30 records, author names): </br></br>";
-    print "<pre>\n";
-    print_r($citedArray);
-    print "</pre>";
-
-    // get rid of duplicates
-    // $singleAuthors = array_unique($citedArray);
-    // print_r($singleAuthors);
-
-    /* echo "</br>UNIQUE CITED ARRAY: </br></br>";
-    print "<pre>\n";
-    print_r($singleAuthors);
-    print "</pre>"; */
 
     $length = count($citedArray);
 
@@ -399,30 +334,39 @@
         };
     };
 
-    // $singleAuthors = array_map('strtoupper', $singleAuthors);
-
-    echo "</br>'no record' REMOVED: </br></br>";
+    echo "</br>CITED ARRAY: </br>";
     print "<pre>\n";
     print_r($citedArray);
     print "</pre>";
 
-    // get rid of duplicates
-    $singleAuthors = array_unique($citedArray);
-    echo "</br>NO DUPLICATES: </br></br>";
+    // make all values uppercase so that we can identify duplicates more easily with 'array_unique'
+    $singleAuthors = array_map('strtoupper', $citedArray);
+
+    $singleAuthors = array_values($singleAuthors);
+
+    echo "</br>SINGLE AUTHORS ARRAY: </br>";
     print "<pre>\n";
     print_r($singleAuthors);
     print "</pre>";
+
+    // get rid of duplicates
+    $singleAuthors = array_unique($citedArray);
+    // reset indices
+    $singleAuthors = array_values($singleAuthors);
 
 
     // =================================================================== //
     // ===================== CONNECT TO DATABASE ========================= //
     // =================================================================== //
 
-    // settings for unix socket on server
-    ini_set('mysqli.default_socket', $_ENV['WOS_MYSQL_SOCKET']);
 
-    // create variable to store connection details
-    $connect = mysqli_connect($db_host, $db_user, $db_password, $db_database);
+    // settings for unix socket on server, check if on server first
+    if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
+        ini_set('mysqli.default_socket', $_ENV['WOS_MYSQL_SOCKET']);
+    }
+
+    // create variable to store connection details, variables declared at start
+    $connect = mysqli_connect($db_host, $db_user, $db_password);
     // check connection; quit if fail with error
     if (!$connect)
     {
@@ -430,36 +374,11 @@
         exit();
     }
 
-    // check connection
-    /* if ($connect->ping()) {
-        printf ("</br></br>CONNECTED TO DATABASE!</br></br>");
-    } else {
-        printf ("ERROR: %s\n", $connect->error);
-    } */
-
     // create the database if it doesn't already exist
     mysqli_query($connect, "CREATE DATABASE IF NOT EXISTS wos");
 
     // select database to work with using connection variable
-    // mysqli_select_db($connect, $db_database);
-
-    // create the tables if they don't exist
-    // check if 'uid' can be selected (if it exists)
-    $selectTest1 = "SELECT uid FROM searchresponse";
-    $con1 = mysqli_query($connect, $selectTest1);
-
-    if (empty($con1)) {
-        $query = "CREATE TABLE searchresponse (uid VARCHAR(20) NOT NULL,
-                                               journal VARCHAR(100) NOT NULL,
-                                               publication VARCHAR(100) NULL,
-                                               year INT(4),
-                                               author1 VARCHAR(100) NOT NULL,
-                                               address VARCHAR(200) NULL,
-                                               author2 VARCHAR(100) NULL,
-                                               author3 VARCHAR(100) NULL,
-                                               citations INT(4) NOT NULL)";
-        $result = mysqli_query($connect, $query);
-    }
+    mysqli_select_db($connect, 'wos');
 
     // check if 'author' can be selected (if it exists)
     $selectTest2 = "SELECT author FROM topcited";
@@ -471,36 +390,9 @@
         $result = mysqli_query($connect, $query);
     }
 
-    // empty tables ready for new data
+    // empty tables ready for new data, otherwise subsequent searches append data to end of existing
     mysqli_query($connect, "TRUNCATE TABLE searchresponse");
     mysqli_query($connect, "TRUNCATE TABLE topcited");
-
-    // loop over the $recordArray (full data)
-    for ($row = 0; $row < count($recordArray); $row++) {
-        $sql = "INSERT INTO searchresponse (uid, journal, publication, year, author1, address, author2, author3, citations) VALUES (";
-        foreach ($recordArray[$row] as $key=>$value) {
-            // add to the query as 'value',
-            $sql .= "'".$value."',";
-        }
-        $sql = rtrim($sql, ','); // remove the comma from the final value entry
-        $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
-        // echo $sql;
-        mysqli_query($connect, $sql);
-    }
-
-    // set up query to select authors according to total citations
-    /* $getAuthors = mysqli_query($connect, "SELECT
-                                          SUM(citations)
-                                          AS citations_sum, author1
-                                          FROM searchresponse
-                                          GROUP BY author1
-                                          ORDER BY citations_sum DESC
-                                          LIMIT 0,10"); */
-
-    /* while ($row = mysqli_fetch_array($getAuthors)) {
-        echo $row['author1'] . " " . $row['citations_sum'];
-        echo "<br>";
-    } */
 
     // create a 'result' variable to store the summed citation throughout the iterations
     $result = 0;
@@ -510,7 +402,8 @@
         // loop $recordArray
         for ($i = 0; $i < count($recordArray); $i++) {
             // add citations into variable if author names match
-            if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
+            if ($recordArray[$i]['author1'] === $value) {
+            // if (($recordArray[$i]['author1'] === $value) || ($recordArray[$i]['author2'] === $value) || ($recordArray[$i]['author3'] === $value)) {
                 $result += ($recordArray[$i]['citations']);
             }
         }
@@ -530,50 +423,8 @@
         $rows[] = $r;
     };
 
-    // iterate array and make all author names uppercase (to merge same authors with names in different cases)
-    for ($i = 0; $i < count($rows); $i++) {
-        $rows[$i]['author'] = strtoupper($rows[$i]['author']);
-    };
-
-    // create temporary array to compare $rows with itself
-    $tempArray = $rows;
-
-    // tests
-    echo "</br>WITH DUPLICATES (uppercase): </br></br>";
-    print "<pre>\n";
-    print_r($rows);
-    print "</pre>";
-
-    // if authors are same, sum citations to first instance and delete second instance
-    // iterate original array sequentially
-    for ($i = 0; $i < count($rows)-1; $i++) {
-        // iterate temp array to compare with original, hence start at 1 (don't need to compare values at same index as we know they are the same)
-        for ($j = $i + 1; $j < count($tempArray); $j++) {
-            // check each author in $rows with $tempArray
-            if ($rows[$i]['author'] === $tempArray[$j]['author']) {
-                // sum citations for duplicate from both tables into $rows
-                $rows[$i]['citations_sum'] += $rows[$j]['citations_sum'];
-                // delete duplicate in $rows at position $j from location found in $tempArray
-                unset($rows[$j]);
-            };  // end if
-        }; // end internal for-loop ($j)
-    }; // end external for-loop ($i)
-
-    // reset indices that were messed up by 'unset'
-    $rows = array_values($rows);
-
-    // make sure that data is sorted correctly (citations_sum, high -> low)
-    usort($rows, function ($a, $b) {
-        return $b['citations_sum'] - $a['citations_sum'];
-    });
-
     // only include first ten elements in array
     $rows = array_slice($rows, 0, 10);
-
-    echo "</br>NO DUPLICATES: </br></br>";
-    print "<pre>\n";
-    print_r($rows);
-    print "</pre>";
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($rows));
@@ -608,7 +459,12 @@
     // no redirect
     header("Location: data.html"); */
 
-    // TIMING
+
+    // =================================================== //
+    // ================ TIMING END ======================= //
+    // =================================================== //
+
+
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
