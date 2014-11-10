@@ -319,7 +319,7 @@
         $recordArray[$i]['address'] = str_replace("'", "", $recordArray[$i]['address']);
     }
 
-    echo "</br>Record Array: </br>";
+    echo "</br>RETRIEVED DATA: </br>";
     print "<pre>\n";
     print_r($recordArray);
     print "</pre>";
@@ -496,10 +496,10 @@
     // only include first ten elements in array
     $rows = array_slice($rows, 0, 10);
 
-    /* echo "</br>NO DUPLICATES: </br></br>";
+    echo "</br>FINAL DATA: </br></br>";
     print "<pre>\n";
     print_r($rows);
-    print "</pre>"; */
+    print "</pre>";
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($rows));

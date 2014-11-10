@@ -364,10 +364,10 @@
     }
 
     // this array has taken all the data we need from the SimpleXMLElement and is ready to be passed into the database
-    /* echo "</br>RECORD ARRAY (full data): </br></br>";
+    echo "</br>RETRIEVED DATA: </br></br>";
     print "<pre>\n";
     print_r($recordArray);
-    print "</pre>"; */
+    print "</pre>";
 
     // populate citedArray from recordArray, only first ten records
     for ($i = 0; $i < 10 && $i < count($recordArray); $i++) {
@@ -376,10 +376,10 @@
             array_push($citedArray, ($recordArray[$i]['author3']));
     };
 
-    echo "</br>CITED ARRAY (30 records, author names): </br></br>";
+    /* echo "</br>CITED ARRAY (30 records, author names): </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>";
+    print "</pre>"; */
 
     // get rid of duplicates
     // $singleAuthors = array_unique($citedArray);
@@ -401,17 +401,17 @@
 
     // $singleAuthors = array_map('strtoupper', $singleAuthors);
 
-    echo "</br>'no record' REMOVED: </br></br>";
+    /* echo "</br>'no record' REMOVED: </br></br>";
     print "<pre>\n";
     print_r($citedArray);
-    print "</pre>";
+    print "</pre>"; */
 
     // get rid of duplicates
     $singleAuthors = array_unique($citedArray);
-    echo "</br>NO DUPLICATES: </br></br>";
+    /* echo "</br>NO DUPLICATES: </br></br>";
     print "<pre>\n";
     print_r($singleAuthors);
-    print "</pre>";
+    print "</pre>"; */
 
 
     // =================================================================== //
@@ -539,10 +539,10 @@
     $tempArray = $rows;
 
     // tests
-    echo "</br>WITH DUPLICATES (uppercase): </br></br>";
+    /* echo "</br>WITH DUPLICATES (uppercase): </br></br>";
     print "<pre>\n";
     print_r($rows);
-    print "</pre>";
+    print "</pre>"; */
 
     // if authors are same, sum citations to first instance and delete second instance
     // iterate original array sequentially
@@ -570,7 +570,7 @@
     // only include first ten elements in array
     $rows = array_slice($rows, 0, 10);
 
-    echo "</br>NO DUPLICATES: </br></br>";
+    echo "</br>FINAL DATA: </br></br>";
     print "<pre>\n";
     print_r($rows);
     print "</pre>";

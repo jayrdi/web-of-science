@@ -1,4 +1,4 @@
- <?php
+<?php
 
     // =================================================================== //
     // ==== Search data entered by user sent by the HTML form in ========= //
@@ -11,26 +11,15 @@
     // =================================================================== //
 
 
-    // css
-    echo '<link rel="stylesheet" type="text/css" href="style2.css"/>';
+    // =================================================================== //
+    // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
+    // =================================================================== //
 
     // TIMING INITIALISE
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
     $starttime = $mtime; 
-
-    // local password file
-    $fileName = '../config.php';
-    // check if it exists before attempting to include it (i.e. is it localhost or server?)
-    if (file_exists($fileName)) {
-        include $fileName;
-    };
-    
-
-    // =================================================================== //
-    // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
-    // =================================================================== //
 
 
     // set processing time for browser before timeout
@@ -101,13 +90,7 @@
                           'from' => $timeStart,
                           'to' => $timeEnd,
                           'sortby' => $sortType
-                         );
-
-    // test data
-    echo "</br>SEARCH_PARAMETERS: </br>";
-    print "<pre>\n";
-    print_r($searchParams);
-    print "</pre>";
+                    );
 
     // turn top cited authors data into JSON file for displaying with JavaScript in data.html
     file_put_contents('search.json', json_encode($searchParams));
@@ -116,15 +99,15 @@
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => 'TI=peacocks',
+            'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-            'timeSpan' => array('begin' => '1864-01-01', 'end' => '2014-11-09'),
+            'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
             'queryLanguage' => 'en'
         ),
         'retrieveParameters' => array(
             'count' => '100',
             'sortField' => array(
-                array('name' => 'TC', 'sort' => 'D')
+                array('name' => $sortType, 'sort' => 'D')
             ),
             'firstRecord' => '1'
         )
@@ -146,7 +129,7 @@
     // number of records found by search, used to finish loop
     $len = $search_response->return->recordsFound;
 
-    echo "</br>RECORDS FOUND: </br>";
+    echo "</br>TOTAL RECORDS FOUND: </br>";
     print "<pre>\n";
     print $len;
     print "</pre>";
@@ -158,21 +141,10 @@
     // =================================================================== //
 
 
-    // print table with suitable headers
-    echo '<table id="table" <tr>
-             <th>Record Number</th>
-             <th>Author</th>
-             <th>Number of Citations</th>
-         </tr>>';
-
     // create an array to store data for each record per iteration
     $recordArray = array();
-    // create an array for top cited authors
-    $citedArray = array();
     // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 2 citations
     $ignore = array(0, 1, 2, 3, 4);
-    // create a variable to store and display row number
-    $count = 0;
 
     // iterate through all records, perform search for each 100 records and tabulate data
     for ($i = 1; $i <= $len; $i+=100) {
@@ -181,15 +153,15 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => 'TI=peacocks',
+                'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-                'timeSpan' => array('begin' => '1864-01-01', 'end' => '2014-11-09'),
+                'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
                 'queryLanguage' => 'en'
             ),
             'retrieveParameters' => array(
                 'count' => '100',
                 'sortField' => array(
-                    array('name' => 'TC', 'sort' => 'D')
+                    array('name' => $sortType, 'sort' => 'D')
                 ),
                 'firstRecord' => $i
             )
@@ -206,7 +178,6 @@
         $xml = new SimpleXMLElement($search_response->return->records);
 
         // save variable names for global use
-        
         $author1 = "";
         // $author2 = "";
         // $author3 = "";
@@ -214,54 +185,44 @@
 
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($xml->REC as $record) {
-            // start table row
-            echo '<tr>';
-            // batch number
-            echo '<td>'.$count.'</td>';
-            $count++;
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
-            echo '<td>'.$author1.'</td>';
             // second author
-            // if (isset($record->static_data->summary->names->name[1]->full_name)) {
-                // $author2 = (string)$record->static_data->summary->names->name[1]->full_name;
-                // echo '<td>'.$author2.'</td>';
-            // } else {
-                // echo '<td>'."no record".'</td>';
-                // $author2 = "no record";
-            // }
+            /* if (isset($record->static_data->summary->names->name[1]->full_name)) {
+                $author2 = (string)$record->static_data->summary->names->name[1]->full_name;
+                echo '<td>'.$author2.'</td>';
+            } else {
+                echo '<td>'."no record".'</td>';
+                $author2 = "no record";
+            }
             // third author
-            // if (isset($record->static_data->summary->names->name[2]->full_name)) {
-                // $author3 = (string)$record->static_data->summary->names->name[2]->full_name;
-                // echo '<td>'.$author3.'</td>';
-            // } else {
-                // echo '<td>'."no record".'</td>';
-                // $author3 = "no record";
-            // }
-            // number of citations, if zero or one then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
+            if (isset($record->static_data->summary->names->name[2]->full_name)) {
+                $author3 = (string)$record->static_data->summary->names->name[2]->full_name;
+                echo '<td>'.$author3.'</td>';
+            } else {
+                echo '<td>'."no record".'</td>';
+                $author3 = "no record";
+            } */
+            // number of citations, if zero then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
             if (!in_array($record->dynamic_data->citation_related->tc_list->silo_tc->attributes(), $ignore)) {
                 $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
-                echo '<td>'.$citations.'</td>';
             } else {
-                echo '<td>0</td>';
                 break 2;
-            }
-            // close table row
-            echo '</tr>';
+            };
 
             // for this iteration map all the values recorded into a temporary array variable, aRecord (equivalent to one row of data in table)
             $arecord = array("author1"=>strtoupper($author1),
                              // "author2"=>$author2,
                              // "author3"=>$author3,
-                             "citations"=>$citations );
+                             "citations"=>$citations
+                            );
 
             // pass the data from this iteration into the array variable '$recordArray', after all iterations, each element in $recordArray will be a single record or row of data for a single journal
             array_push($recordArray, $arecord) ;
         }
-    }    
-    echo '</table>';
+    };    
 
-    // need to replace single quotes in text to avoid escaping when inserting to mysql, also replace full stops to find duplicates e.g DAWSON, JR vs DAWSON J.R
+    // need to replace single quotes in text to avoid escaping when inserting to mysql, and other charas to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
         $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
         $recordArray[$i]['author1'] = str_replace(".", "", $recordArray[$i]['author1']);
@@ -270,6 +231,11 @@
         // $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
         // $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
     }
+
+    echo "</br>RETRIEVED DATA: </br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // as length of $j loop will decrease each time because of 'unset' its elements, create a variable to dynamically store its length
     $length = count($recordArray);
@@ -306,28 +272,16 @@
     // only include first ten elements in array
     $recordArray = array_slice($recordArray, 0, 10);
 
+    echo "</br>FINAL DATA: </br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
+
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($recordArray));
 
-    // print table with suitable headers
-    echo '<table id="citationsTable"
-          <tr id="citationsRow">
-          <th id="citationsHeader">Author</th>
-          <th id="citationsHeader">Total Citations</th>
-          </tr> >';
 
-    // print data from $recordArray into table
-    // for ($i = 0; $i < 10; $i++) {
-    for ($i = 0; $i < count($recordArray); $i++) {
-        echo "<tr id='citationsRow'>";
-        echo "<td id='citationsData'>".$recordArray[$i]['author1']."</td>";
-        echo "<td id='citationsData'>".$recordArray[$i]['citations']."</td>";
-        echo "</tr>";
-    };
-
-    echo "</table>";
-
-    $url = 'data.html';
+    $url = 'data2.html';
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -335,8 +289,7 @@
     }
 
     // no redirect
-    header("Location: data.html");
-
+    header("Location: data2.html");
 
     // =================================================== //
     // ================ TIMING END ======================= //
