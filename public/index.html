@@ -79,7 +79,7 @@
 
 	<div id="mainBlock">
 
-		<form name="params" action="wos2.php" method="post" class="form">
+		<form name="params" action="wos3.php" method="post" id="form">
 			<p class="input">Keyword(s)</p>
 			<input class="field" type="text" name="category1">
 
@@ -146,8 +146,11 @@
 			<p>To: <input class="date" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></p>
 			</br></br>
 
+			<!-- check number of records that will be returned by the search -->
+			<input class="check" type="button" value="Check Search Size" onclick="submitForm('checkSize.php')"/>
+
 			<!-- execute search -->
-			<input class="submit" type="submit" value="Go" onclick="$('#loading').show();"/>
+			<input class="submit" type="button" value="Go" onclick="$('#loading').show();submitForm('wos3.php')"/>
 			<div id="loading" style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
 		</form>
 

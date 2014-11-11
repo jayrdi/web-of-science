@@ -4,16 +4,9 @@ function unhide(divID) {
 	if (item) {
 		item.className = (item.className == 'hidden')?'unhidden':'hidden';
 	}
-}
+};
 
-function display() {
-	document.write("ACCESS!");
-	/* $.ajax({
-		type: "GET",
-		url: "wos.php",
-		dataType: "json",
-		success: function(data) {
-			document.write(data);
-		}
-	}) */
-}
+function submitForm(action) {
+	document.getElementById('form').action = action;
+	document.getElementById('form').submit();
+};
