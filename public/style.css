@@ -93,6 +93,7 @@ h2 {
 	margin-top: 20px;
 	margin-left: 60px;
 	margin-bottom: 180px;
+	width: 560px;
 }
 
 .about {
@@ -178,7 +179,7 @@ select option {
 	font-size: 2em;
 	color: #fff;
 	border: 2px solid #c8102e;
-	margin-top: 180px;
+	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
 	cursor: pointer;
@@ -192,30 +193,7 @@ select option {
 	color: #c8102e;
 	border: 5px solid #c8102e;
 	font-size: 2.1em;
-	margin-top: 176px;
-}
-
-.check {
-	padding: 5px;
-	font-family: 'Raleway', sans-serif;
-	font-size: 1em;
-	color: #fff;
-	border: 2px solid #c8102e;
-	margin-top: 80px;
-	position: absolute;
-	border-radius: 7px;
-	cursor: pointer;
-	background-image: url('images/cvi_globalnav.jpg');
-	background-position: center;
-	background-size: 10px 35px;
-	/* background-color: #152d6d; */
-}
-
-.check:hover {
-	color: #c8102e;
-	border: 3px solid #c8102e;
-	font-size: 1em;
-	margin-top: 79px;
+	margin-top: 76px;
 }
 
 input {
@@ -292,7 +270,7 @@ td {
 	background-size: 10px 30px;
 	border-radius: 7px;
 	cursor: pointer;
-	display: block;
+	display: inline;
 
 }
 
@@ -302,12 +280,13 @@ td {
 
 .unhidden {
 	display: inline;
-	margin-top: -20px !important;
+	float: right;
+	margin-top: -128px;
 }
 
-#form {
+.form {
 	display: inline;
-	width: 600px;
+	width: 800px;
 }
 
 #citationsTable {
@@ -408,7 +387,7 @@ svg {
 	float: left;
 	display: inline-block;
 	margin-top: 20px;
-	margin-left: 100px;
+	margin-left: 50px;
 }
 
 #instructText {

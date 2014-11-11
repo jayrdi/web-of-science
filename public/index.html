@@ -79,7 +79,7 @@
 
 	<div id="mainBlock">
 
-		<form name="params" action="wos3.php" method="post" id="form">
+		<form name="params" action="wos3.php" method="post" class="form">
 			<p class="input">Keyword(s)</p>
 			<input class="field" type="text" name="category1">
 
@@ -97,12 +97,13 @@
 			    <option value="DO">DOI</option>
 			    <option value="PY">Year Published</option>
 			    <option value="AD">Address</option>
-			</select></br></br>
+			</select>
 
 			<!-- extra search fields -->
 			<div id="extra" class="hidden">
 
 			<!-- logic gate -->
+			<p class="input">Logic</p>
 			<select id="dropdown" name="logic">
 				<option selected="selected" value=""></option>
 				<option value="AND">AND</option>
@@ -130,7 +131,7 @@
 			</select></br></br>
 
 			</div> <!-- extra -->
-			</br>
+
 			<!-- sort params -->
 			<p class="input">Sort By</p>
 			<select id="dropdown" name="sort">
@@ -146,11 +147,8 @@
 			<p>To: <input class="date" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></p>
 			</br></br>
 
-			<!-- check number of records that will be returned by the search -->
-			<input class="check" type="button" value="Check Search Size" onclick="submitForm('checkSize.php')"/>
-
 			<!-- execute search -->
-			<input class="submit" type="button" value="Go" onclick="$('#loading').show();submitForm('wos3.php')"/>
+			<input class="submit" type="submit" value="Go" onclick="$('#loading').show();"/>
 			<div id="loading" style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
 		</form>
 

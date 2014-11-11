@@ -5,8 +5,3 @@ function unhide(divID) {
 		item.className = (item.className == 'hidden')?'unhidden':'hidden';
 	}
 };
-
-function submitForm(action) {
-	document.getElementById('form').action = action;
-	document.getElementById('form').submit();
-};

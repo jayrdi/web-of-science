@@ -90,7 +90,7 @@
                           'from' => $timeStart,
                           'to' => $timeEnd,
                           'sortby' => $sortType
-                    );
+                         );
 
     // turn top cited authors data into JSON file for displaying with JavaScript in data.html
     file_put_contents('search.json', json_encode($searchParams));
