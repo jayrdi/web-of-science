@@ -45,6 +45,17 @@ p {
 	/* width: 470px; */
 }
 
+.sg-orientation {
+	background-color: #000;
+	border-bottom: 1px solid #333;
+	color: #eee;
+	padding: 4px;
+	min-height: 1.2em;
+	overflow: auto;
+}
+
+
+
 header {
 	height: 100px;
 	/* background-color: #152d6d; */
@@ -102,7 +113,7 @@ h2 {
 	background-image: url('images/cvi_globalnav_grey.jpg');
 	background-position: center;
 	background-size: 10px 43px;
-	border-top: 2px solid #c8102e;
+	border-top: 2px solid #5bc0de;
 	/* border-bottom: 2px solid #7bafd4; */
 	padding: 5px;
 	font-family: 'Raleway', sans-serif;
@@ -114,12 +125,12 @@ h2 {
 footer {
 	width: 100%;
 	bottom: 0;
-	height: 50px;
+	height: 70px;
 	/* background-color: #fff; */
 	background-image: url('images/cvi_globalnav_grey.jpg');
 	background-position: center;
-	background-size: 10px 70px;
-	border-top: 2px solid #c8102e;
+	background-size: 10px 90px;
+	border-top: 2px solid #5bc0de;
 	color: #f4efdd;
 	font-family: 'Lora', serif;
 	position: fixed;
@@ -159,7 +170,7 @@ select option {
 }
 
 #ncl {
-	top: 15px;
+	top: 50px;
 	right: 30px;
 	width: 173px;
 	position: absolute;
@@ -178,7 +189,7 @@ select option {
 	font-family: 'Raleway', sans-serif;
 	font-size: 2em;
 	color: #fff;
-	border: 2px solid #c8102e;
+	border: 2px solid #5bc0de;
 	margin-top: 80px;
 	position: absolute;
 	border-radius: 7px;
@@ -190,8 +201,8 @@ select option {
 }
 
 .submit:hover {
-	color: #c8102e;
-	border: 5px solid #c8102e;
+	color: #5bc0de;
+	border: 5px solid #5bc0de;
 	font-size: 2.1em;
 	margin-top: 76px;
 }
@@ -402,7 +413,7 @@ svg {
 
 #graphHeader {
 	margin-left: 60px;
-	color: #c8102e;
+	color: #5bc0de;
 	text-shadow: none;
 }
 
@@ -450,7 +461,7 @@ nav {
 
 nav.nav {
 	border-top: 1px solid #282c2f;
-	border-bottom: 1px solid #121317;
+	/* border-bottom: 1px solid #121317; */
 	border-radius: 3px;
 	display: block !important;
 }
@@ -506,7 +517,7 @@ nav.nav li a {
 
 nav.nav li a:hover, nav li.active a {
 	background-position: 0px -36px;
-	color: #c8102e;
+	color: #5bc0de;
 }
 
 nav.nav li a:active {
@@ -557,7 +568,7 @@ nav.nav li ul li a {
 
 nav.nav li ul li a:hover {
 	/* opacity: 0.5; */
-	color: #ff0000;
+	color: #fff;
 }
 
 /* arrow above drop down */
