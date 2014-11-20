@@ -1,0 +1,169 @@
+<!DOCTYPE>
+
+<html>
+	<head>
+		<title>Academic Intelligence</title>
+
+		<!-- LINKS -->
+
+		<!-- Corporate visual identity (bootstrap) -->
+  		<link href="//resviz.ncl.ac.uk/static/style/cvi.css" media="screen" rel="stylesheet" type="text/css" />
+  		<!-- bootstrap css -->
+  		<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
+		<!-- favicon, newcastle logo -->
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+		<!-- SCRIPTS -->
+
+		<!-- jquery & jquery ui -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- local script -->
+		<script src="script.js"/></script>
+		<!-- bootstrap js -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+		<!-- META -->
+
+		<meta charset="UTF-8"/>
+		<!-- ensure proper rendering and touch zooming in mobile devices -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="keywords" content="academic intelligence, resviz, research visualisation, research and enterprise services"/>
+		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+		<meta name="author" content="John Dawson"/>
+	</head>
+
+	<body>
+		<!-- BREADCRUMBS -->
+		<div class="sg-orientation">    
+	        <a href="#content" class="sg-button sg-skiptocontent"></a>
+	        <span class="sg-breadcrumbs">
+	            <a href="http://www.ncl.ac.uk/">Newcastle University</a> &gt;&gt;
+	            <a href="https://resviz.ncl.ac.uk/">Research Visualisation</a> &gt;&gt;
+	            <strong href="#">Academic Intelligence</strong>
+	        </span>
+	    </div>
+
+		<!-- TITLE BAR -->
+		<div class="sg-titlebar">
+			<h1><a title="Newcastle University Homepage" accesskey="1" href="http://www.ncl.ac.uk/"/><span title="Newcastle University">Newcastle University</span></a></h1>
+			<h2><a href="https://resviz.ncl.ac.uk/wos/">Academic Intelligence</a></h2>
+		</div> 
+
+
+		<div class="sg-navigation">&nbsp;</div>
+
+		<div class="sg-content">
+			<!-- NAVIGATION BAR -->
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container">
+					<div class="navbar-header">
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="https://resviz.ncl.ac.uk/"><span class="glyphicon glyphicon-home"></span></a></li>
+							<li><a href="https://resviz.ncl.ac.uk/chords/">Research Visualisation</a></li>
+							<li><a href="index.html">Academic Intelligence</a></li>
+						</ul>
+					</div> <!-- navbar-collapse -->
+				</div> <!-- container -->
+			</nav> <!-- navbar -->
+
+			<!-- main content -->
+			<section class="container">
+				<div class="col-lg-6">
+					<!-- search params -->
+					<form action="wos3.php" method="post" role="form">
+						<div class="form-group">
+							<!-- keyword for search -->
+							<label for="keyword">Keyword(s)</label>
+							<input class="form-control" type="text" name="category1"><br/>
+
+							<!-- search type -->
+							<label for="searchType1">Search Type</label>
+							<select class="form-control" name="type1">
+							    <option value="TS">Topic</option>
+							    <option value="TI">Title</option>
+							    <option value="AU">Author</option>
+							    <option value="ED">Editor</option>
+							    <option value="CU">Country</option>
+							    <option value="SO">Publication Name</option>
+							    <option value="DO">DOI</option>
+							    <option value="PY">Year Published</option>
+							    <option value="AD">Address</option>
+							</select><br/>
+
+							<!-- extra (initially hidden) search fields -->
+							<div id="extra" class="hidden">
+
+							<!-- logic between keywords -->
+							<label for="logic">Logic</label>
+							<select class="form-control" name="logic">
+								<option selected="selected" value=""></option>
+								<option value="AND">AND</option>
+								<option value="OR">OR</option>
+								<option value="NOT">NOT</option>
+							</select><br/>
+
+							<!-- 2nd search params -->
+							<!-- 2nd keyword -->
+							<label for="extraKeyword">Extra Keyword(s)</label>
+							<input class="form-control" type="text" name="category2"><br/>
+
+							<!-- 2nd search type -->
+							<label for="searchType2">Search Type</label>
+							<select class="form-control" name="type2">
+								<option selected="selected" value=""></option>
+							    <option value="TS">Topic</option>
+							    <option value="TI">Title</option>
+							    <option value="AU">Author</option>
+							    <option value="ED">Editor</option>
+							    <option value="CU">Country</option>
+							    <option value="SO">Publication Name</option>
+							    <option value="DO">DOI</option>
+							    <option value="PY">Year Published</option>
+							    <option value="AD">Address</option>
+							</select><br/>
+
+							</div><br/> <!-- extra -->
+
+							<!-- sort params -->
+							<!-- <label for="sortBy">Sort By</label>
+							<select class="form-control" name="sort">
+							    <option value="RS">Relevance</option>
+							    <option value="TC">Times Cited: Most -> Least</option>
+							    <option value="PY">Publication Year: Newest -> Oldest</option>
+							    <option value="AU">First Author: A -> Z</option>
+							    <option value="CF">Conference Title: A -> Z</option>
+							</select> -->
+
+							<!-- timespan -->
+							<label for="timeSpan">TIMESPAN</label></br>
+							<label>From: <input class="form-control" type="date" name="timeStart" placeholder="YYYY-MM-DD"></label>
+							<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label>
+							</br></br>
+
+							<!-- loading graphic -->
+							<div style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
+						</div>
+						<!-- execute search -->
+						<button type="submit" class="btn btn-default">Submit</button>
+					</form>
+
+					<!-- hide/reveal extra search boxes -->
+					<a href="javascript:unhide('extra')" id="button">Click here to add more search parameters</a>
+				</div> <!-- col-lg-6 -->
+				<div class="col-lg-6"></div>
+
+			</section> <!-- main content; container -->
+		</div> <!-- sg-content -->
+
+		<!-- FOOTER -->
+		<div class="sg-clear">&nbsp;</div>
+		<div class="sg-footer">
+			<p><a href="http://www.ncl.ac.uk/res/about/office/research/" id="mail">Research & Enterprise Services</a><br/>Newcastle University, Newcastle Upon Tyne,<br/>NE1 7RU, United Kingdom<br/><a href="mailto:res.policy@ncl.ac.uk">Email Webmaster</a><br/><br/>&copy; 2014 Newcastle University</p>
+		</div>
+
+		<script src="//browser-update.org/update.js"></script>
+
+	</body>
+
+</html>

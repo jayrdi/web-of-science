@@ -59,7 +59,8 @@
     // keyword(s)
     $queryCategory1 = $_POST["category1"];
     // sort type
-    $sortType = $_POST["sort"];
+    // $sortType = $_POST["sort"];
+    $sortType = "TC";
 
     // check if 'hidden' extra search facility is being used, if it is, populate variables
     if (!$_POST["category2"]) {
