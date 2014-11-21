@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE HTML>
 
 <html>
 	<head>
@@ -15,7 +15,7 @@
 
 		<!-- SCRIPTS -->
 
-		<!-- jquery & jquery ui -->
+		<!-- jquery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<!-- local script -->
 		<script src="script.js"/></script>
@@ -27,6 +27,7 @@
 		<meta charset="UTF-8"/>
 		<!-- ensure proper rendering and touch zooming in mobile devices -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=10" />
 		<meta name="keywords" content="academic intelligence, resviz, research visualisation, research and enterprise services"/>
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson"/>
@@ -35,7 +36,7 @@
 	<body>
 		<!-- BREADCRUMBS -->
 		<div class="sg-orientation">    
-	        <a href="#content" class="sg-button sg-skiptocontent"></a>
+	        <a href="#content" class="sg-button sg-skiptocontent">Skip to Content</a>
 	        <span class="sg-breadcrumbs">
 	            <a href="http://www.ncl.ac.uk/">Newcastle University</a> &gt;&gt;
 	            <a href="https://resviz.ncl.ac.uk/">Research Visualisation</a> &gt;&gt;
@@ -75,11 +76,11 @@
 						<div class="form-group">
 							<div class="col-lg-6">
 								<!-- keyword for search -->
-								<label for="keyword">Keyword(s)</label>
+								<label>Keyword(s)</label>
 								<input class="form-control" type="text" name="category1"><br/>
 
 								<!-- search type -->
-								<label for="searchType1">Search Type</label>
+								<label>Search Type</label>
 								<select class="form-control" name="type1">
 								    <option value="TS">Topic</option>
 								    <option value="TI">Title</option>
@@ -93,9 +94,9 @@
 								</select><br/>
 
 								<!-- timespan -->
-								<label for="timeSpan">TIMESPAN</label></br>
+								<label>TIMESPAN</label></br>
 								<label>From: <input class="form-control" type="date" name="timeStart" placeholder="YYYY-MM-DD"></label>
-								<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/><br/>
+								<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
 								<!-- execute search -->
 								<button type="submit" class="btn btn-default">Submit</button><br/><br/>
@@ -111,7 +112,7 @@
 								<div id="extra" class="hidden">
 
 								<!-- logic between keywords -->
-								<label for="logic">Logic</label>
+								<label>Logic</label>
 								<select class="form-control" name="logic">
 									<option selected="selected" value=""></option>
 									<option value="AND">AND</option>
@@ -121,11 +122,11 @@
 
 								<!-- 2nd search params -->
 								<!-- 2nd keyword -->
-								<label for="extraKeyword">Extra Keyword(s)</label>
+								<label>Extra Keyword(s)</label>
 								<input class="form-control" type="text" name="category2"><br/>
 
 								<!-- 2nd search type -->
-								<label for="searchType2">Search Type</label>
+								<label>Search Type</label>
 								<select class="form-control" name="type2">
 									<option selected="selected" value=""></option>
 								    <option value="TS">Topic</option>
@@ -154,7 +155,7 @@
 		<!-- FOOTER -->
 		<div class="sg-clear">&nbsp;</div>
 		<div class="sg-footer">
-			<p><a href="http://www.ncl.ac.uk/res/about/office/research/">Research & Enterprise Services</a><br/>Newcastle University, Newcastle Upon Tyne,<br/>NE1 7RU, United Kingdom<br/><a href="mailto:res.policy@ncl.ac.uk">Email Webmaster</a><br/><br/>&copy; 2014 Newcastle University</p>
+			<p><a href="http://www.ncl.ac.uk/res/about/office/research/">Research &amp; Enterprise Services</a><br/>Newcastle University, Newcastle Upon Tyne,<br/>NE1 7RU, United Kingdom<br/><a href="mailto:res.policy@ncl.ac.uk">Email Webmaster</a><br/><br/>&copy; 2014 Newcastle University</p>
 		</div>
 
 		<script src="//browser-update.org/update.js"></script>
