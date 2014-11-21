@@ -1,0 +1,197 @@
+<!DOCTYPE>
+
+<html>
+	<head>
+
+		<title>Academic Intelligence</title>
+
+		<!-- link to CSS stylesheet, fonts & plugins -->
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+		<!-- Corporate visual identity (bootstrap) -->
+  		<link href="//resviz.ncl.ac.uk/static/style/cvi.css" media="screen" rel="stylesheet" type="text/css" />
+  		<!-- bootstrap css -->
+  		<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
+		<!-- favicon, newcastle logo -->
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<!-- links to various javascript files used -->
+		<!-- jquery & jquery ui -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<!-- local script -->
+		<script src="script.js"/></script>
+		<!-- bootstrap js -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+		<meta charset="UTF-8"/>
+		<!-- ensure proper rendering and touch zooming in mobile devices -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+		<meta name="author" content="John Dawson"/>
+
+		<!-- JAVASCRIPT for navigation bar -->
+		<script type="text/javascript"> 
+		$(document).ready(function(){
+
+			// Required: Navigation bar drop-down
+			$("nav ul li").hover(function() {
+				$(this).addClass("active");
+				$(this).find("ul").show().animate({
+					opacity: 1
+				}, 400);
+			}, function() {
+				$(this).find("ul").hide().animate({
+					opacity: 0
+				}, 200);
+				$(this).removeClass("active");
+			});
+			
+			// Required: Addtional styling elements
+			$('nav ul li ul li:first-child').prepend('<li class="arrow"></li>');
+			$('nav ul li:first-child').addClass('first');
+			$('nav ul li:last-child').addClass('last');
+			$('nav ul li ul').parent().append('<span class="dropdown"></span>').addClass('drop');
+
+		});
+		</script>
+		<!-- end javascript -->
+
+	</head>
+
+	<!-- breadcrumbs -->
+	<div class="sg-orientation">    
+        <a href="#content" class="sg-button sg-skiptocontent"></a>
+        <span class="sg-breadcrumbs">
+            <a href="http://www.ncl.ac.uk/">Newcastle University</a> &gt;&gt;
+            <a href="https://resviz.ncl.ac.uk/">Research Visualisation</a> &gt;&gt;
+            <strong href="#">Academic Intelligence</strong>
+        </span>
+    </div>
+
+	<!-- title bar -->
+	<header>
+		<div class="wrapper">
+			<h1 class="logo">Academic Intelligence</h1>
+			<h2 id="subhead">Web of Science Database Query</h2>
+		</div> <!-- wrapper --> 
+		<!-- newcastle university logo -->
+		<img id="ncl" src="images/cvi_shield_tran.gif"></img>
+	</header>
+
+	<article class="about">
+		<nav class="nav">
+			<ul class="clear">
+				<li><a href="https://resviz.ncl.ac.uk/">Home</a></li>
+				<li><a href="https://resviz.ncl.ac.uk/app/#/chordstmp2">Research Visualisation</a>
+					<ul>
+						<li><a href="https://resviz.ncl.ac.uk/demo/#/help">Chords V1</a></li>
+						<li><a href="#">Chords V2</a></li>
+					</ul>
+				</li>
+				<li><a href="index.html">Academic Intelligence</a></li>
+			</ul>
+		</nav>
+	</article> <!-- about -->
+
+	<div id="mainBlock">
+
+		<form name="params" action="wos3.php" method="post" class="form">
+			<p class="input">Keyword(s)</p>
+			<input class="field" type="text" name="category1">
+
+			</br></br>
+
+			<!-- search params -->
+			<p class="input">Search Type</p>
+			<select id="dropdown" name="type1">
+			    <option value="TS">Topic</option>
+			    <option value="TI">Title</option>
+			    <option value="AU">Author</option>
+			    <option value="ED">Editor</option>
+			    <option value="CU">Country</option>
+			    <option value="SO">Publication Name</option>
+			    <option value="DO">DOI</option>
+			    <option value="PY">Year Published</option>
+			    <option value="AD">Address</option>
+			</select>
+
+			<!-- extra search fields -->
+			<div id="extra" class="hidden">
+
+			<!-- logic gate -->
+			<p class="input">Logic</p>
+			<select id="dropdown" name="logic">
+				<option selected="selected" value=""></option>
+				<option value="AND">AND</option>
+				<option value="OR">OR</option>
+				<option value="NOT">NOT</option>
+			</select></br>
+
+			<!-- 2nd search params -->
+			<p class="input">Extra Keyword(s)</p>
+			<input class="field" type="text" name="category2">
+			</br></br>
+
+			<p class="input">Search Type</p>
+			<select id="dropdown" name="type2">
+				<option selected="selected" value=""></option>
+			    <option value="TS">Topic</option>
+			    <option value="TI">Title</option>
+			    <option value="AU">Author</option>
+			    <option value="ED">Editor</option>
+			    <option value="CU">Country</option>
+			    <option value="SO">Publication Name</option>
+			    <option value="DO">DOI</option>
+			    <option value="PY">Year Published</option>
+			    <option value="AD">Address</option>
+			</select></br></br>
+
+			</div> <!-- extra -->
+
+			<!-- sort params -->
+			<p class="input">Sort By</p>
+			<select id="dropdown" name="sort">
+			    <option value="RS">Relevance</option>
+			    <option value="TC">Times Cited: Most -> Least</option>
+			    <option value="PY">Publication Year: Newest -> Oldest</option>
+			    <option value="AU">First Author: A -> Z</option>
+			    <option value="CF">Conference Title: A -> Z</option>
+			</select></br>
+
+			<p class="input">Timespan</p>
+			<p>From: <input class="date" type="date" name="timeStart" placeholder="YYYY-MM-DD"></p></br>
+			<p>To: <input class="date" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></p>
+			</br></br>
+
+			<!-- execute search -->
+			<input class="submit" type="submit" value="Go" onclick="$('#loading').show();"/>
+			<div id="loading" style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
+		</form>
+
+		<div></div>
+
+		<a href="javascript:unhide('extra')" id="button" title="Fields entered in the additional search boxes above WILL NOT be cleared by clicking this button">Click here to add more search parameters</a>
+
+	</div> <!-- mainBlock -->
+
+	<article id="instructions">
+		<h2 id="instructHeader">Instructions</h2>
+		<div id="instructText">
+		<p><h3>1.</h3> In order to find the most cited publications by an author in a particular category,</br>
+					   please enter the relevant keyword(s) in the box to the left.</br></br>
+		   <h3>2.</h3> Select the search type from the 'Search Type' drop down menu.</br></br>
+		   <h3>3.</h3> Select the way in which the data should be sorted from the 'Sort By' drop down menu.</br></br>
+		   <h3>4.</h3> If you want to add further keywords to refine your search, click the 'add more search</br>parameters' button.
+					   Choose the options as before and then state the logical relationship</br>between the search parameters, AND, OR or NOT from the drop down menu.</br></br>
+		   <h3>5.</h3> When you have selected all the search parameters, click the 'Go' button and wait</br>for the data to load.</br></p>	
+		</div>
+	</article>
+
+	<footer>
+		<div class="wrapper">
+			<p id="links"><a href="http://www.ncl.ac.uk/res/about/office/research/" id="mail">Research & Enterprise Services</a></br>Newcastle University, Newcastle Upon Tyne,</p></br>NE1 7RU, United Kingdom</br><a href="mailto:res.policy@ncl.ac.uk" id="mail">Email Webmaster</a><br/><br/>&copy; 2014 Newcastle University</p>
+		</div> <!-- wrapper -->
+	</footer>
+
+</html>

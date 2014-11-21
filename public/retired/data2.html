@@ -1,0 +1,388 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+
+	<title>NCL Research Enterprises</title>
+	
+	<!-- link to CSS stylesheet, fonts & plugins -->
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+	<!-- favicon -->
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+	<!-- scripts -->
+	<script type='text/javascript' src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<!-- d3 -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.12/d3.min.js" charset="utf-8"></script>
+	<!-- angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	<!-- metadata -->
+	<meta charset="UTF-8"/>
+	<meta name="keywords" content="web of science, research visualisation, newcastle university research"/>
+	<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
+	<meta name="author" content="John Dawson"/>
+
+	<!-- JAVASCRIPT for navigation bar -->
+	<script type="text/javascript"> 
+	$(document).ready(function(){
+
+		// Required: Navigation bar drop-down
+		$("nav ul li").hover(function() {
+			$(this).addClass("active");
+			$(this).find("ul").show().animate({
+				opacity: 1
+			}, 400);
+		}, function() {
+			$(this).find("ul").hide().animate({
+				opacity: 0
+			}, 200);
+			$(this).removeClass("active");
+		});
+		
+		// Required: Addtional styling elements
+		$('nav ul li ul li:first-child').prepend('<li class="arrow"></li>');
+		$('nav ul li:first-child').addClass('first');
+		$('nav ul li:last-child').addClass('last');
+		$('nav ul li ul').parent().append('<span class="dropdown"></span>').addClass('drop');
+
+	});
+	</script>
+	<!-- end javascript -->
+
+</head>
+
+<body>
+
+	<header>
+		<div class="wrapper">
+			<h1 class="logo">Academic Intelligence</h1>
+			<h2 id="subhead">Web of Science Database Query</h2>
+		</div> <!-- wrapper --> 
+	</header>
+
+	<article class="about">
+		<nav class="nav">
+			<ul class="clear">
+				<li><a href="https://resviz.ncl.ac.uk/">Home</a></li>
+				<li><a href="#">Tab</a></li>
+				<li><a href="https://resviz.ncl.ac.uk/app/#/chordstmp2">Research Visualisation</a>
+					<ul>
+						<li><a href="https://resviz.ncl.ac.uk/demo/#/help">Chords V1</a></li>
+						<li><a href="#">Chords V2</a></li>
+					</ul>
+				</li>
+				<li><a href="index.html">Academic Intelligence</a></li>
+				<li><a href="#">Tab</a></li>
+			</ul>
+		</nav>
+	</article> <!-- about -->
+
+	</br><h2 id="graphHeader">Authors With Largest Number of Citations:</h2>
+
+	<div class="chart"></div>
+
+	<h2 id="instructHeader">Information</h2></br>
+	<div id="info">
+		<h4>The y-axis represents the number of citations</br>for publications for the author on the x-axis.</br></br>
+			Click on one of the bars to load the name</br>of the associated author in Google.</br></h4>
+	</div>
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			// call to 'data.json' created in wos.php
+			$.getJSON('data.json', function (data) {
+
+				// javascript variable to store json data
+				var topCited = data;
+
+				// TESTS: 
+				/* console.log("TOPCITED OBJECT: ");
+				console.log(topCited);
+				console.log("FIRST ELEMENT OF TOPCITED: ")
+				console.log(topCited[0].author);
+				console.log(topCited[0].citations_sum);
+				// console.log(topCited[1].citations_sum);
+
+				// append data to document under series of paragraphs (test)
+				// enter() returns a reference to the placeholder elements for each data element that had no corresponding existing DOM element
+				// i.e. in this case there exist no <p> elements, enter references this from the data and then appends a <p> element for each element in the data set
+				d3.select("body").selectAll("p")
+								 .data(topCited)
+								 .enter()
+								 .append("p");
+
+				// use D3 text operator to assign text values to the paragraph elements, creates anonymous function (no name as only used here)
+				// d refers to the current data attribut for the current element, i refers to the index of the current element
+				d3.selectAll("p").text(function (d, i) {
+					return i + ". " + d.author + "  =  " + d.citations_sum;
+				}); */
+
+				// establish some margins for the graph area to avoid overlap with other HTML elements
+				var margin = {
+								top: 10,
+								right: 30,
+								bottom: 250,
+								left: 40
+					 		 };
+
+				// initiate variables for max width and height of canvas for chart, determine largest citation value for domain and scaling
+				// width, 10 bars at 75px each plus 3px padding
+				var height = 600;
+				var width = 780;
+				/* var maxY = d3.max(topCited, function (d) {
+				    return d.citations_sum;	
+				}); */
+
+				var maxY = topCited[0].citations_sum;
+
+				// console.log("maxY: " + maxY);
+
+				// set scale to alter data set so that it fits well in the canvas space
+				// map the domain (actual data range) to the range (size of canvas)
+				var linearScale = d3.scale.linear()
+										  // 0 -> largest citations value
+										  .domain([0, maxY])
+										  // 0 -> 600
+										  .range([0, height]);
+
+				// TESTS: should = 600
+				// console.log(linearScale(maxY));
+				// console.log(linearScale(100));
+
+				// create canvas for chart
+				var svgContainer = d3.select(".chart").append("svg")
+												      .attr("width", width)
+									  				  // max size from data set plus 20px margin
+									  				  .attr("height", height + margin.bottom)
+									  				  // .style("border", "1px solid green");
+
+				// create an SVG Grouped Element (<g>) to contain all the 'bars' of the graph
+				var barGroup = svgContainer.append("g");
+
+				// bind the data to SVG Rectangle elements
+				var bar = barGroup.selectAll("rect")
+								  .data(topCited)
+								  .enter()
+								  .append("rect")
+								  .attr("fill", "#7bafd4")
+								  // highlight each bar as you hover over it
+								  .on("mouseover", function () {
+								      d3.select(this)
+								        .attr("fill", "#003c71");	
+								  })
+								  // transition to remove highlight from bar
+								  .on("mouseout", function() {
+								      d3.select(this)
+								        .transition()
+								        .duration(250)
+								        .attr("fill", "#7bafd4");
+								  });
+
+				// set variable to store bar width + padding
+				var barWidth = 78;
+
+				// set attributes for the rectangles (bars)
+				var rectAttributes = bar.attr("width", 75)
+										// set bar height by value of citations_sum
+										.attr("height", function (d) {
+										    return linearScale(d.citations_sum);
+										})
+										// index * 78 will move each bar (width, 75px) one bar width along and leave 3px padding
+										.attr("x", function (d, i) {
+										    return i * barWidth;
+										})
+										// this is determined from the top left corner so to get the bar at the bottom, take the bar height from the canvas height
+										.attr("y", function (d) {
+										    return height - linearScale(d.citations_sum);
+										})
+										// .style("fill", "steelblue");
+
+				// bind the data to SVG Text elements
+				var text = barGroup.selectAll("text")
+								   .data(topCited)
+								   .enter()
+								   .append("text");
+
+				// set attributes for the text on bars (citation values)
+				var barLabels = text.attr("x", function (d, i) {
+									     return (barWidth * i) + 37.5; // sets to halfway between each bar horizontally
+									 })
+									 .attr("y", function (d) {
+									     return height - (linearScale(d.citations_sum)) - 3; // sets to top of each bar + 5 to sit just above bar
+									 })
+									 .text(function (d) {
+									     return d.citations_sum; // value to display, citations value (number)	
+									 })
+									 .style("text-anchor", "middle")
+									 .attr("font-family", "Raleway")
+									 .attr("font-size", "26px")
+									 .attr("fill", "#7bafd4");
+
+				// create a scale for the horizontal axis
+				var xScale = d3.scale.ordinal()
+									 .domain(data.map(function (d) {
+									 	return d.author;
+									 }))
+									 .rangeRoundBands([0, width], 0);
+
+				// create a scale for the vertical axis
+				var yScale = d3.scale.linear()
+									 .domain([0, maxY])
+									 .range([height, 0]);
+
+				// define x-axis
+				var xAxis = d3.svg.axis()
+								  .scale(xScale)
+								  .orient("bottom")
+								  .ticks(10);
+
+				// define y-axis
+				var yAxis = d3.svg.axis()
+							  .scale(yScale)
+							  .orient("left")
+							  .ticks(10);
+
+				// create x-axis
+				svgContainer.append("g")
+							.attr("class", "axis")
+							.attr("transform", "translate(0, " + height + ")")
+							.call(xAxis)
+							// select author names
+							.selectAll("text")
+							.style("text-anchor", "end")
+							// spacing
+							.attr("dx", "-.8em")
+							.attr("dy", ".15em")
+							// rotate text as too long to display horizontally
+							.attr("transform", function (d) {
+							    return "rotate(-45)";
+							});
+
+				// create y-axis
+				svgContainer.append("g")
+							.attr("class", "axis")
+							// .attr("transform", "translate(3,0)")
+							.call(yAxis)
+							// append a title to the y-axis
+							.append("text")
+							.attr("transform", "rotate(-90)")
+							.attr("y", -70)
+							.attr("x", -200)
+							.style("text-anchor", "end")
+							.attr("fill", "#000")
+							.attr("font-size", "24px")
+							.text("Citations");
+
+				// create link when user clicks on a single bar of data
+				d3.selectAll("rect")
+				  .on("click", function (d) {
+				  	  // variable stores url for google and adds author name relevant to bar that was clicked
+				      var url = "https://www.google.co.uk/#q=" + d.author;
+				      // add an href html element with the url attached
+				      $(location).attr("href", url);
+				      window.location = url;
+				  });
+
+			})
+			// call to 'search.json' created in wos.php
+			$.getJSON('search.json', function (json) {
+
+				/* var searchParams = json;
+				console.log(searchParams);
+				console.log(searchParams.keyword1); */
+
+				// select location by HTML table id
+				var tbody = document.getElementById('searchData');
+				var tr = "<tr>";
+				// header row
+				tr += "<td>Keyword 1</td>" +
+					  "<td>Search Type 1</td>" + 
+					  "<td>Logic</td>" + 
+					  "<td>Keyword 2</td>" + 
+					  "<td>Search Type 2</td>" + 
+					  "<td>From</td>" + 
+					  "<td>To</td>" + 
+					  "<td>Sorted By</td>" + 
+					  "</tr>";
+
+				// add data row
+				tr += "<td>" + json.keyword1 + "</td>" + 
+					  "<td>" + json.searchType1 + "</td>" + 
+					  "<td>" + json.logic + "</td>" +
+					  "<td>" + json.keyword2 + "</td>" +
+					  "<td>" + json.searchType2 + "</td>" +
+					  "<td>" + json.from + "</td>" +
+					  "<td>" + json.to + "</td>" +
+					  "<td>" + json.sortby + "</td>" +
+					  "</tr>";
+				// add row to body of table
+				tbody.innerHTML += tr;
+				
+				/* function tabulate(data, columns) {
+					var table = d3.select("body")
+								  .append("table")
+								  .attr("style", "margin-left: 1000px"),
+								  thead = table.append("thead"),
+								  tbody = table.append("tbody");
+
+					// append header row
+					thead.append("tr")
+						 .selectAll("th")
+						 .data(columns)
+						 .enter()
+						 .append("th")
+						 .text(function (column) {
+						     return column;	
+						 });
+
+					// create a row for each object in the data
+					var rows = tbody.selectAll("tr")
+									.data(searchParams)
+									.enter()
+									.append("tr");
+
+					// create a cell in each row for each column
+					var cells = rows.selectAll("td")
+									.data(function (row) {
+										return columns.map(function (column) {
+											return {
+												column: column, value: row[column]
+											};
+										});
+									})
+									.enter()
+									.append("td")
+									.html(function (d) {
+										return d.keyword1;
+									});
+
+					return table;
+				}
+
+				//render the table
+				var searchTable = tabulate(data, ["keyword1", "searchType1", "logic", "keyword2", "searchType2", "from", "to", "sortby"]); */
+			});
+		});
+
+	</script>
+
+	</br></br></br></br><h3 id="prompt">Try to find these authors on <a href="https://uk.linkedin.com/" id="mail">LinkedIn</a></br>or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites</h3>
+
+	<table>
+		<tbody id="searchData"></tbody>
+	</table>
+
+	<footer>
+		<div class="wrapper">
+			<h3 class="credit">Credit</h3></br>
+			<!-- links to author and department -->
+			<p id="links"><a href="mailto:john@artgecko.co.uk" id="mail">John Dawson</a> @ <a href="http://www.ncl.ac.uk/res/about/office/research/" id="mail">Research & Enterprise Services</a>, Newcastle University</p>
+		</div> <!-- wrapper -->
+	</footer>
+
+</body>
+
+</html>
