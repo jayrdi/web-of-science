@@ -12,6 +12,9 @@
 	<link href="//resviz.ncl.ac.uk/static/style/cvi.css" media="screen" rel="stylesheet" type="text/css" />
 	<!-- bootstrap css -->
 	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
+	<!-- fonts for graph -->
+	<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
 	<!-- favicon, newcastle logo -->
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
@@ -98,7 +101,7 @@
 						var margin = {
 										top: 30,
 										right: 30,
-										bottom: 150,
+										bottom: 160,
 										left: 90
 							 		 };
 
@@ -216,6 +219,7 @@
 									.call(xAxis)
 									// select author names
 									.selectAll("text")
+									.attr("font-family", "Lora")
 									.style("text-anchor", "end")
 									// spacing
 									.attr("dx", "-.8em")
@@ -230,6 +234,7 @@
 									.attr("class", "axis")
 									// .attr("transform", "translate(3,0)")
 									.call(yAxis)
+									.attr("font-family", "Lora")
 									// append a title to the y-axis
 									.append("text")
 									.attr("transform", "rotate(-90)")

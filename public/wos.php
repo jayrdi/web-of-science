@@ -290,7 +290,7 @@
     }
 
     // no redirect
-    header("Location: data2.html");
+    header("Location: data.html");
 
     // =================================================== //
     // ================ TIMING END ======================= //
