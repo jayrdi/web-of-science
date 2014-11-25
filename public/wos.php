@@ -10,6 +10,9 @@
     // ==== display ====================================================== //
     // =================================================================== //
 
+    // security
+    // require('redis-session.php');
+    // RedisSession::start();
 
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
@@ -277,6 +280,11 @@
     print "<pre>\n";
     print_r($recordArray);
     print "</pre>";
+
+    // make sure all the values are strings, when encoding the summed ints seem to cause problems
+    for ($i = 0; $i < (count($recordArray)); $i++) {
+        $recordArray[$i]['citations'] = (string)$recordArray[$i]['citations'];
+    };
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($recordArray));

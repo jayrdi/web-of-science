@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html lang="en">
 
 <head>
 
@@ -84,7 +84,7 @@
 
 			<div class="jumbotron">
 				<h2>Information</h2>
-				<p>The y-axis represents the number of citations for publications for the author on the x-axis. Click on one of the bars to load the name of the associated author in Google.</p>
+				<p>The y-axis represents the number of citations for publications for the author on the x-axis. Click on one of the bars to perform a search on name of the associated author in Google.</p>
 				<p>Try to find these authors on <a href="https://uk.linkedin.com/">LinkedIn</a> or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites.</p>
 			</div>
 
@@ -97,12 +97,14 @@
 						// javascript variable to store json data
 						var topCited = data;
 
+						console.log(topCited);
+
 						// establish some margins for the graph area to avoid overlap with other HTML elements
 						var margin = {
 										top: 30,
 										right: 30,
-										bottom: 160,
-										left: 90
+										bottom: 180,
+										left: 100
 							 		 };
 
 						// initiate variables for max width and height of canvas for chart, determine largest citation value for domain and scaling
@@ -124,11 +126,12 @@
 						var svgContainer = d3.select(".chart").append("svg")
 														      .attr("width", width)
 											  				  // max size from data set plus 20px margin
-											  				  .attr("height", height + margin.bottom)
-											  				  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+											  				  .attr("height", height + margin.bottom);
+											  				  
 
 						// create an SVG Grouped Element (<g>) to contain all the 'bars' of the graph
-						var barGroup = svgContainer.append("g");
+						var barGroup = svgContainer.append("g")
+												   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 						// bind the data to SVG Rectangle elements
 						var bar = barGroup.selectAll("rect")
@@ -212,10 +215,13 @@
 									  .orient("left")
 									  .ticks(10);
 
+						// if this calculation is done in "translate" below, it concatenates instead of adding values
+						var translateY = height + margin.top;
+
 						// create x-axis
 						svgContainer.append("g")
 									.attr("class", "axis")
-									.attr("transform", "translate(0, " + height + ")")
+									.attr("transform", "translate(" + margin.left + "," + translateY + ")")
 									.call(xAxis)
 									// select author names
 									.selectAll("text")
@@ -232,9 +238,8 @@
 						// create y-axis
 						svgContainer.append("g")
 									.attr("class", "axis")
-									// .attr("transform", "translate(3,0)")
+									.attr("transform", "translate(" + margin.left  + "," + margin.top + ")")
 									.call(yAxis)
-									.attr("font-family", "Lora")
 									// append a title to the y-axis
 									.append("text")
 									.attr("transform", "rotate(-90)")
@@ -242,6 +247,7 @@
 									.attr("x", -200)
 									.style("text-anchor", "end")
 									.attr("fill", "#000")
+									.attr("font-family", "Lora")
 									.attr("font-size", "24px")
 									.text("Citations");
 
