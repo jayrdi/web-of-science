@@ -7,13 +7,18 @@
 
 		<!-- LINKS -->
 
-		<!-- Corporate visual identity (bootstrap) -->
+		<!-- local css file -->
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<!-- Corporate visual identity -->
   		<link href="//resviz.ncl.ac.uk/static/style/cvi.css" media="screen" rel="stylesheet" type="text/css" />
   		<!-- bootstrap css -->
   		<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
   		<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- favicon, newcastle logo -->
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<!-- fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Raleway:700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
 
 		<!-- META -->
 
@@ -63,9 +68,9 @@
 
 			<!-- main content -->
 			<section class="container">
-				<div class="col-lg-12">
+				<div class="row">
 					<!-- search params -->
-					<form action="wos.php" method="post" role="form" class="form-horizontal">
+					<form action="wos.php" method="post" role="form" class="form-horizontal" id="form">
 						<fieldset>
 							<div class="form-group">
 								<div class="col-lg-6 well bs-component">
@@ -76,14 +81,12 @@
 									<!-- search type -->
 									<label>Search Type</label>
 									<select class="form-control" name="type1">
+										<option value="TI">Title</option>
 									    <option value="TS">Topic</option>
-									    <option value="TI">Title</option>
 									    <option value="AU">Author</option>
-									    <option value="ED">Editor</option>
 									    <option value="CU">Country</option>
 									    <option value="SO">Publication Name</option>
 									    <option value="DO">DOI</option>
-									    <option value="PY">Year Published</option>
 									    <option value="AD">Address</option>
 									</select><br/>
 
@@ -93,11 +96,11 @@
 									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
 									<!-- execute search -->
-									<button type="submit" class="btn btn-default">Submit</button><br/><br/>
+									<button type="submit" class="btn btn-primary">Submit</button><br/><br/>
 
 									<!-- hide/reveal extra search boxes -->
-									<div class="alert alert-info col-lg-10">
-										<a href="javascript:unhide('extra')"><span class="glyphicon glyphicon-plus"></span> Click here to add/remove extra search parameters</a>
+									<div class="btn btn-info">
+										<a id="searchParams" href="javascript:unhide('extra')"><span class="glyphicon glyphicon-plus"></span> Click here to add/remove extra search parameters</a>
 									</div>
 								</div> <!-- col-lg-6 -->
 
@@ -108,7 +111,6 @@
 									<!-- logic between keywords -->
 									<label>Logic</label>
 									<select class="form-control" name="logic">
-										<option selected="selected" value=""></option>
 										<option value="AND">AND</option>
 										<option value="OR">OR</option>
 										<option value="NOT">NOT</option>
@@ -122,27 +124,32 @@
 									<!-- 2nd search type -->
 									<label>Search Type</label>
 									<select class="form-control" name="type2">
-										<option selected="selected" value=""></option>
+										<option value="TI">Title</option>
 									    <option value="TS">Topic</option>
-									    <option value="TI">Title</option>
 									    <option value="AU">Author</option>
-									    <option value="ED">Editor</option>
 									    <option value="CU">Country</option>
 									    <option value="SO">Publication Name</option>
 									    <option value="DO">DOI</option>
-									    <option value="PY">Year Published</option>
 									    <option value="AD">Address</option>
 									</select><br/>
 
-									</div><br/> <!-- extra -->
+									</div> <!-- extra -->
 								</div> <!-- col-lg-6 -->
-
-								<!-- loading graphic -->
-								<div style="display:none;"><img src="images/loader.gif" width="40" alt=""/>Loading, please wait</div>
 							</div> <!-- form-group -->
 						</fieldset>
 					</form>
-				</div> <!-- col-lg-12 -->
+				</div> <!-- row -->
+
+				<!-- TEMPORARY PLACEMENT FOR LOADING BAR -->
+				<div class="row">
+					<div class="col-lg-6">
+						<h3 style="color:red">Temporary progress bar is Temporary</h3>
+						<div class="progress progress-striped active">
+					        <div class="progress-bar" style="width: 65%"></div>
+						</div>
+					</div>
+					<div class="col-lg-6"></div>
+				</div>
 
 			</section> <!-- main content; container -->
 		</div> <!-- sg-content -->
