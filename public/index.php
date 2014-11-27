@@ -39,7 +39,7 @@
     if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
     echo "Logged in";
     } else {
-    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.html');
+    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
     die();
     }
 
