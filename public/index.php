@@ -13,7 +13,6 @@
   		<link href="//resviz.ncl.ac.uk/static/style/cvi.css" media="screen" rel="stylesheet" type="text/css" />
   		<!-- bootstrap css -->
   		<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
-  		<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- favicon, newcastle logo -->
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 		<!-- fonts -->
@@ -30,6 +29,24 @@
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson"/>
 	</head>
+
+	<!-- USER LOGIN SECURITY -->
+	<?php
+
+	require('redis-session.php');
+    RedisSession::start();
+
+    if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
+    echo "Logged in";
+    } else {
+    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.html');
+    die();
+    }
+
+    header('Content-type: application/json');
+    echo json_encode($_SESSION);
+
+    ?>
 
 	<body>
 		<!-- BREADCRUMBS -->

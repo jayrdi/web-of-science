@@ -11,7 +11,7 @@
     // =================================================================== //
 
     // from https://github.com/TheDeveloper/redis-session-php
-    require('redis-session.php');
+    /* require('redis-session.php');
     RedisSession::start();
 
     if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
@@ -22,7 +22,7 @@
     }
 
     header('Content-type: application/json');
-    echo json_encode($_SESSION); 
+    echo json_encode($_SESSION); */
 
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
