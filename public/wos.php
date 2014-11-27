@@ -10,9 +10,23 @@
     // ==== display ====================================================== //
     // =================================================================== //
 
-    // security
-    // require('redis-session.php');
-    // RedisSession::start();
+    // from https://github.com/TheDeveloper/redis-session-php
+    require('redis-session.php');
+    RedisSession::start();
+
+    if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
+    echo "Logged in";
+    } else {
+    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index2.html');
+    die();
+    }
+    
+    if ($_SESSION['HTTP_SHIB_EP_STAFFORSTUDENT'] === 'staff') {
+    echo "Staff can see this";
+    }
+
+    header('Content-type: application/json');
+    echo json_encode($_SESSION); 
 
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
