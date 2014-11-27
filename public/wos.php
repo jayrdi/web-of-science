@@ -17,12 +17,8 @@
     if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
     echo "Logged in";
     } else {
-    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index2.html');
+    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.html');
     die();
-    }
-    
-    if ($_SESSION['HTTP_SHIB_EP_STAFFORSTUDENT'] === 'staff') {
-    echo "Staff can see this";
     }
 
     header('Content-type: application/json');
