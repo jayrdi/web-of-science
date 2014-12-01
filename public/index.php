@@ -2,6 +2,24 @@
 
 <html lang="en">
 
+	<!-- USER LOGIN SECURITY -->
+	<?php
+
+	require('redis-session.php');
+    RedisSession::start();
+
+    if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
+    echo "Logged in";
+    } else {
+    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
+    die();
+    }
+
+    header('Content-type: application/json');
+    // echo json_encode($_SESSION);
+
+    ?>
+
 	<head>
 		<title>Academic Intelligence</title>
 
@@ -29,24 +47,6 @@
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson"/>
 	</head>
-
-	<!-- USER LOGIN SECURITY -->
-	<?php
-
-	require('redis-session.php');
-    RedisSession::start();
-
-    if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
-    echo "Logged in";
-    } else {
-    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.html');
-    die();
-    }
-
-    header('Content-type: application/json');
-    // echo json_encode($_SESSION);
-
-    ?>
 
 	<body>
 		<!-- BREADCRUMBS -->

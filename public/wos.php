@@ -143,11 +143,7 @@
     // number of records found by search, used to finish loop
     $len = $search_response->return->recordsFound;
 
-    echo "</br>TOTAL RECORDS FOUND: </br>";
-    print "<pre>\n";
-    print $len;
-    print "</pre>";
-
+    echo $len;
 
     // =================================================================== //
     // ============ CREATE VARIABLES TO STORE REQUIRED DATA ============== //
