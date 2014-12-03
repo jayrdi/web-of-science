@@ -143,7 +143,11 @@
     // number of records found by search, used to finish loop
     $len = $search_response->return->recordsFound;
 
-    echo $len;
+    echo "</br>RECORDS FOUND: </br>";
+    print "<pre>\n";
+    print $len;
+    print "</pre>";
+
 
     // =================================================================== //
     // ============ CREATE VARIABLES TO STORE REQUIRED DATA ============== //
@@ -296,7 +300,7 @@
     file_put_contents('data.json', json_encode($recordArray));
 
 
-    $url = 'data.html';
+    /* $url = 'data.html';
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -304,7 +308,7 @@
     }
 
     // no redirect
-    header("Location: data.html");
+    header("Location: data.html"); */
 
     // =================================================== //
     // ================ TIMING END ======================= //
