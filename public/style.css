@@ -10,7 +10,7 @@ a:link, a:visited, a:hover, a:active {
 	font-family: 'Raleway' !important;
 }
 
-/* body {
+.sg-content {
 	background-image: url("images/swirl_pattern.png") !important;
 	background-repeat: repeat !important;
-} */
+}

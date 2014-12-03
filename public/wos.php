@@ -40,8 +40,8 @@
     // override default PHP memory limit
     ini_set('memory_limit', '-1');
 
-    // ensures anything dumped out will be caught
-    ob_start();
+    // ensures anything dumped out will be caught, output buffer
+    if (ob_get_level() == 0) ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
