@@ -10,20 +10,6 @@
     // ==== display ====================================================== //
     // =================================================================== //
 
-    // from https://github.com/TheDeveloper/redis-session-php
-    /* require('redis-session.php');
-    RedisSession::start();
-
-    if (isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
-    echo "Logged in";
-    } else {
-    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.html');
-    die();
-    }
-
-    header('Content-type: application/json');
-    echo json_encode($_SESSION); */
-
     // =================================================================== //
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
@@ -41,7 +27,7 @@
     ini_set('memory_limit', '-1');
 
     // ensures anything dumped out will be caught, output buffer
-    if (ob_get_level() == 0) ob_start();
+    ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
