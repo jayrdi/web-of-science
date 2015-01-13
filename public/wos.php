@@ -52,6 +52,7 @@
     // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
     // =================================================================== //
 
+    // data passed in from user via form in index.html
 
     // search type
     $queryType1 = $_POST["type1"];
@@ -95,7 +96,7 @@
     // turn top cited authors data into JSON file for displaying with JavaScript in data.html
     file_put_contents('search.json', json_encode($searchParams));
     
-    // pass in relevant parameters for search
+    // pass in relevant parameters for search, this is the format necessary for Web of Science Web Service
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
@@ -143,7 +144,7 @@
 
     // create an array to store data for each record per iteration
     $recordArray = array();
-    // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 2 citations
+    // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 4 citations
     $ignore = array(0, 1, 2, 3, 4);
 
     // iterate through all records, perform search for each 100 records and tabulate data
@@ -284,7 +285,6 @@
 
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($recordArray));
-
 
     $url = 'data.html';
 
