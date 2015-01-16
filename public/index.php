@@ -3,17 +3,17 @@
 <html lang="en" ng-app>
 
 	<!-- USER LOGIN SECURITY -->
-	<?php
+	<!-- <?php
 
-	require('redis-session.php');
+	/* require('redis-session.php');
     RedisSession::start();
 
     if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    }
+    } */
 
-    ?>
+    ?> -->
 
 	<head>
 		<title>Academic Intelligence</title>
@@ -86,21 +86,20 @@
 						<fieldset>
 							<div class="form-group">
 								<div class="col-lg-6 well bs-component">
-									<!-- keyword for search -->
-									<label>Keyword(s)</label>
-									<input class="form-control" type="text" name="category1"><br/>
 
-									<!-- search type -->
-									<label>Search Type</label>
-									<select class="form-control" name="type1">
-										<option value="TI">Title</option>
-									    <option value="TS">Topic</option>
-									    <option value="AU">Author</option>
-									    <option value="CU">Country</option>
-									    <option value="SO">Publication Name</option>
-									    <option value="DO">DOI</option>
-									    <option value="AD">Address</option>
-									</select><br/>
+									<div class="journal_fields_wrap">
+										<!-- keyword(s) for journal name(s) -->
+										<label>Journal(s)</label>
+										<button class="add_journal_field_button btn btn-info" type="button">Add more fields</button>
+										<div><input class="form-control" type="text" name="journal1"></div></br>
+									</div>
+
+									<div class="title_fields_wrap">
+										<!-- keyword(s) for paper title(s) -->
+										<label>Keyword(s)</label>
+										<button class="add_title_field_button btn btn-info" type="button">Add more fields</button>
+										<div><input class="form-control" type="text" name="title1"></div><br/>
+									</div>
 
 									<!-- timespan -->
 									<label>TIMESPAN</label></br>
@@ -108,45 +107,10 @@
 									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
 									<!-- execute search -->
-									<button type="submit" class="btn btn-primary">Submit</button><br/><br/>
+									<button type="submit" class="btn btn-primary">Submit</button>
 
-									<!-- hide/reveal extra search boxes -->
-									<div class="btn btn-info">
-										<a id="searchParams" href="javascript:unhide('extra')"><span class="glyphicon glyphicon-plus"></span> Click here to add/remove extra search parameters</a>
-									</div>
 								</div> <!-- col-lg-6 -->
 
-								<div class="col-lg-6">
-									<!-- extra (initially hidden) search fields -->
-									<div id="extra" class="hidden">
-
-									<!-- logic between keywords -->
-									<label>Logic</label>
-									<select class="form-control" name="logic">
-										<option value="AND">AND</option>
-										<option value="OR">OR</option>
-										<option value="NOT">NOT</option>
-									</select><br/>
-
-									<!-- 2nd search params -->
-									<!-- 2nd keyword -->
-									<label>Extra Keyword(s)</label>
-									<input class="form-control" type="text" name="category2"><br/>
-
-									<!-- 2nd search type -->
-									<label>Search Type</label>
-									<select class="form-control" name="type2">
-										<option value="TI">Title</option>
-									    <option value="TS">Topic</option>
-									    <option value="AU">Author</option>
-									    <option value="CU">Country</option>
-									    <option value="SO">Publication Name</option>
-									    <option value="DO">DOI</option>
-									    <option value="AD">Address</option>
-									</select><br/>
-
-									</div> <!-- extra -->
-								</div> <!-- col-lg-6 -->
 							</div> <!-- form-group -->
 						</fieldset>
 					</form>
@@ -157,7 +121,7 @@
 					<div class="col-lg-6">
 						<h3 style="color:red">Temporary progress bar is Temporary</h3>
 						<div class="progress progress-striped active">
-					        <div class="progress-bar" style="width: 65%"></div>
+					        <div class="progress-bar" style="width: 40%"></div>
 						</div>
 					</div>
 					<div class="col-lg-6"></div>

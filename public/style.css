@@ -10,6 +10,16 @@ a:link, a:visited, a:hover, a:active {
 	font-family: 'Raleway' !important;
 }
 
+.add_journal_field_button {
+    margin-bottom: 4px !important;
+    margin-left: 335px !important;
+}
+
+.add_title_field_button {
+    margin-bottom: 4px !important;
+    margin-left: 325px !important;
+}
+
 /* .sg-content {
 	background-image: url("images/footer_lodyas.png") !important;
 	background-repeat: repeat !important;

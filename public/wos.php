@@ -54,24 +54,16 @@
 
     // data passed in from user via form in index.html
 
-    // search type
-    $queryType1 = $_POST["type1"];
+    // search type for journals (publication name)
+    $queryType1 = "SO";
     // keyword(s)
-    $queryCategory1 = $_POST["category1"];
+    $queryJournal = $_POST["journal1"];
+    // search type for titles
+    $queryType2 = "TI";
+    // keyword(s)
+    $queryTitle = $_POST["title1"];
     // sort type
-    // $sortType = $_POST["sort"];
     $sortType = "TC";
-
-    // check if 'hidden' extra search facility is being used, if it is, populate variables
-    if (!$_POST["category2"]) {
-        $queryLogic = "";
-        $queryType2 = "";
-        $queryCategory2 = "";
-    } else {
-        $queryLogic = $_POST["logic"];
-        $queryType2 = $_POST["type2"]."=";
-        $queryCategory2 = $_POST["category2"];
-    }
 
     // check if timespan fields have been populated
     if (!$_POST["timeStart"]) {
@@ -83,11 +75,8 @@
     }
 
     // create an array to store all the search parameters to pass to data.html to display with the graph
-    $searchParams = array('keyword1' => $queryCategory1,
-                          'searchType1' => $queryType1,
-                          'logic' => $queryLogic,
-                          'keyword2' => $queryCategory2,
-                          'searchType2' => $queryType2,
+    $searchParams = array('journals' => $queryJournal,
+                          'titles' => $queryTitle,
                           'from' => $timeStart,
                           'to' => $timeEnd,
                           'sortby' => $sortType
@@ -100,7 +89,7 @@
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
+            'userQuery' => $queryType1.'='.$queryJournal. ' AND ' .$queryType2. '=' .$queryTitle,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
             'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
             'queryLanguage' => 'en'
@@ -154,7 +143,7 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryType1.'='.$queryCategory1. ' ' .$queryLogic. ' ' .$queryType2.$queryCategory2,
+                'userQuery' => $queryType1.'='.$queryJournal. ' AND ' .$queryType2. '=' .$queryTitle,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
                 'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
                 'queryLanguage' => 'en'
@@ -286,7 +275,7 @@
     // turn top cited authors data into JSON file for displaying with JavaScript
     file_put_contents('data.json', json_encode($recordArray));
 
-    $url = 'data.html';
+    /* $url = 'data.html';
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -294,7 +283,7 @@
     }
 
     // no redirect
-    header("Location: data.html");
+    header("Location: data.html"); */
 
     // =================================================== //
     // ================ TIMING END ======================= //
