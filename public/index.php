@@ -3,17 +3,17 @@
 <html lang="en" ng-app>
 
 	<!-- USER LOGIN SECURITY -->
-	<?php
+	<!-- <?php
 
-	require('redis-session.php');
+	/* require('redis-session.php');
     RedisSession::start();
 
     if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    }
+    } */
 
-    ?>
+    ?> -->
 
 	<head>
 		<title>Academic Intelligence</title>
