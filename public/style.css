@@ -10,14 +10,27 @@ a:link, a:visited, a:hover, a:active {
 	font-family: 'Raleway' !important;
 }
 
+/* spacing */
 .add_journal_field_button {
     margin-bottom: 4px !important;
-    margin-left: 335px !important;
+    margin-left: 315px !important;
 }
 
 .add_title_field_button {
     margin-bottom: 4px !important;
-    margin-left: 325px !important;
+    margin-left: 340px !important;
+}
+
+/* default width too narrow */
+.tooltip-inner {
+    width: 150px !important;
+}
+
+/* to allow glyphicons at end of form field */
+.form-control {
+    display: inline-block !important;
+    width: 90% !important;
+    margin-bottom: 15px !important;
 }
 
 /* .sg-content {

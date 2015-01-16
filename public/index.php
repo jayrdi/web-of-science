@@ -89,16 +89,22 @@
 
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
-										<label>Journal(s)</label>
+										<label>Journal Title</label>
 										<button class="add_journal_field_button btn btn-info" type="button">Add more fields</button>
-										<div><input class="form-control" type="text" name="journal1"></div></br>
+										<div>
+											<input class="form-control" type="text" name="journal1" data-toggle="tooltip"
+												   title="this is a tooltip">
+										</div>
 									</div>
 
 									<div class="title_fields_wrap">
 										<!-- keyword(s) for paper title(s) -->
-										<label>Keyword(s)</label>
+										<label>Keyword</label>
 										<button class="add_title_field_button btn btn-info" type="button">Add more fields</button>
-										<div><input class="form-control" type="text" name="title1"></div><br/>
+										<div>
+											<input class="form-control" type="text" name="title1" data-toggle="tooltip"
+												   title="">
+										</div>
 									</div>
 
 									<!-- timespan -->

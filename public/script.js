@@ -38,7 +38,7 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).parent('').remove(); // remove parent form field
         x--; // text box decrement
-    })
+    });
 
     ///////////////////////////
     //// TITLE FORM FIELDS ////
@@ -62,6 +62,14 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).parent('').remove(); // remove parent form field
         y--; // text box decrement
-    })
+    });
+
+    ////////////////////
+    ///// TOOLTIPS /////
+    ////////////////////
+
+    $('[data-toggle="tooltip"]').tooltip({
+        'placement': 'right'
+    });
 
 })
