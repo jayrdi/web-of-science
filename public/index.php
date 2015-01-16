@@ -117,6 +117,17 @@
 
 								</div> <!-- col-lg-6 -->
 
+								<div class="col-lg-6 well bs-component">
+
+									<div class="jumbotron">
+										<h1>How to..</h1>
+										<p>Please enter only one journal title or keyword per box.</p>
+										<p>If you would like to see a list of valid Publication Names then please,</p>
+										<p><a class="btn btn-success btn-lg" target="_blank" href="http://wcs.webofknowledge.com/SA/getSearchTerm.do;jsessionid=0932D83EDBB100DF8B8E2BF1BE2E3EFB?SID=P2iZaPtq15w2UOKgSFO&product=UA&termName=SO&timeSpan=All+Years&returnURL=http%3a%2f%2fapps.webofknowledge.com%2fInboundService.do%3fproduct%3dUA%26mode%3dAdvancedSearch%26search_mode%3dAdvancedSearch%26action%3dtransfer%26SID%3dP2iZaPtq15w2UOKgSFO%26inputbox%3dinput1%26fieldtag%3dSO">Click here</a></p>
+									</div>
+
+								</div> 
+
 							</div> <!-- form-group -->
 						</fieldset>
 					</form>
