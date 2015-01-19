@@ -13,7 +13,7 @@
 	    die();
     }
 
-    ?> -->
+    ?>
 
 	<head>
 		<title>Academic Intelligence</title>
