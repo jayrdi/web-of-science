@@ -13,7 +13,7 @@ a:link, a:visited, a:hover, a:active {
 /* spacing */
 .add_journal_field_button {
     margin-bottom: 4px !important;
-    margin-left: 260px !important;
+    margin-left: 4px !important;
 }
 
 .add_title_field_button {
@@ -35,6 +35,11 @@ a:link, a:visited, a:hover, a:active {
 
 .glyphicon {
     margin-left: 15px !important;
+}
+
+#journal_list {
+    margin-bottom: 4px !important;
+    margin-left: 140px !important;
 }
 
 /* .sg-content {

@@ -266,25 +266,25 @@
 						var tbody = document.getElementById('searchData');
 						var tr = "<tr>";
 						// header row
-						tr += "<td>Keyword 1</td>" +
-							  "<td>Search Type 1</td>" + 
-							  "<td>Logic</td>" + 
-							  "<td>Keyword 2</td>" + 
-							  "<td>Search Type 2</td>" + 
+						tr += "<td>Journal 1</td>" +
+							  "<td>Journal 2</td>" + 
+							  "<td>Journal 3</td>" + 
+							  "<td>Keyword 1</td>" + 
+							  "<td>Keyword 2</td>" +
+							  "<td>Keyword 3</td>" + 
 							  "<td>From</td>" + 
 							  "<td>To</td>" + 
-							  "<td>Sorted By</td>" + 
 							  "</tr>";
 
 						// add data row
-						tr += "<td>" + json.keyword1 + "</td>" + 
-							  "<td>" + json.searchType1 + "</td>" + 
-							  "<td>" + json.logic + "</td>" +
-							  "<td>" + json.keyword2 + "</td>" +
-							  "<td>" + json.searchType2 + "</td>" +
+						tr += "<td>" + json.journal1 + "</td>" + 
+							  "<td>" + json.journal2 + "</td>" + 
+							  "<td>" + json.journal3 + "</td>" +
+							  "<td>" + json.title1 + "</td>" +
+							  "<td>" + json.title2 + "</td>" +
+							  "<td>" + json.title3 + "</td>" +
 							  "<td>" + json.from + "</td>" +
 							  "<td>" + json.to + "</td>" +
-							  "<td>" + json.sortby + "</td>" +
 							  "</tr>";
 						// add row to body of table
 						tbody.innerHTML += tr;

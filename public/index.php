@@ -13,7 +13,7 @@
 	    die();
     }
 
-    ?>
+    ?> -->
 
 	<head>
 		<title>Academic Intelligence</title>
@@ -90,6 +90,7 @@
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
 										<label>Journal Title</label>
+										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jlresults.cgi?PC=D">Journal List</a>
 										<button class="add_journal_field_button btn btn-info" type="button">Add more fields</button>
 										<div>
 											<input class="form-control" type="text" name="journal1" data-toggle="tooltip"
@@ -113,7 +114,7 @@
 									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
 									<!-- execute search -->
-									<button type="submit" class="btn btn-primary">Submit</button>
+									<button type="submit" class="btn btn-primary btn-lg">Submit</button>
 
 								</div> <!-- col-lg-6 -->
 
@@ -122,8 +123,8 @@
 									<div class="jumbotron">
 										<h1>How to..</h1>
 										<p>Please enter only one journal title or keyword per box.</p>
-										<p>If you would like to see a list of valid Publication Names then please,</p>
-										<p><a class="btn btn-success btn-lg" target="_blank" href="http://wcs.webofknowledge.com/SA/getSearchTerm.do;jsessionid=0932D83EDBB100DF8B8E2BF1BE2E3EFB?SID=P2iZaPtq15w2UOKgSFO&product=UA&termName=SO&timeSpan=All+Years&returnURL=http%3a%2f%2fapps.webofknowledge.com%2fInboundService.do%3fproduct%3dUA%26mode%3dAdvancedSearch%26search_mode%3dAdvancedSearch%26action%3dtransfer%26SID%3dP2iZaPtq15w2UOKgSFO%26inputbox%3dinput1%26fieldtag%3dSO">Click here</a></p>
+										<p>If you would like further information on x, y and z, then please,</p>
+										<p><a class="btn btn-warning" target="_blank" href="#">Click here</a></p>
 									</div>
 
 								</div> 
