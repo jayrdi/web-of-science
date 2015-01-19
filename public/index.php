@@ -123,8 +123,8 @@
 									<div class="jumbotron">
 										<h1>How to..</h1>
 										<p>Please enter only one journal title or keyword per box.</p>
-										<p>If you would like further information on x, y and z, then please,</p>
-										<p><a class="btn btn-warning" target="_blank" href="#">Click here</a></p>
+										<p>If you would like further information on x, y and z, then please,
+										<a class="btn btn-warning btn-lg" target="_blank" href="#">Click here</a></p>
 									</div>
 
 								</div> 
