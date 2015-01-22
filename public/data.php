@@ -88,13 +88,13 @@
 			<script type="text/javascript">
 
 				$(document).ready(function() {
-					// call to 'data.json' created in wos.php
-					$.getJSON('data.json', function (data) {
+
+					// get $recordArray data from wos.php
+					var data = $.parseJSON('<?php echo json_encode($recordArray) ?>');
+						// alert(data);
 
 						// javascript variable to store json data
 						var topCited = data;
-
-						console.log(topCited);
 
 						// establish some margins for the graph area to avoid overlap with other HTML elements
 						var margin = {
@@ -258,9 +258,9 @@
 						      window.location = url;
 						  });
 
-					})
-					// call to 'search.json' created in wos.php
-					$.getJSON('search.json', function (json) {
+					// })
+					// get data from $searchParams from wos.php
+					var searchData = $.parseJSON('<?php echo json_encode($searchParams) ?>');
 
 						// select location by HTML table id
 						var tbody = document.getElementById('searchData');
@@ -277,18 +277,18 @@
 							  "</tr>";
 
 						// add data row
-						tr += "<td>" + json.journal1 + "</td>" + 
-							  "<td>" + json.journal2 + "</td>" + 
-							  "<td>" + json.journal3 + "</td>" +
-							  "<td>" + json.title1 + "</td>" +
-							  "<td>" + json.title2 + "</td>" +
-							  "<td>" + json.title3 + "</td>" +
-							  "<td>" + json.from + "</td>" +
-							  "<td>" + json.to + "</td>" +
+						tr += "<td>" + searchData.journal1 + "</td>" + 
+							  "<td>" + searchData.journal2 + "</td>" + 
+							  "<td>" + searchData.journal3 + "</td>" +
+							  "<td>" + searchData.title1 + "</td>" +
+							  "<td>" + searchData.title2 + "</td>" +
+							  "<td>" + searchData.title3 + "</td>" +
+							  "<td>" + searchData.from + "</td>" +
+							  "<td>" + searchData.to + "</td>" +
 							  "</tr>";
 						// add row to body of table
 						tbody.innerHTML += tr;
-					});
+					// });
 				});
 
 			</script>

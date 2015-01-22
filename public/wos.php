@@ -20,6 +20,8 @@
     $mtime = $mtime[1] + $mtime[0];
     $starttime = $mtime; 
 
+    // initialise session in order to store data to session variable
+    // session_start();
 
     // set processing time for browser before timeout
     ini_set('max_execution_time', 3600);
@@ -59,23 +61,13 @@
     // keyword(s)
     $queryJournal1 = $_POST["journal1"];
 
-    echo "</br>journal1: </br>";
-    print "<pre>\n";
-    print $queryJournal1;
-    print "</pre>";
-
-    // check if journal2 field has been populated
+    // check if journal2 field has been populated, if not entered then set to blank
     if (!$_POST["journal2"]) {
         $queryJournal2 = "";
     } else {
         $queryJournal2 = $_POST["journal2"];
         $queryJournal2 = " OR " .$queryType1. "=" .$queryJournal2;
     }
-
-    echo "</br>journal2: </br>";
-    print "<pre>\n";
-    print $queryJournal2;
-    print "</pre>";
 
     // check if journal3 field has been populated
     if (!$_POST["journal3"]) {
@@ -85,20 +77,10 @@
         $queryJournal3 = " OR " .$queryType1. "=" .$queryJournal3;
     }
 
-    echo "</br>journal3: </br>";
-    print "<pre>\n";
-    print $queryJournal3;
-    print "</pre>";
-
     // search type for titles
     $queryType2 = "TI";
     // keyword(s)
     $queryTitle1 = $_POST["title1"];
-
-    echo "</br>title1: </br>";
-    print "<pre>\n";
-    print $queryTitle1;
-    print "</pre>";
 
     // check if title2 field has been populated
     if (!$_POST["title2"]) {
@@ -108,11 +90,6 @@
         $queryTitle2 = " OR " .$queryType2. "=" .$queryTitle2;
     }
 
-    echo "</br>title2: </br>";
-    print "<pre>\n";
-    print $queryTitle2;
-    print "</pre>";
-
     // check if title3 field has been populated
     if (!$_POST["title3"]) {
         $queryTitle3 = "";
@@ -120,11 +97,6 @@
         $queryTitle3 = $_POST["title3"];
         $queryTitle3 = " OR " .$queryType2. "=" .$queryTitle3;
     }
-
-    echo "</br>title3: </br>";
-    print "<pre>\n";
-    print $queryTitle3;
-    print "</pre>";
     
     // sort type
     $sortType = "TC";
@@ -150,7 +122,7 @@
                          );
 
     // turn top cited authors data into JSON file for displaying with JavaScript in data.html
-    file_put_contents('search.json', json_encode($searchParams));
+    // file_put_contents('search.json', json_encode($searchParams));
     
     // pass in relevant parameters for search, this is the format necessary for Web of Science Web Service
     $search_array = array(
@@ -329,28 +301,35 @@
     // only include first ten elements in array
     $recordArray = array_slice($recordArray, 0, 10);
 
-    echo "</br>FINAL DATA: </br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
-
     // make sure all the values are strings, when encoding the summed ints seem to cause problems
     for ($i = 0; $i < (count($recordArray)); $i++) {
         $recordArray[$i]['citations'] = (string)$recordArray[$i]['citations'];
     };
 
-    // turn top cited authors data into JSON file for displaying with JavaScript
-    file_put_contents('data.json', json_encode($recordArray));
+    /* echo "</br>FINAL DATA: </br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>"; */
 
-    $url = 'data.html';
+    // turn top cited authors data into JSON file for displaying with JavaScript
+    // file_put_contents('data.json', json_encode($recordArray));
 
     // clear the output buffer
     while (ob_get_status()) {
         ob_end_clean();
     }
 
-    // no redirect
-    header("Location: data.html");
+    // store data in session variable
+    // $_SESSION['data'] = json_encode($recordArray);
+
+    // test session data
+    // echo $_SESSION['data'];
+
+    // output $recordArray in JSON format to be picked up by JavaScript in data.html
+    // echo json_encode($recordArray);
+
+    include "data.php";
+
 
     // =================================================== //
     // ================ TIMING END ======================= //
