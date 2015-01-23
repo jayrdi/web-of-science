@@ -11,6 +11,8 @@
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
     <!-- local css file -->
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <!-- favicon, newcastle logo -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
 </head>
 
