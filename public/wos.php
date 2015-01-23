@@ -1,12 +1,28 @@
+<html>
+<head>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- local script -->
+    <script src="script.js"/></script>
+    <!-- bootstrap js -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <!-- bootstrap css -->
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/readable/bootstrap.min.css" rel="stylesheet">
+    <!-- local css file -->
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+</head>
+
 <?php
 
     // =================================================================== //
     // ==== Search data entered by user sent by the HTML form in ========= //
-    // ==== index.html is sent here for processing.  SOAP Request ======== //
+    // ==== index.php is sent here for processing.  SOAP Request ========= //
     // ==== sent to Web of Science using their API and data ============== //
     // ==== retrieved from the SOAP Response.  Data is then ============== //
     // ==== organised according to author by number of times their ======= //
-    // ==== publications have been cited.  Sent to data.html for ========= //
+    // ==== publications have been cited.  Sent to data.php for ========== //
     // ==== display ====================================================== //
     // =================================================================== //
 
@@ -29,7 +45,7 @@
     ini_set('memory_limit', '-1');
 
     // ensures anything dumped out will be caught, output buffer
-    ob_start();
+    // ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
@@ -58,45 +74,59 @@
 
     // search type for journals (publication name)
     $queryType1 = "SO";
+
     // keyword(s)
-    $queryJournal1 = $_POST["journal1"];
+    // check if journal1 field has been populated, if not entered then set to blank
+    if (isset($_POST["journal1"])) {
+        $queryJournal1 = $_POST["journal1"];
+        $queryJournal1 = " OR " .$queryType1. "=" .$queryJournal1;
+    } else {
+        $queryJournal1 = "";
+    };
 
     // check if journal2 field has been populated, if not entered then set to blank
-    if (!$_POST["journal2"]) {
-        $queryJournal2 = "";
-    } else {
+    if (isset($_POST["journal2"])) {
         $queryJournal2 = $_POST["journal2"];
         $queryJournal2 = " OR " .$queryType1. "=" .$queryJournal2;
-    }
+    } else {
+        $queryJournal2 = "";
+    };
 
     // check if journal3 field has been populated
-    if (!$_POST["journal3"]) {
-        $queryJournal3 = "";
-    } else {
+    if (isset($_POST["journal3"])) {
         $queryJournal3 = $_POST["journal3"];
         $queryJournal3 = " OR " .$queryType1. "=" .$queryJournal3;
-    }
+    } else {
+        $queryJournal3 = "";
+    };
 
     // search type for titles
     $queryType2 = "TI";
+
     // keyword(s)
-    $queryTitle1 = $_POST["title1"];
+    // check if title1 field has been populated
+    if (isset($_POST["title1"])) {
+        $queryTitle1 = $_POST["title1"];
+        $queryTitle1 = " OR " .$queryType2. "=" .$queryTitle1;
+    } else {
+        $queryTitle1 = "";
+    };
 
     // check if title2 field has been populated
-    if (!$_POST["title2"]) {
-        $queryTitle2 = "";
-    } else {
+    if (isset($_POST["title2"])) {
         $queryTitle2 = $_POST["title2"];
         $queryTitle2 = " OR " .$queryType2. "=" .$queryTitle2;
-    }
+    } else {
+        $queryTitle2 = "";
+    };
 
     // check if title3 field has been populated
-    if (!$_POST["title3"]) {
-        $queryTitle3 = "";
-    } else {
-        $queryTitle3 = $_POST["title3"];
+    if (isset($_POST["title3"])) {
+        $queryTitle3 = $_POST["title2"];
         $queryTitle3 = " OR " .$queryType2. "=" .$queryTitle3;
-    }
+    } else {
+        $queryTitle3 = "";
+    };
     
     // sort type
     $sortType = "TC";
@@ -108,7 +138,7 @@
     } else {
         $timeStart = $_POST["timeStart"];
         $timeEnd = $_POST["timeEnd"];
-    }
+    };
 
     // create an array to store all the search parameters to pass to data.html to display with the graph
     $searchParams = array('journal1' => $queryJournal1,
@@ -120,9 +150,6 @@
                           'from' => $timeStart,
                           'to' => $timeEnd,
                          );
-
-    // turn top cited authors data into JSON file for displaying with JavaScript in data.html
-    // file_put_contents('search.json', json_encode($searchParams));
     
     // pass in relevant parameters for search, this is the format necessary for Web of Science Web Service
     $search_array = array(
@@ -148,20 +175,53 @@
     // =================================================================== //
 
 
-    // try to store as a variable the 'search' method on the '$search_array' called on the SOAP client with associated SID 
+    // try to store as a variable the 'search' method on the '$search_array' called on the SOAP client with associated SID
+    // if it fails, redirect back to index.php with error message
     try {
         $search_response = $search_client->search($search_array);
     } catch (Exception $e) {  
-        echo $e->getMessage(); 
+        echo $e->getMessage();
     };
 
-    // number of records found by search, used to finish loop
-    $len = $search_response->return->recordsFound;
+    // check if there has been a soap fault
+    if (is_soap_fault($search_response)) {
+        echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
+                   <div class='panel-heading'>
+                       <h1 class='panel-title'>
+                           ALERT<span class='glyphicon glyphicon-exclamation-sign'></span>
+                       </h1>
+                   </div>
+                   <div class='panel-body'>
+                       <p>There were no records found for your search</p>
+                       <p>Please review your search options and try again</p>
+                       <h2>
+                           <button type='button' class='back btn btn-danger'>
+                               <span class='glyphicon glyphicon-fast-backward'></span>
+                               <strong>Click here to return to search page</strong>
+                           </button>
+                       </h2>
+                   </div>
+               </div>");
+        exit;
+    };
 
-    echo "</br>RECORDS FOUND: </br>";
+    // number of records found by search, used to finish loop (check if no records first)
+    /* if (isset($search_response->return->recordsFound)) {
+        $len = $search_response->return->recordsFound;
+    } */
+
+    // if there are no results, display an alert box with javascript and return to index.php
+    /* if ($len == 0) {
+        echo ("<script language='javascript'>
+                window.location.href='index.php'
+                window.alert('No records found');
+               </script>");
+    } */
+
+    /* echo "</br>RECORDS FOUND: </br>";
     print "<pre>\n";
     print $len;
-    print "</pre>";
+    print "</pre>"; */
 
 
     // =================================================================== //
@@ -259,12 +319,12 @@
         $recordArray[$i]['author1'] = str_replace(" ", "", $recordArray[$i]['author1']);
         // $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
         // $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
-    }
+    };
 
-    echo "</br>RETRIEVED DATA: </br>";
+    /* echo "</br>RETRIEVED DATA: </br>";
     print "<pre>\n";
     print_r($recordArray);
-    print "</pre>";
+    print "</pre>"; */
 
     // as length of $j loop will decrease each time because of 'unset' its elements, create a variable to dynamically store its length
     $length = count($recordArray);
@@ -315,9 +375,9 @@
     // file_put_contents('data.json', json_encode($recordArray));
 
     // clear the output buffer
-    while (ob_get_status()) {
+    /* while (ob_get_status()) {
         ob_end_clean();
-    }
+    } */
 
     // store data in session variable
     // $_SESSION['data'] = json_encode($recordArray);
@@ -328,7 +388,7 @@
     // output $recordArray in JSON format to be picked up by JavaScript in data.html
     // echo json_encode($recordArray);
 
-    include "data.php";
+    // include "data.php";
 
 
     // =================================================== //
@@ -341,6 +401,8 @@
     $mtime = $mtime[1] + $mtime[0];
     $endtime = $mtime;
     $totaltime = ($endtime - $starttime);
-    echo "This page was created in ".$totaltime." seconds";
+    // echo "This page was created in ".$totaltime." seconds";
 
 ?>
+
+</html>

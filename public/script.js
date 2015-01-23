@@ -72,4 +72,15 @@ $(document).ready(function() {
         'placement': 'right'
     });
 
+    ////////////////////
+    //// NO RECORDS ////
+    ////  BUTTON    ////
+    ////////////////////
+
+    var goBack = $(".back");
+
+    $(goBack).click(function(e) {
+        window.location.href='index.php';
+    });
+
 })

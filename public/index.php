@@ -13,7 +13,7 @@
 	    die();
     }
 
-    ?>
+    ?> -->
 
 	<head>
 		<title>Academic Intelligence</title>
@@ -91,7 +91,7 @@
 										<!-- keyword(s) for journal name(s) -->
 										<label>Journal Title</label>
 										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jlresults.cgi?PC=D">Journal List</a>
-										<button class="add_journal_field_button btn btn-info" type="button">Add more fields</button>
+										<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										<div>
 											<input class="form-control" type="text" name="journal1" data-toggle="tooltip"
 												   title="this is a tooltip">
@@ -101,7 +101,7 @@
 									<div class="title_fields_wrap">
 										<!-- keyword(s) for paper title(s) -->
 										<label>Keyword</label>
-										<button class="add_title_field_button btn btn-info" type="button">Add more fields</button>
+										<button class="add_title_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										<div>
 											<input class="form-control" type="text" name="title1" data-toggle="tooltip"
 												   title="">
@@ -114,17 +114,17 @@
 									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
 									<!-- execute search -->
-									<button type="submit" class="btn btn-primary btn-lg">Submit</button>
+									<button type="submit" class="btn btn-primary btn-lg"><strong>Submit</strong><span class='glyphicon glyphicon-transfer'></span></button>
 
 								</div> <!-- col-lg-6 -->
 
 								<div class="col-lg-6 well bs-component">
 
 									<div class="jumbotron">
-										<h1>How to..</h1>
-										<p>Please enter only one journal title or keyword per box.</p>
-										<p>If you would like further information on x, y and z, then please,
-										<a class="btn btn-warning btn-lg" target="_blank" href="#">Click here</a></p>
+										<h1>How to...</h1>
+										<p>Please enter only one journal title or keyword per box</p>
+										<p>If you would like further information on x, y and z, then please
+										<a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a></p>
 									</div>
 
 								</div> 

@@ -18,7 +18,7 @@ a:link, a:visited, a:hover, a:active {
 
 .add_title_field_button {
     margin-bottom: 4px !important;
-    margin-left: 285px !important;
+    margin-left: 267px !important;
 }
 
 /* default width too narrow */
@@ -33,13 +33,23 @@ a:link, a:visited, a:hover, a:active {
     margin-bottom: 15px !important;
 }
 
-.glyphicon {
+.glyphicon-transfer {
+    margin-left: 15px !important;
+}
+
+.glyphicon-exclamation-sign {
     margin-left: 15px !important;
 }
 
 #journal_list {
     margin-bottom: 4px !important;
-    margin-left: 140px !important;
+    margin-left: 120px !important;
+}
+
+#alertBox {
+    position: fixed !important;
+    left: 35% !important;
+    top: 35% !important;
 }
 
 /* .sg-content {
