@@ -81,7 +81,7 @@
     // check if journal1 field has been populated, if not entered then set to blank
     if (isset($_POST["journal1"])) {
         $queryJournal1 = $_POST["journal1"];
-        $queryJournal1 = " OR " .$queryType1. "=" .$queryJournal1;
+        $queryJournal1 = $queryType1. "=" .$queryJournal1;
     } else {
         $queryJournal1 = "";
     };
@@ -109,7 +109,7 @@
     // check if title1 field has been populated
     if (isset($_POST["title1"])) {
         $queryTitle1 = $_POST["title1"];
-        $queryTitle1 = " OR " .$queryType2. "=" .$queryTitle1;
+        $queryTitle1 = $queryType2. "=" .$queryTitle1;
     } else {
         $queryTitle1 = "";
     };
@@ -157,7 +157,7 @@
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryType1.'='.$queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' .$queryType2. '=' .$queryTitle1 . $queryTitle2 . $queryTitle3,
+            'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' . $queryTitle1 . $queryTitle2 . $queryTitle3,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
             'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
             'queryLanguage' => 'en'
@@ -185,8 +185,25 @@
         echo $e->getMessage();
     };
 
-    // check if there has been a soap fault
-    if (is_soap_fault($search_response)) {
+    // echo "REQUEST: <br/>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/>";
+    // echo "RESPONSE: <br/>" . htmlspecialchars($search_client->__getLastResponse()) . "<br/>";
+
+    // number of records found by search, used to finish loop (check if no records first)
+    // if soap fault, i.e. no recordsFound then set $len to null to avoid undefined variable on line 205
+    if (isset($search_response->return->recordsFound)) {
+        $len = $search_response->return->recordsFound;
+    } else {
+        $len = "";
+    }
+
+    /* echo "</br>RECORDS FOUND: </br>";
+    print "<pre>\n";
+    print $len;
+    print "</pre>"; */
+
+    // check if there has been a soap fault OR if there are 0 records for the search
+    if (is_soap_fault($search_client->__getLastResponse()) || $len == 0) {
+    // if ($len == 0) {
         echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
                    <div class='panel-heading'>
                        <h1 class='panel-title'>
@@ -194,8 +211,8 @@
                        </h1>
                    </div>
                    <div class='panel-body'>
-                       <p>There were no records found for your search</p>
-                       <p>Please review your search options and try again</p>
+                       <p><strong>There were no records found for your search</strong></p>
+                       <p><strong>Please review your search options and try again</strong></p>
                        <h2>
                            <button type='button' class='back btn btn-danger'>
                                <span class='glyphicon glyphicon-fast-backward'></span>
@@ -207,11 +224,6 @@
         exit;
     };
 
-    // number of records found by search, used to finish loop (check if no records first)
-    /* if (isset($search_response->return->recordsFound)) {
-        $len = $search_response->return->recordsFound;
-    } */
-
     // if there are no results, display an alert box with javascript and return to index.php
     /* if ($len == 0) {
         echo ("<script language='javascript'>
@@ -219,11 +231,6 @@
                 window.alert('No records found');
                </script>");
     } */
-
-    /* echo "</br>RECORDS FOUND: </br>";
-    print "<pre>\n";
-    print $len;
-    print "</pre>"; */
 
 
     // =================================================================== //
@@ -244,7 +251,7 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryType1.'='.$queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' .$queryType2. '=' .$queryTitle1 . $queryTitle2 . $queryTitle3,
+                'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' . $queryTitle1 . $queryTitle2 . $queryTitle3,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
                 'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
                 'queryLanguage' => 'en'
@@ -390,7 +397,7 @@
     // output $recordArray in JSON format to be picked up by JavaScript in data.html
     // echo json_encode($recordArray);
 
-    // include "data.php";
+    include "data.php";
 
 
     // =================================================== //
