@@ -124,7 +124,7 @@
 
     // check if title3 field has been populated
     if (isset($_POST["title3"])) {
-        $queryTitle3 = $_POST["title2"];
+        $queryTitle3 = $_POST["title3"];
         $queryTitle3 = " OR " .$queryType2. "=" .$queryTitle3;
     } else {
         $queryTitle3 = "";
