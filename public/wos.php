@@ -14,8 +14,25 @@
     <!-- favicon, newcastle logo -->
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
-</head>
+    <script type='text/javascript'>
+        // function that will scroll to the bottom of the window when called
+        function scrollToBottom() {
+            window.scrollTo(0, document.body.scrollHeight);
+        };
 
+        // function that will overwrite current record in info panel
+        function setRecord(current, total) {
+            document.getElementById('progressPanel').innerHTML = "<strong>Loading record " + current + " of " + total + "</strong>";
+        };
+
+        function goBack() {
+            window.location.href = 'index.php';
+        };
+
+    </script>
+
+</head>
+<body>
 <?php
 
     // =================================================================== //
@@ -32,11 +49,28 @@
     // ================ SET UP SOAP CLIENTS & AUTHENTICATE =============== //
     // =================================================================== //
 
+    // loading bar
+    /* echo ('<div class="row">
+               <div class="col-lg-6">
+                   <h3>Loading, please wait</h3>
+                   <div class="progress progress-striped active">
+                       <div class="progress-bar" role="progressbar" style="width: 65%">65%</div>
+                   </div>
+               </div>
+               <div class="col-lg-6"></div>
+           </div>'); */
+    
     // TIMING INITIALISE
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
     $starttime = $mtime; 
+
+    // prevent browser from using cached data
+    header('Cache-Control: no-cache');
+
+    // variable to store average time/record retrieval
+    $avg = 0.015; 
 
     // initialise session in order to store data to session variable
     // session_start();
@@ -224,14 +258,6 @@
         exit;
     };
 
-    // if there are no results, display an alert box with javascript and return to index.php
-    /* if ($len == 0) {
-        echo ("<script language='javascript'>
-                window.location.href='index.php'
-                window.alert('No records found');
-               </script>");
-    } */
-
 
     // =================================================================== //
     // ============ CREATE VARIABLES TO STORE REQUIRED DATA ============== //
@@ -243,6 +269,44 @@
     $recordArray = array();
     // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 4 citations
     $ignore = array(0, 1, 2, 3, 4);
+    // create a counter variable to use for progress bar
+    $counter = 1;
+    // create a variable to store time for processing
+    $timeDecimal = round(($len*$avg), 2);
+    // turn time into readable format
+    // $time = gmdate("i:s", round($timeDecimal));
+    if ($timeDecimal > 59.99) {
+        $minutes = round(($timeDecimal/60), 0, PHP_ROUND_HALF_DOWN);
+        while ($timeDecimal > 59.99) {
+            $timeDecimal -= 60;
+            $seconds = round($timeDecimal, 0);
+        };
+    } else {
+        $minutes = 0;
+        $seconds = round($timeDecimal, 0);
+    };
+
+    // panel to display records loading progress, js updates current record in #progressPanel
+    echo "<div class='panel panel-primary' id='alertBox'>
+              <div class='panel-heading'>
+                  <h1 class='panel-title'>
+                  PROGRESS<span class='glyphicon glyphicon-info-sign'></span>
+                  </h1>
+              </div>
+              <div class='panel-body'>
+                  <p id='progressPanel'></p>
+                  <p>This should take roughly " .$minutes. " minutes & " .$seconds. " seconds</p>
+                  <h2>
+                      <button type='submit' class='back btn btn-primary' onclick='goBack()'>
+                          <span class='glyphicon glyphicon-remove'></span>
+                          <strong>Cancel</strong>
+                      </button>
+                  </h2>
+              </div>
+          </div>";
+
+    // create div to store progress loader
+    // echo "<div class='loading'>";
 
     // iterate through all records, perform search for each 100 records and tabulate data
     for ($i = 1; $i <= $len; $i+=100) {
@@ -283,6 +347,25 @@
 
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($xml->REC as $record) {
+
+            // use iteration as counter for progress bar, adds to 'loading' div
+            // echo "<p>Loading record " .$counter." of " .$len. "<p/>";
+            // call js function to scroll window to bottom
+            /* echo "<script type='text/javascript'>
+                      scrollToBottom();
+                  </script>"; */
+
+            // call js function to update panel each iteration
+            echo "<script type='text/javascript'>
+                      setRecord(" .$counter. "," .$len. ")
+                  </script>";
+
+            // increment for next record
+            $counter++;
+
+            // ob_flush();
+            // flush();
+
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             // second author
@@ -318,7 +401,10 @@
             // pass the data from this iteration into the array variable '$recordArray', after all iterations, each element in $recordArray will be a single record or row of data for a single journal
             array_push($recordArray, $arecord) ;
         }
-    };    
+    };
+
+    // close loading div
+    // echo "</div>"; 
 
     // need to replace single quotes in text to avoid escaping when inserting to mysql, and other charas to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
@@ -410,8 +496,8 @@
     $mtime = $mtime[1] + $mtime[0];
     $endtime = $mtime;
     $totaltime = ($endtime - $starttime);
-    // echo "This page was created in ".$totaltime." seconds";
+    echo "This page was created in ".$totaltime." seconds";
 
 ?>
-
+</body>
 </html>

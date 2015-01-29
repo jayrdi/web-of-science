@@ -41,6 +41,10 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 15px !important;
 }
 
+.glyphicon-info-sign {
+    margin-left: 15px !important;
+}
+
 #journal_list {
     margin-bottom: 4px !important;
     margin-left: 120px !important;

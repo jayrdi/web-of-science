@@ -71,8 +71,8 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li><a href="https://resviz.ncl.ac.uk/"><span class="glyphicon glyphicon-home"></span></a></li>
-							<li><a href="https://resviz.ncl.ac.uk/chords/">Research Visualisation</a></li>
-							<li><a href="index.html">Academic Intelligence</a></li>
+							<li><a href="https://resviz.ncl.ac.uk/profile">Research Visualisation</a></li>
+							<li><a href="index.php">Academic Intelligence</a></li>
 						</ul>
 					</div> <!-- navbar-collapse -->
 				</div> <!-- container -->
@@ -90,7 +90,7 @@
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
 										<label>Journal Title</label>
-										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jlresults.cgi?PC=D">Journal List</a>
+										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D">Journal List</a>
 										<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										<div>
 											<input class="form-control" type="text" name="journal1" data-toggle="tooltip"
@@ -135,15 +135,15 @@
 				</div> <!-- row -->
 
 				<!-- TEMPORARY PLACEMENT FOR LOADING BAR -->
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-lg-6">
 						<h3 style="color:red">Temporary progress bar is Temporary</h3>
 						<div class="progress progress-striped active">
-					        <div class="progress-bar" style="width: 40%"></div>
+					        <div class="progress-bar" role="progressbar" style="width: 65%">65%</div>
 						</div>
 					</div>
 					<div class="col-lg-6"></div>
-				</div>
+				</div> -->
 
 			</section> <!-- main content; container -->
 		</div> <!-- sg-content -->
