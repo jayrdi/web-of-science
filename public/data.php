@@ -68,7 +68,7 @@
 					<ul class="nav navbar-nav">
 						<li><a href="https://resviz.ncl.ac.uk/"><span class="glyphicon glyphicon-home"></span></a></li>
 						<li><a href="https://resviz.ncl.ac.uk/chords/">Research Visualisation</a></li>
-						<li><a href="index.html">Academic Intelligence</a></li>
+						<li><a href="index.php">Academic Intelligence</a></li>
 					</ul>
 				</div> <!-- navbar-collapse -->
 			</div> <!-- container -->

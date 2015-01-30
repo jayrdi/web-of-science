@@ -3,17 +3,17 @@
 <html lang="en" ng-app>
 
 	<!-- USER LOGIN SECURITY -->
-	<?php
+	<!-- <?php
 
-	require('redis-session.php');
+	/* require('redis-session.php');
     RedisSession::start();
 
     if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    }
+    } */
 
-    ?>
+    ?> -->
 
 	<head>
 		<title>Academic Intelligence</title>
@@ -85,16 +85,17 @@
 					<form action="wos.php" method="post" role="form" class="form-horizontal" id="form">
 						<fieldset>
 							<div class="form-group">
-								<div class="col-lg-6 well bs-component">
+								<div class="col-lg-6 well bs-component" id="searchField">
 
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
 										<label>Journal Title</label>
-										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D">Journal List</a>
+										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
+										    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
 										<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										<div>
-											<input class="form-control" type="text" name="journal1" data-toggle="tooltip"
-												   title="this is a tooltip">
+											<input class="form-control" type="text" name="journal1" data-toggle="tooltip-right"
+												   title="Please enter only one journal per box">
 										</div>
 									</div>
 
@@ -103,8 +104,8 @@
 										<label>Keyword</label>
 										<button class="add_title_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										<div>
-											<input class="form-control" type="text" name="title1" data-toggle="tooltip"
-												   title="">
+											<input class="form-control" type="text" name="title1" data-toggle="tooltip-right"
+												   title="Please enter only one title per box">
 										</div>
 									</div>
 
@@ -121,10 +122,12 @@
 								<div class="col-lg-6 well bs-component">
 
 									<div class="jumbotron">
-										<h1>How to...</h1>
-										<p>Please enter only one journal title or keyword per box</p>
-										<p>If you would like further information on x, y and z, then please
-										<a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a></p>
+										<h1>Notes</h1>
+										<p>You may enter either a journal name, a title keyword or both.</p>
+										<p>Keywords are taken literally. If you want to search for a word plus any subsequent characters, 
+											please enter the keyword followed immediately by the * symbol.</p><br/>
+										<!-- <p>If you would like further information on x, y and z, then please
+										<a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a></p> -->
 									</div>
 
 								</div> 
@@ -133,17 +136,6 @@
 						</fieldset>
 					</form>
 				</div> <!-- row -->
-
-				<!-- TEMPORARY PLACEMENT FOR LOADING BAR -->
-				<!-- <div class="row">
-					<div class="col-lg-6">
-						<h3 style="color:red">Temporary progress bar is Temporary</h3>
-						<div class="progress progress-striped active">
-					        <div class="progress-bar" role="progressbar" style="width: 65%">65%</div>
-						</div>
-					</div>
-					<div class="col-lg-6"></div>
-				</div> -->
 
 			</section> <!-- main content; container -->
 		</div> <!-- sg-content -->

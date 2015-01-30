@@ -68,8 +68,12 @@ $(document).ready(function() {
     ///// TOOLTIPS /////
     ////////////////////
 
-    $('[data-toggle="tooltip"]').tooltip({
+    $('[data-toggle="tooltip-right"]').tooltip({
         'placement': 'right'
+    });
+
+    $('[data-toggle="tooltip-down"]').tooltip({
+        'placement': 'bottom'
     });
 
     ////////////////////

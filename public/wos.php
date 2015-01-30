@@ -21,13 +21,25 @@
         };
 
         // function that will overwrite current record in info panel
-        function setRecord(current, total) {
+        /* function setRecord(current, total) {
             document.getElementById('progressPanel').innerHTML = "<strong>Loading record " + current + " of " + total + "</strong>";
+        }; */
+
+        // function that will overwrite current record in info panel
+        function setRecord(current) {
+            document.getElementById('progressPanel').innerHTML = "<strong>Loading record " + current + "</strong>";
         };
 
+        // function to redirect to index page
         function goBack() {
             window.location.href = 'index.php';
         };
+
+        // function to remove the info panel once page has loaded
+        function removePanel() {
+            var rem = document.getElementById('alertBox');
+            rem.remove();
+        }
 
     </script>
 
@@ -113,7 +125,7 @@
 
     // keyword(s)
     // check if journal1 field has been populated, if not entered then set to blank
-    if (isset($_POST["journal1"])) {
+    if ($_POST["journal1"] != "") {
         $queryJournal1 = $_POST["journal1"];
         $queryJournal1 = $queryType1. "=" .$queryJournal1;
     } else {
@@ -141,7 +153,10 @@
 
     // keyword(s)
     // check if title1 field has been populated
-    if (isset($_POST["title1"])) {
+    if (($_POST["title1"] != "") && ($_POST["journal1"] != "")) {
+        $queryTitle1 = $_POST["title1"];
+        $queryTitle1 = " AND " .$queryType2. "=" .$queryTitle1;
+    } elseif (($_POST["title1"] != "") && ($_POST["journal1"] == "")) {
         $queryTitle1 = $_POST["title1"];
         $queryTitle1 = $queryType2. "=" .$queryTitle1;
     } else {
@@ -191,7 +206,7 @@
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
-            'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' . $queryTitle1 . $queryTitle2 . $queryTitle3,
+            'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
             'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
             'queryLanguage' => 'en'
@@ -219,6 +234,7 @@
         echo $e->getMessage();
     };
 
+    // SOAP request and response data, for error handling
     // echo "REQUEST: <br/>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/>";
     // echo "RESPONSE: <br/>" . htmlspecialchars($search_client->__getLastResponse()) . "<br/>";
 
@@ -245,8 +261,8 @@
                        </h1>
                    </div>
                    <div class='panel-body'>
-                       <p><strong>There were no records found for your search</strong></p>
-                       <p><strong>Please review your search options and try again</strong></p>
+                       <p>There were no records found for your search</p>
+                       <p>Please review your search options and try again</p>
                        <h2>
                            <button type='button' class='back btn btn-danger'>
                                <span class='glyphicon glyphicon-fast-backward'></span>
@@ -295,7 +311,7 @@
               </div>
               <div class='panel-body'>
                   <p id='progressPanel'></p>
-                  <p>This should take roughly " .$minutes. " minutes & " .$seconds. " seconds</p>
+                  <p>This will take a <strong>maximum</strong> of roughly " .$minutes. " minutes & " .$seconds. " seconds</p>
                   <h2>
                       <button type='submit' class='back btn btn-primary' onclick='goBack()'>
                           <span class='glyphicon glyphicon-remove'></span>
@@ -315,7 +331,7 @@
         $search_array = array(
             'queryParameters' => array(
                 'databaseId' => 'WOS',
-                'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . ' AND ' . $queryTitle1 . $queryTitle2 . $queryTitle3,
+                'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
                 'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
                 'queryLanguage' => 'en'
@@ -356,8 +372,12 @@
                   </script>"; */
 
             // call js function to update panel each iteration
-            echo "<script type='text/javascript'>
+            /* echo "<script type='text/javascript'>
                       setRecord(" .$counter. "," .$len. ")
+                  </script>"; */
+
+            echo "<script type='text/javascript'>
+                      setRecord(" .$counter. ");
                   </script>";
 
             // increment for next record
@@ -466,9 +486,6 @@
     print_r($recordArray);
     print "</pre>"; */
 
-    // turn top cited authors data into JSON file for displaying with JavaScript
-    // file_put_contents('data.json', json_encode($recordArray));
-
     // clear the output buffer
     /* while (ob_get_status()) {
         ob_end_clean();
@@ -480,8 +497,10 @@
     // test session data
     // echo $_SESSION['data'];
 
-    // output $recordArray in JSON format to be picked up by JavaScript in data.html
-    // echo json_encode($recordArray);
+    // call function to remove panel
+    echo "<script type='text/javascript'>
+                      removePanel();
+                  </script>";
 
     include "data.php";
 
@@ -496,7 +515,7 @@
     $mtime = $mtime[1] + $mtime[0];
     $endtime = $mtime;
     $totaltime = ($endtime - $starttime);
-    echo "This page was created in ".$totaltime." seconds";
+    // echo "This page was created in ".$totaltime." seconds";
 
 ?>
 </body>
