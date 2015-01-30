@@ -260,7 +260,7 @@
 
 					// })
 					// get data from $searchParams from wos.php
-					var searchData = $.parseJSON('<?php echo json_encode($searchParams) ?>');
+					/* var searchData = $.parseJSON('<?php echo json_encode($searchParams) ?>');
 
 						// select location by HTML table id
 						var tbody = document.getElementById('searchData');
@@ -288,25 +288,25 @@
 							  "</tr>";
 						// add row to body of table
 						tbody.innerHTML += tr;
-					// });
+					// }); */
 				});
 
 			</script>
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-lg-5">
 					<div class="alert alert-danger">
 						<h3>Temporary Graph is Temporary</h3>
 					</div>
 				</div>
 				<div class="col-lg-7"></div>
-			</div> <!-- row -->
+			</div>
 
 			<table class="table table-striped table-hover">
 				<tbody id="searchData"></tbody>
 			</table>
 
-		</section> <!-- container -->
+		</section> -->
 
 	</div> <!-- sg-content -->
 

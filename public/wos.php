@@ -15,6 +15,7 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
     <script type='text/javascript'>
+
         // function that will scroll to the bottom of the window when called
         function scrollToBottom() {
             window.scrollTo(0, document.body.scrollHeight);
@@ -97,7 +98,7 @@
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
-    // array options are temporary and used to track request & response data in printout below (line 65)
+    // array options are temporary and used to track request & response data
     $auth_client = @new SoapClient($auth_url, array(
                      "trace" => 1,
                      "exceptions" => 0));
@@ -106,7 +107,7 @@
 
     // set WSDL for search and create new SOAP client
     $search_url = "http://search.webofknowledge.com/esti/wokmws/ws/WokSearch?wsdl";
-    // array options are temporary and used to track request & response data in printout below (line 130)
+    // array options are temporary and used to track request & response data
     $search_client = @new SoapClient($search_url, array(
                      "trace" => 1,
                      "exceptions" => 0));
@@ -311,7 +312,7 @@
               </div>
               <div class='panel-body'>
                   <p id='progressPanel'></p>
-                  <p>This will take a <strong>maximum</strong> of roughly " .$minutes. " minutes & " .$seconds. " seconds</p>
+                  <p>The <strong>maximum</strong> estimated time for this query is " .$minutes. " minutes & " .$seconds. " seconds</p>
                   <h2>
                       <button type='submit' class='back btn btn-primary' onclick='goBack()'>
                           <span class='glyphicon glyphicon-remove'></span>
@@ -431,7 +432,7 @@
         $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
         $recordArray[$i]['author1'] = str_replace(".", "", $recordArray[$i]['author1']);
         $recordArray[$i]['author1'] = str_replace(". ", "", $recordArray[$i]['author1']);
-        $recordArray[$i]['author1'] = str_replace(" ", "", $recordArray[$i]['author1']);
+        // $recordArray[$i]['author1'] = str_replace(" ", "", $recordArray[$i]['author1']);
         // $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
         // $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
     };

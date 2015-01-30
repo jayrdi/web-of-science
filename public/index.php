@@ -122,10 +122,8 @@
 								<div class="col-lg-6 well bs-component">
 
 									<div class="jumbotron">
-										<h1>Notes</h1>
+										<h2>Notes</h2>
 										<p>You may enter either a journal name, a title keyword or both.</p>
-										<p>Keywords are taken literally. If you want to search for a word plus any subsequent characters, 
-											please enter the keyword followed immediately by the * symbol.</p><br/>
 										<!-- <p>If you would like further information on x, y and z, then please
 										<a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a></p> -->
 									</div>
