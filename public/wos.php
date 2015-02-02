@@ -321,6 +321,9 @@
                   </h2>
               </div>
           </div>";
+          
+    ob_flush();
+    flush();
 
     // create div to store progress loader
     // echo "<div class='loading'>";
