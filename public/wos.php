@@ -94,7 +94,7 @@
     ini_set('memory_limit', '-1');
 
     // ensures anything dumped out will be caught, output buffer
-    // ob_start();
+    ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
@@ -384,8 +384,8 @@
             // increment for next record
             $counter++;
 
-            // ob_flush();
-            // flush();
+            ob_flush();
+            flush();
 
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
@@ -488,9 +488,9 @@
     print "</pre>"; */
 
     // clear the output buffer
-    /* while (ob_get_status()) {
+    while (ob_get_status()) {
         ob_end_clean();
-    } */
+    }
 
     // store data in session variable
     // $_SESSION['data'] = json_encode($recordArray);
