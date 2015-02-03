@@ -383,6 +383,11 @@
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
+            $mtime = microtime();
+            $mtime = explode(" ",$mtime);
+            $mtime = $mtime[1] + $mtime[0];
+            $endtime = $mtime;
+            $totaltime = ($endtime - $starttime);
             echo "Interval: ".$totaltime." seconds";
 
             // increment for next record
