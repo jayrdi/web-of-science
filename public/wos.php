@@ -379,22 +379,17 @@
             /* echo "<script type='text/javascript'>
                       setRecord(" .$counter. "," .$len. ")
                   </script>"; */
+                  
+            ob_flush();
 
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
-            $mtime = microtime();
-            $mtime = explode(" ",$mtime);
-            $mtime = $mtime[1] + $mtime[0];
-            $endtime = $mtime;
-            $totaltime = ($endtime - $starttime);
-            echo "Interval: ".round($totaltime, 0)." seconds<br/>";
 
             // increment for next record
             $counter++;
-
-            ob_flush();
-            flush();
+            
+            // flush();
 
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
