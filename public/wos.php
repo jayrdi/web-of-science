@@ -377,10 +377,13 @@
                       setRecord(" .$counter. "," .$len. ")
                   </script>"; */
                   
+            ob_flush();
+            flush();
+                  
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
-            flush();
+            
 
             // increment for next record
             $counter++;
