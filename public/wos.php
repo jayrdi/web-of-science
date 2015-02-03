@@ -426,6 +426,7 @@
             // pass the data from this iteration into the array variable '$recordArray', after all iterations, each element in $recordArray will be a single record or row of data for a single journal
             array_push($recordArray, $arecord) ;
         }
+        ob_flush();
     };
 
     // close loading div
