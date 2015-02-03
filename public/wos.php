@@ -94,7 +94,7 @@
     ini_set('memory_limit', '-1');
 
     // ensures anything dumped out will be caught, output buffer
-    ob_start();
+    // ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
@@ -321,9 +321,6 @@
                   </h2>
               </div>
           </div>";
-          
-    ob_flush();
-    flush();
 
     // create div to store progress loader
     // echo "<div class='loading'>";
@@ -380,16 +377,13 @@
                       setRecord(" .$counter. "," .$len. ")
                   </script>"; */
                   
-            ob_flush();
-
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
+            flush();
 
             // increment for next record
             $counter++;
-            
-            // flush();
 
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
