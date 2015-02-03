@@ -91,9 +91,7 @@
     // set processing time for browser before timeout
     ini_set('max_execution_time', 3600);
     // override default PHP memory limit
-    ini_set('memory_limit', '-1');
-    // turn off output buffering to allow loading panel to display properly
-    ini_set('output_buffering', 'Off');
+    // ini_set('memory_limit', '-1');
 
     // ensures anything dumped out will be caught, output buffer
     // ob_start();
