@@ -388,7 +388,7 @@
             $mtime = $mtime[1] + $mtime[0];
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
-            echo "Interval: ".$totaltime." seconds";
+            echo "Interval: ".round($totaltime, 0)." seconds<br/>";
 
             // increment for next record
             $counter++;
