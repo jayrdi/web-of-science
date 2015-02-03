@@ -383,6 +383,7 @@
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
+            echo "Interval: ".$totaltime." seconds";
 
             // increment for next record
             $counter++;
