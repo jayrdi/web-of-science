@@ -377,16 +377,13 @@
                       setRecord(" .$counter. "," .$len. ")
                   </script>"; */
 
+            ob_flush(); // flush anything from the header output buffer
+            flush(); // send contents so far to the browser
+
             echo "<script type='text/javascript'>
                       setRecord(" .$counter. ");
                   </script>";
-
-            // increment for next record
-            $counter++;
-
-            // ob_flush();
-            // flush();
-
+            
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             // second author
@@ -422,6 +419,8 @@
             // pass the data from this iteration into the array variable '$recordArray', after all iterations, each element in $recordArray will be a single record or row of data for a single journal
             array_push($recordArray, $arecord) ;
         }
+        // increment for next record
+        $counter+=100;
     };
 
     // close loading div
@@ -488,9 +487,9 @@
     print "</pre>"; */
 
     // clear the output buffer
-    /* while (ob_get_status()) {
+    while (ob_get_status()) {
         ob_end_clean();
-    } */
+    }
 
     // store data in session variable
     // $_SESSION['data'] = json_encode($recordArray);

@@ -124,8 +124,9 @@
 									<div class="jumbotron">
 										<h2>Notes</h2>
 										<p>You may enter either a journal name, a title keyword or both.</p>
-										<!-- <p>If you would like further information on x, y and z, then please
-										<a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a></p> -->
+										<p>Results will ignore any publications with less than five citations,</p>
+										<p>and return only the first author listed from Web of Science.</p>
+										<!-- <a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a> -->
 									</div>
 
 								</div> 

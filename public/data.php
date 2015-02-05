@@ -21,9 +21,9 @@
 	<!-- SCRIPTS -->
 
 	<!-- jquery -->
-	<script type='text/javascript' src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<!-- d3 -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.12/d3.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js" charset="utf-8"></script>
 
 	<!-- META -->
 
@@ -82,7 +82,7 @@
 			<div class="jumbotron">
 				<h2>Information</h2>
 				<p>The y-axis represents the number of citations for publications for the author on the x-axis. Click on one of the bars to perform a search on name of the associated author in Google.</p>
-				<p>Try to find these authors on <a href="https://uk.linkedin.com/">LinkedIn</a> or the <a href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites.</p>
+				<p>Try to find these authors on <a target="_blank" href="https://uk.linkedin.com/">LinkedIn</a> or the <a target="_blank" href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites.</p>
 			</div>
 
 			<script type="text/javascript">
@@ -90,7 +90,8 @@
 				$(document).ready(function() {
 
 					// get $recordArray data from wos.php
-					var data = $.parseJSON('<?php echo json_encode($recordArray) ?>');
+					var data = $.parseJSON('<?php echo json_encode($recordArray)?>');
+						// test
 						// alert(data);
 
 						// javascript variable to store json data
@@ -109,6 +110,7 @@
 						var height = 500;
 						var width = 870;
 
+						// maximum height of y axis is maximum number of citations (first element)
 						var maxY = topCited[0].citations;
 
 						// set scale to alter data set so that it fits well in the canvas space
@@ -116,7 +118,7 @@
 						var linearScale = d3.scale.linear()
 												  // 0 -> largest citations value
 												  .domain([0, maxY])
-												  // 0 -> 600
+												  // 0 -> 500
 												  .range([0, height]);
 
 						// create canvas for chart
