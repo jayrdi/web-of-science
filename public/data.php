@@ -81,7 +81,8 @@
 
 			<div class="jumbotron">
 				<h2>Information</h2>
-				<p>The y-axis represents the number of citations for publications for the author on the x-axis. Click on one of the bars to perform a search on name of the associated author in Google.</p>
+				<p>The y-axis represents the number of citations for publications for the author on the x-axis.</p>
+				<p>Click on the author's bar to perform a search by their name with Google.</p>
 				<p>Try to find these authors on <a target="_blank" href="https://uk.linkedin.com/">LinkedIn</a> or the <a target="_blank" href="http://gtr.rcuk.ac.uk/" id="mail">Gateway to Research</a> sites.</p>
 			</div>
 

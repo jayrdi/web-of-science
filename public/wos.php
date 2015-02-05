@@ -428,9 +428,9 @@
 
     // need to replace single quotes in text to avoid escaping when inserting to mysql, and other charas to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
-        $recordArray[$i]['author1'] = str_replace("'", " ", $recordArray[$i]['author1']);
-        $recordArray[$i]['author1'] = str_replace(".", "", $recordArray[$i]['author1']);
-        $recordArray[$i]['author1'] = str_replace(". ", "", $recordArray[$i]['author1']);
+        $recordArray[$i]['author1'] = str_replace("'", "", $recordArray[$i]['author1']);
+        $recordArray[$i]['author1'] = str_replace(".", " ", $recordArray[$i]['author1']);
+        $recordArray[$i]['author1'] = str_replace(". ", " ", $recordArray[$i]['author1']);
         // $recordArray[$i]['author1'] = str_replace(" ", "", $recordArray[$i]['author1']);
         // $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
         // $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);

@@ -89,7 +89,7 @@
 
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
-										<label>Journal Title</label>
+										<label>Journal</label>
 										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
 										    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
 										<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
@@ -110,7 +110,7 @@
 									</div>
 
 									<!-- timespan -->
-									<label>TIMESPAN</label></br>
+									<label>TIME SPAN</label></br>
 									<label>From: <input class="form-control" type="date" name="timeStart" placeholder="YYYY-MM-DD"></label>
 									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
 
@@ -121,11 +121,11 @@
 
 								<div class="col-lg-6 well bs-component">
 
-									<div class="jumbotron">
+									<div class="modal-dialog">
 										<h2>Notes</h2>
-										<p>You may enter either a journal name, a title keyword or both.</p>
-										<p>Results will ignore any publications with less than five citations,</p>
-										<p>and return only the first author listed from Web of Science.</p>
+										<p>This application is optimised for Chrome.</p>
+										<p>In order to get the best results from your search,<br/>enter one or more journals.</p>
+										<p>Keywords and time spans are optional and can be<br/>used to refine your search.</p>
 										<!-- <a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a> -->
 									</div>
 

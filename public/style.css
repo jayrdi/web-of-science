@@ -51,13 +51,21 @@ a:link, a:visited, a:hover, a:active {
 
 #journal_list {
     margin-bottom: 4px !important;
-    margin-left: 120px !important;
+    margin-left: 160px !important;
 }
 
 #alertBox {
     position: fixed !important;
     left: 35% !important;
     top: 35% !important;
+}
+
+.jumbotron p {
+    /* font-size: 20px !important; */
+}
+
+.modal-dialog {
+    padding-left: 40px !important;
 }
 
 /* .sg-content {
