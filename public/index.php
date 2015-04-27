@@ -78,7 +78,7 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
-							<li><a href="about.php">About</a></li>
+							<li><a href="#">About</a></li>
 						</ul>
 					</div> <!-- navbar-collapse -->
 				</div> <!-- container -->
