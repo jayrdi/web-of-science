@@ -220,8 +220,14 @@
     $sortType = "TC";
 
     // check if timespan fields have been populated
-    if (isset($_POST["timeStart"])) {
+    if ((isset($_POST["timeStart"])) && (isset($_POST["timeEnd"]))) {
         $timeStart = $_POST["timeStart"];
+        $timeEnd = $_POST["timeEnd"];
+    } elseif ((isset($_POST["timeStart"])) && (!isset($_POST["timeEnd"]))) {
+        $timeStart = $_POST["timeStart"];
+        $timeEnd = date("Y");
+    } elseif ((!isset($_POST["timeStart"])) && (isset($_POST["timeEnd"]))) {
+        $timeStart = "1970";
         $timeEnd = $_POST["timeEnd"];
     } else {
         $timeStart = "1970";
