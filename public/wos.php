@@ -40,7 +40,7 @@
         function removePanel() {
             var rem = document.getElementById('alertBox');
             rem.remove();
-        }
+        };
 
     </script>
 
@@ -112,7 +112,31 @@
                      "trace" => 1,
                      "exceptions" => 0));
     // call 'setCookie' method on '$search_client' storing SID (Session ID) as the response (value) given from the 'authenticate' method
-    $search_client->__setCookie('SID',$auth_response->return);
+    // check if an SID has been set, if not it means Throttle server has stopped the query, therefore display error message
+    if (isset($auth_response->return)) {
+      $search_client->__setCookie('SID',$auth_response->return);
+    } else {
+        echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
+                   <div class='panel-heading'>
+                       <h1 class='panel-title'>
+                           ALERT<span class='glyphicon glyphicon-exclamation-sign'></span>
+                       </h1>
+                   </div>
+                   <div class='panel-body'>
+                       <p>Request has been denied by Throttle server.</p>
+                       <p>Web of Science enforces a limit of 5 requests in as many minutes, 
+                          if you exceed this then the query will fail.</p>
+                       <p><strong>This will include queries from other computers on campus.</strong></p>
+                       <h2>
+                           <button type='button' class='back btn btn-danger'>
+                               <span class='glyphicon glyphicon-fast-backward'></span>
+                               <strong>Click here to return to search page</strong>
+                           </button>
+                       </h2>
+                   </div>
+               </div>");
+        exit;
+    };
 
 
     // =================================================================== //
@@ -137,16 +161,22 @@
     if (isset($_POST["journal2"])) {
         $queryJournal2 = $_POST["journal2"];
         $queryJournal2 = " OR " .$queryType1. "=" .$queryJournal2;
+        // for search params
+        $searchJournal2 = $_POST["journal2"];
     } else {
         $queryJournal2 = "";
+        $searchJournal2 = "";
     };
 
     // check if journal3 field has been populated
     if (isset($_POST["journal3"])) {
         $queryJournal3 = $_POST["journal3"];
         $queryJournal3 = " OR " .$queryType1. "=" .$queryJournal3;
+        // for search params
+        $searchJournal3 = $_POST["journal3"];
     } else {
         $queryJournal3 = "";
+        $searchJournal3 = "";
     };
 
     // search type for titles
@@ -168,48 +198,56 @@
     if (isset($_POST["title2"])) {
         $queryTitle2 = $_POST["title2"];
         $queryTitle2 = " OR " .$queryType2. "=" .$queryTitle2;
+        // for search params
+        $searchTitle2 = $_POST["title2"];
     } else {
         $queryTitle2 = "";
+        $searchTitle2 = "";
     };
 
     // check if title3 field has been populated
     if (isset($_POST["title3"])) {
         $queryTitle3 = $_POST["title3"];
         $queryTitle3 = " OR " .$queryType2. "=" .$queryTitle3;
+        // for search params
+        $searchTitle3 = $_POST["title3"];
     } else {
         $queryTitle3 = "";
+        $searchTitle3 = "";
     };
     
     // sort type
     $sortType = "TC";
 
     // check if timespan fields have been populated
-    if (!$_POST["timeStart"]) {
-        $timeStart = "1864-01-01";
-        $timeEnd = "2080-01-01";
-    } else {
+    if (isset($_POST["timeStart"])) {
         $timeStart = $_POST["timeStart"];
         $timeEnd = $_POST["timeEnd"];
+    } else {
+        $timeStart = "1970";
+        $timeEnd = date("Y");
     };
 
     // create an array to store all the search parameters to pass to data.html to display with the graph
-    $searchParams = array('journal1' => $queryJournal1,
-                          'journal2' => $queryJournal2,
-                          'journal3' => $queryJournal3,
-                          'title1' => $queryTitle1,
-                          'title2' => $queryTitle2,
-                          'title3' => $queryTitle3,
+    // journals and titles 2 & 3 are not always set so can't use $_POST
+    $searchParams = array('journal1' => $_POST['journal1'],
+                          'journal2' => $searchJournal2,
+                          'journal3' => $searchJournal3,
+                          'title1' => $_POST['title1'],
+                          'title2' => $searchTitle2,
+                          'title3' => $searchTitle3,
                           'from' => $timeStart,
                           'to' => $timeEnd,
                          );
     
     // pass in relevant parameters for search, this is the format necessary for Web of Science Web Service
+    // perform search for all time, process different time scales later
     $search_array = array(
         'queryParameters' => array(
             'databaseId' => 'WOS',
             'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
             'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-            'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
+            'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
             'queryLanguage' => 'en'
         ),
         'retrieveParameters' => array(
@@ -235,13 +273,18 @@
         echo $e->getMessage();
     };
 
-    // SOAP request and response data, for error handling
-    // echo "REQUEST: <br/>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/>";
-    // echo "RESPONSE: <br/>" . htmlspecialchars($search_client->__getLastResponse()) . "<br/>";
+    // SOAP request and response data, for error handling, str_ireplace for easier viewing
+    // echo "AUTHENTICATION REQUEST: </br>" . htmlspecialchars($auth_client->__getLastRequest()) . "<br/><br/>";
+    // echo "AUTHENTICATION RESPONSE: </br>" . htmlspecialchars($auth_client->__getLastResponse()) . "<br/><br/>";
+    // echo "SEARCH REQUEST: </br>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/><br/>";
+    /* echo "SEARCH RESPONSE:";
+    print "<pre>\n";
+    print "\n" . htmlentities(str_ireplace('><', ">\n</br></br><", $search_client->__getLastResponse())) . "\n";
+    print "</pre>"; */
 
     // number of records found by search, used to finish loop (check if no records first)
     // if soap fault, i.e. no recordsFound then set $len to null to avoid undefined variable on line 205
-    if (isset($search_response->return->recordsFound)) {
+    if (isset($search_response->return->recordsFound)) { 
         $len = $search_response->return->recordsFound;
     } else {
         $len = "";
@@ -252,9 +295,8 @@
     print $len;
     print "</pre>"; */
 
-    // check if there has been a soap fault OR if there are 0 records for the search
+    // check if there has been a soap fault with the query OR if there are 0 records for the search
     if (is_soap_fault($search_client->__getLastResponse()) || $len == 0) {
-    // if ($len == 0) {
         echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
                    <div class='panel-heading'>
                        <h1 class='panel-title'>
@@ -284,11 +326,13 @@
 
     // create an array to store data for each record per iteration
     $recordArray = array();
-    // create an array to represent citation values to ignore, i.e. not interested in any publications with less than 4 citations
-    $ignore = array(0, 1, 2, 3, 4);
+    // create an array to represent citation values to ignore, i.e. not interested in any publications
+    // with less than 1 (4) citation(s)
+    $ignore = array(0, 1, 2, 3);
     // create a counter variable to use for progress bar
     $counter = 1;
-    // create a variable to store time for processing
+
+    // create a variable to store time for loading screen
     $timeDecimal = round(($len*$avg), 2);
     // turn time into readable format
     // $time = gmdate("i:s", round($timeDecimal));
@@ -334,7 +378,7 @@
                 'databaseId' => 'WOS',
                 'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
                 'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-                'timeSpan' => array('begin' => $timeStart, 'end' => $timeEnd),
+                'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
                 'queryLanguage' => 'en'
             ),
             'retrieveParameters' => array(
@@ -353,14 +397,21 @@
             echo $e->getMessage(); 
         };
 
+        // check SOAP response
+        /* echo "SEARCH RESPONSE:";
+        print "<pre>\n";
+        print "\n" . htmlentities(str_ireplace('><', ">\n</br></br><", $search_client->__getLastResponse())) . "\n";
+        print "</pre>"; */
+
         // turn Soap Client object from current response into SimpleXMLElement
         $xml = new SimpleXMLElement($search_response->return->records);
 
-        // save variable names for global use
+        // save variable names for global use, author, citations and publication year
         $author1 = "";
         // $author2 = "";
         // $author3 = "";
         $citations = "";
+        $pubyear = "";
 
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($xml->REC as $record) {
@@ -386,22 +437,10 @@
             
             // first author
             $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
-            // second author
-            /* if (isset($record->static_data->summary->names->name[1]->full_name)) {
-                $author2 = (string)$record->static_data->summary->names->name[1]->full_name;
-                echo '<td>'.$author2.'</td>';
-            } else {
-                echo '<td>'."no record".'</td>';
-                $author2 = "no record";
-            }
-            // third author
-            if (isset($record->static_data->summary->names->name[2]->full_name)) {
-                $author3 = (string)$record->static_data->summary->names->name[2]->full_name;
-                echo '<td>'.$author3.'</td>';
-            } else {
-                echo '<td>'."no record".'</td>';
-                $author3 = "no record";
-            } */
+            
+            // publication year
+            $pubyear = (string)$record->static_data->summary->pub_info->attributes()->pubyear;
+
             // number of citations, if zero then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
             if (!in_array($record->dynamic_data->citation_related->tc_list->silo_tc->attributes(), $ignore)) {
                 $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
@@ -413,6 +452,7 @@
             $arecord = array("author1"=>strtoupper($author1),
                              // "author2"=>$author2,
                              // "author3"=>$author3,
+                             "pubyear"=>$pubyear,
                              "citations"=>$citations
                             );
 
@@ -420,7 +460,7 @@
             array_push($recordArray, $arecord) ;
         }
         // increment for next record
-        $counter+=100;
+        $counter+=100; 
     };
 
     // close loading div
@@ -431,15 +471,85 @@
         $recordArray[$i]['author1'] = str_replace("'", "", $recordArray[$i]['author1']);
         $recordArray[$i]['author1'] = str_replace(".", " ", $recordArray[$i]['author1']);
         $recordArray[$i]['author1'] = str_replace(". ", " ", $recordArray[$i]['author1']);
-        // $recordArray[$i]['author1'] = str_replace(" ", "", $recordArray[$i]['author1']);
-        // $recordArray[$i]['author2'] = str_replace("'", " ", $recordArray[$i]['author2']);
-        // $recordArray[$i]['author3'] = str_replace("'", " ", $recordArray[$i]['author3']);
     };
 
     /* echo "</br>RETRIEVED DATA: </br>";
     print "<pre>\n";
     print_r($recordArray);
     print "</pre>"; */
+
+
+    /*********************/
+    /*** ASSIGN VALUES ***/
+    /***** TO RECORDS ****/
+    /*********************/
+
+
+    // find out current year and how many years since 1970 (earliest WoS publication date)
+    /* $years = (date('Y') - 1970);
+    // populate an array for each year since 1970
+    $numYears = array();
+    for ($i = 1; $i <= $years; $i++) {
+        array_push($numYears, $i);
+    }; */
+    // we now have an array where each element represents a year from now back to 1970
+
+    // iterate each element (publication) in $recordArray and assign value
+    // according to citations vs publication date
+    for ($i = 0; $i < count($recordArray); $i++) {
+        // check publication year against current year
+        switch (date('Y')) {
+            case ($recordArray[$i]['pubyear']) == (date('Y')):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 10);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-1):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 10);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-2):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 9);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-3):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 8);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-4):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 7);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-5):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 6);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-6):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 5);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-7):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 4);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-8):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 3);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-9):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 2);
+                break;
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-10):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 1);
+                break;
+            default:
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 0);
+                break;
+        }
+    };
+
+
+    /********* VALUES END ************/
+
+    /******* FREQUENCY OF AUTHOR *******/
+
+    // iterate data and add 'frequency' to each element with value 1
+    for ($i = 0; $i < (count($recordArray)); $i++) {
+        $recordArray[$i]['frequency'] = 1;
+    };
+
+    /**********************************/
+
 
     // as length of $j loop will decrease each time because of 'unset' its elements, create a variable to dynamically store its length
     $length = count($recordArray);
@@ -453,10 +563,14 @@
             if ($recordArray[$i]['author1'] === $recordArray[$j]['author1']) {
                 // add second citations value to first
                 $recordArray[$i]['citations'] += $recordArray[$j]['citations'];
+                // add second value to first
+                $recordArray[$i]['values'] += $recordArray[$j]['values'];
                 // remove second instance
                 unset($recordArray[$j]);
                 // add to a variable the number of times 'unset' has been used for this iteration of $i
                 $count++;
+                // add 1 to frequency for author
+                $recordArray[$i]['frequency'] += 1;
             }; // end if
         }; // end inner loop ($j)
         // decrease length of inner loop by $count, i.e. the number of elements that were removed in the last iteration, to make the length of the inner loop correct
@@ -467,29 +581,220 @@
         $recordArray = array_values($recordArray);
     }; // end outer loop ($i)
 
-    // sort array according to citation values
-    // make sure that data is sorted correctly (citations_sum, high -> low)
+    /******************************************/
+    /******* PROCESS DATA ACCORDING TO ********/
+    /********* USER TIME SPAN INPUT ***********/
+    /******************************************/
+
+
+    // create new array from $recordArray that only contains data from years
+    // specified by user in Time Span in form input
+    $timeArray = array();
+    // create new arrays for previous 2, 5 and 10 years for dropdown menu
+    $tenArray = array();
+    $fiveArray = array();
+    $twoArray = array();
+
+    for ($i = 0; $i < count($recordArray); $i++) {
+        // if the publication year of the current record is less than or equal to the end of the time span
+        // AND greater than or equal to the start of the time span then include the full record in $timeArray
+        if (($recordArray[$i]['pubyear'] <= $timeEnd) && ($recordArray[$i]['pubyear'] >= $timeStart)) {
+            array_push($timeArray, $recordArray[$i]);
+        }
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-10)) {
+            array_push($tenArray, $recordArray[$i]);
+        }
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-5)) {
+            array_push($fiveArray, $recordArray[$i]);
+        }
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-2)) {
+            array_push($twoArray, $recordArray[$i]);
+        }
+    };
+
+    /* echo count($timeArray);
+    echo "</br>";
+    echo count($tenArray);
+    echo "</br>";
+    echo count($fiveArray);
+    echo "</br>";
+    echo count($twoArray);
+    echo "</br>";
+    echo count($recordArray);
+    echo "</br>";
+
+    echo "TIME SPAN ARRAY: " . count($timeArray);
+    echo "</br></br>";
+
+    for ($i = 0; $i < count($timeArray); $i++) {
+        echo $i . "\n";
+        print "<pre>\n";
+        print_r($timeArray[$i]);
+        print "</pre>";
+    };
+
+    echo "10yr ARRAY: " . count($tenArray);
+    echo "</br></br>";
+
+    for ($i = 0; $i < count($tenArray); $i++) {
+        echo $i . "\n";
+        print "<pre>\n";
+        print_r($tenArray[$i]);
+        print "</pre>";
+    };
+
+    echo "5yr ARRAY: " . count($fiveArray);
+    echo "</br></br>";
+
+    for ($i = 0; $i < count($fiveArray); $i++) {
+        echo $i . "\n";
+        print "<pre>\n";
+        print_r($fiveArray[$i]);
+        print "</pre>";
+    };
+
+    echo "2yr ARRAY: " . count($twoArray);
+    echo "</br></br>";
+
+    for ($i = 0; $i < count($twoArray); $i++) {
+        echo $i . "\n";
+        print "<pre>\n";
+        print_r($twoArray[$i]);
+        print "</pre>";
+    }; */
+
+    /******************************************/
+
+    /* echo "RECORD ARRAY: " . count($recordArray);
+    echo "</br></br>";
+
+    for ($i = 0; $i < count($recordArray); $i++) {
+        echo $i . "\n";
+        print "<pre>\n";
+        print_r($recordArray[$i]);
+        print "</pre>";
+    }; */
+
+    // create  a new array to process values
+    $valueArray = array_merge(array(), $recordArray);
+    $freqArray = array_merge(array(), $recordArray);
+
+    // sort array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
     usort($recordArray, function ($a, $b) {
         return $b['citations'] - $a['citations'];
     });
 
+    // sort time span array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($timeArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 10yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($tenArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 5yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($fiveArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 2yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($twoArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort array according to value
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($valueArray, function ($a, $b) {
+        return $b['values'] - $a['values'];
+    });
+
+    // sort array according to frequency of author
+    usort($freqArray, function ($a, $b) {
+        return $b['frequency'] - $a['frequency'];
+    });
+
     // only include first ten elements in array
     $recordArray = array_slice($recordArray, 0, 10);
+    $timeArray = array_slice($timeArray, 0, 10);
+    $tenArray = array_slice($tenArray, 0, 10);
+    $fiveArray = array_slice($fiveArray, 0, 10);
+    $twoArray = array_slice($twoArray, 0, 10);
+    $valueArray = array_slice($valueArray, 0, 10);
+    $freqArray = array_slice($freqArray, 0, 15);
 
     // make sure all the values are strings, when encoding the summed ints seem to cause problems
-    for ($i = 0; $i < (count($recordArray)); $i++) {
+    /* for ($i = 0; $i < (count($recordArray)); $i++) {
         $recordArray[$i]['citations'] = (string)$recordArray[$i]['citations'];
     };
 
-    /* echo "</br>FINAL DATA: </br>";
+    // make sure all the values are strings, when encoding the summed ints seem to cause problems
+    for ($i = 0; $i < (count($timeArray)); $i++) {
+        $timeArray[$i]['citations'] = (string)$timeArray[$i]['citations'];
+    };
+
+    // make sure all the values are strings, when encoding the summed ints seem to cause problems
+    for ($i = 0; $i < (count($valueArray)); $i++) {
+        $valueArray[$i]['values'] = (string)$valueArray[$i]['values'];
+    }; */
+
+    // make sure all the values are strings, when encoding the summed ints seem to cause problems
+    /* for ($i = 0; $i < (count($freqArray)); $i++) {
+        $freqArray[$i]['frequency'] = (string)$freqArray[$i]['frequency'];
+    }; */
+
+    /* echo "</br>FINAL CITATIONS DATA: </br>";
     print "<pre>\n";
     print_r($recordArray);
+    print "</pre>";
+
+    echo "</br>FINAL VALUES DATA: </br>";
+    print "<pre>\n";
+    print_r($valueArray);
+    print "</pre>"; */
+
+    // sort frequency data so that it only has 2 values for bubble chart (author & frequency)
+    for ($i = 0; $i <=(count($freqArray)); $i++) {
+        unset($freqArray[$i]['citations']);
+        unset($freqArray[$i]['values']);
+        unset($freqArray[$i]['pubyear']);
+    };
+
+    for ($i = 0; $i <=(count($valueArray)); $i++) {
+        unset($valueArray[$i]['citations']);
+        unset($valueArray[$i]['frequency']);
+        unset($valueArray[$i]['pubyear']);
+    };
+
+    // for data to work in d3 as bubble chart, needs to have parent and children
+    $frequencyJSON = array();
+    $frequencyJSON["name"] = "frequencyData";
+    $frequencyJSON["children"] = $freqArray;
+
+    $valuesJSON = array();
+    $valuesJSON["name"] = "rankedData";
+    $valuesJSON["children"] = $valueArray;
+
+    /* echo "</br>FINAL FREQUENCY DATA: </br>";
+    print "<pre>\n";
+    print_r($frequencyJSON);
+    print "</pre>";
+
+    echo "</br>FINAL VALUES DATA: </br>";
+    print "<pre>\n";
+    print_r($valueArray);
     print "</pre>"; */
 
     // clear the output buffer
     while (ob_get_status()) {
         ob_end_clean();
-    }
+    };
 
     // store data in session variable
     // $_SESSION['data'] = json_encode($recordArray);
@@ -502,7 +807,7 @@
                       removePanel();
                   </script>";
 
-    include "data.php";
+    include "data.html";
 
 
     // =================================================== //
@@ -518,5 +823,19 @@
     // echo "This page was created in ".$totaltime." seconds";
 
 ?>
+
+<!-- create jscript variable here to use in graphs.js -->
+<script type="text/javascript">
+    var topCited = $.parseJSON('<?php echo json_encode($recordArray)?>');
+    var topCitedYears = $.parseJSON('<?php echo json_encode($timeArray)?>');
+    var topCitedTen = $.parseJSON('<?php echo json_encode($tenArray)?>');
+    var topCitedFive = $.parseJSON('<?php echo json_encode($fiveArray)?>');
+    var topCitedTwo = $.parseJSON('<?php echo json_encode($twoArray)?>');
+    var topValued = '<?php echo json_encode($valuesJSON)?>';
+    var searchData = $.parseJSON('<?php echo json_encode($searchParams)?>');
+</script>
+<!-- link to graphs.js for data variables -->
+<!-- <script type="text/javascript" src="graphs.js"></script> -->
+
 </body>
 </html>

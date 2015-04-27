@@ -6,23 +6,8 @@ a:link, a:visited, a:hover, a:active {
 	text-decoration: none !important;
 }
 
-/* #searchField {
-    margin-top: 50px !important;
-} */
-
 #form {
 	font-family: 'Raleway' !important;
-}
-
-/* spacing */
-.add_journal_field_button {
-    margin-bottom: 4px !important;
-    margin-left: 4px !important;
-}
-
-.add_title_field_button {
-    margin-bottom: 4px !important;
-    margin-left: 267px !important;
 }
 
 /* default width too narrow */
@@ -33,8 +18,9 @@ a:link, a:visited, a:hover, a:active {
 /* to allow glyphicons at end of form field */
 .form-control {
     display: inline-block !important;
-    width: 90% !important;
     margin-bottom: 15px !important;
+    width: 95% !important;
+    margin-right: 5px !important;
 }
 
 .glyphicon-transfer {
@@ -49,26 +35,165 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 15px !important;
 }
 
-#journal_list {
-    margin-bottom: 4px !important;
-    margin-left: 160px !important;
-}
-
 #alertBox {
     position: fixed !important;
     left: 35% !important;
     top: 35% !important;
 }
 
-.jumbotron p {
-    /* font-size: 20px !important; */
-}
-
 .modal-dialog {
     padding-left: 40px !important;
 }
 
-/* .sg-content {
-	background-image: url("images/footer_lodyas.png") !important;
-	background-repeat: repeat !important;
+/* KEEP BUTTONS AT END OF FORM FIELD */
+
+.journal_buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline;
+}
+
+.journal_fields_wrap {
+    position: relative;
+}
+
+.title_buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline;
+}
+
+.title_fields_wrap {
+    position: relative;
+}
+
+.form_title {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.form_field {
+    margin-top: 24px;
+}
+
+.add_journal_field_button {
+    margin-right: 28px;
+}
+
+.add_title_field_button {
+    margin-right: 28px;
+}
+
+/* .graphs {
+    margin-left: 40px !important;
 } */
+
+.chart1 {
+    display: inline-block !important;
+    margin-right: 10px !important;
+}
+
+.chart2 {
+    display: inline-block !important;
+}
+
+/* #rankChart {
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+} */
+
+.col {
+    float: left;
+    margin-right: 40px;
+    border-left: solid #5bc0de 8px;
+    padding-left: 12px;
+}
+
+/* .panel-info {
+    float: none !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+} */
+
+#freqChart {
+    float: none !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+#submit {
+    margin-top: 40px;
+}
+
+#tenYear {
+    display: inline-block !important;
+}
+
+#subTitle {
+    display: inline !important;
+}
+
+.chart3 {
+    padding: none !important;
+}
+
+.node {
+    opacity: 0.5 !important;
+}
+
+.node:hover {
+    opacity: 1 !important;
+}
+
+.dropdown {
+    margin-top: 20px;
+}
+
+.backdrop {
+    background-color: #5bc0de !important;
+    border-radius: 10px !important;
+}
+
+.titles {
+    color: #fff !important;
+}
+
+#impact {
+    margin-bottom: 20px !important;
+    /* float: none !important;
+    margin-right: auto !important;
+    margin-left: 25px !important; */
+    padding-left: 30px !important;
+    display: inline-block !important;
+}
+
+#algorithm {
+    margin-top: 100px;
+    margin-left: 20px;
+    display: inline-block;
+    margin-bottom: 500px;
+}
+
+.graph_fields_wrap {
+    float: none !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 1190px !important;
+}
+
+.jumbotron {
+    display: block !important;
+    float: none !important;
+    bottom: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+#header {
+    float: none !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}

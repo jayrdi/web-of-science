@@ -1,7 +1,4 @@
 
-// jQuery:
-// to add/remove form fields
-
 $(document).ready(function() {
 
     // variables for journal form fields

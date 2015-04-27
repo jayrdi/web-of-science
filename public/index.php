@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html lang="en" ng-app>
+<html lang="en">
 
 	<!-- USER LOGIN SECURITY -->
 	<?php
@@ -41,6 +41,13 @@
 		<meta name="keywords" content="academic intelligence, resviz, research visualisation, research and enterprise services"/>
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Dawson"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
 	</head>
 
 	<body>
@@ -70,9 +77,8 @@
 					<div class="navbar-header">
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li><a href="https://resviz.ncl.ac.uk/"><span class="glyphicon glyphicon-home"></span></a></li>
-							<li><a href="https://resviz.ncl.ac.uk/profile">Research Visualisation</a></li>
-							<li><a href="index.php">Academic Intelligence</a></li>
+							<li><a href="index.php"><span class="glyphicon glyphicon-home"></span></a></li>
+							<li><a href="about.php">About</a></li>
 						</ul>
 					</div> <!-- navbar-collapse -->
 				</div> <!-- container -->
@@ -85,37 +91,65 @@
 					<form action="wos.php" method="post" role="form" class="form-horizontal" id="form">
 						<fieldset>
 							<div class="form-group">
-								<div class="col-lg-6 well bs-component" id="searchField">
+								<div class="col-lg-6 well bs-component">
 
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
-										<label>Journal</label>
-										<a class="btn btn-success" id="journal_list" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
-										    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
-										<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
-										<div>
+										<h4 class="form_title">Journal</h4>
+										<div class="journal_buttons">
+											<a class="btn btn-success" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
+											    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
+											<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
+										</div> <!-- journal_buttons -->
+										<div class="form_field">
 											<input class="form-control" type="text" name="journal1" data-toggle="tooltip-right"
 												   title="Please enter only one journal per box">
-										</div>
-									</div>
+										</div> <!-- form_field -->
+									</div> <!-- journal_fields_wrap -->
 
 									<div class="title_fields_wrap">
 										<!-- keyword(s) for paper title(s) -->
-										<label>Keyword</label>
-										<button class="add_title_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
-										<div>
+										<h4 class="form_title">Keyword</h4>
+										<div class="title_buttons">
+											<button class="add_title_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
+										</div> <!-- title_buttons -->
+										<div class="form_field">
 											<input class="form-control" type="text" name="title1" data-toggle="tooltip-right"
 												   title="Please enter only one title per box">
-										</div>
-									</div>
+										</div> <!-- form_field -->
+									</div> <!-- title_fields_wrap -->
 
 									<!-- timespan -->
-									<label>TIME SPAN</label></br>
-									<label>From: <input class="form-control" type="date" name="timeStart" placeholder="YYYY-MM-DD"></label>
-									<label>To: <input class="form-control" type="date" name="timeEnd" placeholder="YYYY-MM-DD"></label><br/><br/>
+									<h4 class="form_title">Time Span</h4></br>
+									<label for="select" class="col-lg-2 control-label">From:</label>
+									<div class="col-lg-3">
+									    <select class="form-control" name="timeStart" id="select">
+										    <option value="" selected disabled>Select</option>
+										    <script type="text/javascript">
+										    	// get current year and then use loop to populate options
+										    	var year = new Date().getFullYear();
+										        for(i = year; i >= 1970; i--) {
+										            document.write('<option value="' + i + '">' + i + '</option>');
+										        };
+										    </script>
+										</select>
+									</div> <!-- col-lg-3 -->
+									<label for="select" class="col-lg-2 control-label">To:</label>
+									<div class="col-lg-3">
+									    <select class="form-control" name="timeEnd" id="select">
+									    	<option value="" selected disabled>Select</option>
+										    <script type="text/javascript">
+										    	// get current year and then use loop to populate options
+										        for(i = year; i >= 1970; i--) {
+										            document.write('<option value="' + i + '">' + i + '</option>');
+										        };
+										    </script>
+										</select>
+									</div> <!-- col-lg-3 -->
+									<br/><br/>
 
 									<!-- execute search -->
-									<button type="submit" class="btn btn-primary btn-lg"><strong>Submit</strong><span class='glyphicon glyphicon-transfer'></span></button>
+									<button type="submit" class="btn btn-primary btn-lg" id="submit"><strong>Submit</strong><span class='glyphicon glyphicon-transfer'></span></button>
 
 								</div> <!-- col-lg-6 -->
 
@@ -125,11 +159,10 @@
 										<h2>Notes</h2>
 										<p>This application is optimised for Chrome.</p>
 										<p>In order to get the best results from your search,<br/>enter one or more journals.</p>
-										<p>Keywords and time spans are optional and can be<br/>used to refine your search.</p>
-										<!-- <a class="btn btn-warning btn-md" target="_blank" href="#"><strong>Click here</strong></a> -->
-									</div>
+										<p>Keywords and time spans are optional but can be<br/>used to refine your search.</p>
+									</div> <!-- modal-dialog -->
 
-								</div> 
+								</div> <!-- col-lg-6 -->
 
 							</div> <!-- form-group -->
 						</fieldset>
