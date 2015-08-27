@@ -23,6 +23,7 @@ a:link, a:visited, a:hover, a:active {
     margin-right: 5px !important;
 }
 
+/* create space between glyphs and text */
 .glyphicon-transfer {
     margin-left: 15px !important;
 }
@@ -35,17 +36,33 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 15px !important;
 }
 
+/* make sure chevrons are light blue */
+.glyphicon-chevron-left {
+    color: #5bc0de !important;
+}
+
+.glyphicon-chevron-right {
+    color: #5bc0de !important;
+}
+
+/* spacing next to 'previous' and 'next' buttons above citation graphs */
+.pager {
+    margin: 5px !important;
+}
+
+/* centres the alert box (throttle or no records errors) on the page */
 #alertBox {
     position: fixed !important;
     left: 35% !important;
     top: 35% !important;
 }
 
+/* 'Notes' box on initial page */
 .modal-dialog {
     padding-left: 40px !important;
 }
 
-/* KEEP BUTTONS AT END OF FORM FIELD */
+/* KEEPS BUTTONS AT END OF FORM FIELD */
 
 .journal_buttons {
     position: absolute;
@@ -159,26 +176,29 @@ a:link, a:visited, a:hover, a:active {
 
 .titles {
     color: #fff !important;
+    margin-bottom: 0px;
 }
 
 #impact {
+    margin-top: 20px !important;
     margin-bottom: 20px !important;
-    /* float: none !important;
-    margin-right: auto !important;
-    margin-left: 25px !important; */
     padding-left: 30px !important;
     display: inline-block !important;
 }
 
 #algorithm {
     margin-top: 100px;
-    margin-left: 20px;
-    display: inline-block;
-    margin-bottom: 500px;
+    margin-left: 30px;
+    display: inline-block !important;
 }
 
-.graph_fields_wrap {
-    float: none !important;
+.graph_fields_wrap1 {
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 1190px !important;
+}
+
+.graph_fields_wrap2 {
     margin-right: auto !important;
     margin-left: auto !important;
     width: 1190px !important;
@@ -186,7 +206,6 @@ a:link, a:visited, a:hover, a:active {
 
 .jumbotron {
     display: block !important;
-    float: none !important;
     bottom: 0 !important;
     margin-right: auto !important;
     margin-left: auto !important;
@@ -196,4 +215,29 @@ a:link, a:visited, a:hover, a:active {
     float: none !important;
     margin-right: auto !important;
     margin-left: auto !important;
+}
+
+.pager {
+    font-weight: bold;
+    color: #5bc0de;
+    border: none;
+    background-color: #f7f7f7;
+    padding: 5px !important;
+    border-radius: 5px;
+}
+
+#next1 {
+    float: right !important;
+}
+
+#next2 {
+    padding-left: 3px !important;
+    float: right !important;
+}
+
+.indexer {
+    display: inline-block !important;
+    float: none !important;
+    margin-right: auto !important;
+    margin-left: 150px !important;
 }
