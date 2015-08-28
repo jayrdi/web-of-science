@@ -13,6 +13,8 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
     <!-- favicon, newcastle logo -->
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <!-- char encoding -->
+    <meta charset="UTF-8"/>
 
 </head>
 <body>
