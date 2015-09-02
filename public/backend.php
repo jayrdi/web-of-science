@@ -891,7 +891,7 @@
     print "</pre>";
     echo "</br>ALL FUNDED DATA: </br>";
     print "<pre>\n";
-    print_r($finalData);
+    print_r($projects);
     print "</pre>";
 
     // ======================== //
