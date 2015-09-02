@@ -1,6 +1,6 @@
 <html>
 <head>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- local script -->
