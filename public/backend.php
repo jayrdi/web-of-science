@@ -873,26 +873,26 @@
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
 
-    // // clear the output buffer
-    // while (ob_get_status()) {
-    //     ob_end_clean();
-    // };
+    // clear the output buffer
+    while (ob_get_status()) {
+        ob_end_clean();
+    };
 
-    // // call function to remove loading panel
-    // echo "<script type='text/javascript'>
-    //           removePanel();
-    //       </script>";
+    // call function to remove loading panel
+    echo "<script type='text/javascript'>
+              removePanel();
+          </script>";
 
-    // include "data.html";
+    include "data.html";
 
-    echo "</br>ALL CITED DATA: </br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
-    echo "</br>ALL FUNDED DATA: </br>";
-    print "<pre>\n";
-    print_r($projects);
-    print "</pre>";
+    // echo "</br>ALL CITED DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCited);
+    // print "</pre>";
+    // echo "</br>ALL FUNDED DATA: </br>";
+    // print "<pre>\n";
+    // print_r($projects);
+    // print "</pre>";
 
     // ======================== //
     // ====== TIMING END ====== //
