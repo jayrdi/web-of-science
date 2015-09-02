@@ -885,7 +885,14 @@
 
     // include "data.html";
 
-    file_put_contents("debug.log","[$date] $username - $message ($query)", FILE_APPEND);
+    echo "</br>ALL CITED DATA: </br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
+    echo "</br>ALL FUNDED DATA: </br>";
+    print "<pre>\n";
+    print_r($finalData);
+    print "</pre>";
 
     // ======================== //
     // ====== TIMING END ====== //
