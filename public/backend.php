@@ -730,26 +730,26 @@
     // close connection
     mysqli_close($connect);
 
-    echo "</br>ALL DATA: </br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
-    echo "</br>ALL DATA: </br>";
-    print "<pre>\n";
-    print_r($topCitedYears);
-    print "</pre>";
-    echo "</br>ALL DATA: </br>";
-    print "<pre>\n";
-    print_r($topCitedTen);
-    print "</pre>";
-    echo "</br>ALL DATA: </br>";
-    print "<pre>\n";
-    print_r($topCitedFive);
-    print "</pre>";
-    echo "</br>ALL DATA: </br>";
-    print "<pre>\n";
-    print_r($topCitedTwo);
-    print "</pre>";
+    // echo "</br>ALL DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCited);
+    // print "</pre>";
+    // echo "</br>ALL DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCitedYears);
+    // print "</pre>";
+    // echo "</br>ALL DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCitedTen);
+    // print "</pre>";
+    // echo "</br>ALL DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCitedFive);
+    // print "</pre>";
+    // echo "</br>ALL DATA: </br>";
+    // print "<pre>\n";
+    // print_r($topCitedTwo);
+    // print "</pre>";
     
 
     // // =========================================== //
