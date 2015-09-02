@@ -117,7 +117,7 @@
 									<!-- section for 'keyword' related elements -->
 									<div class="title_fields_wrap">
 										<!-- keyword(s) for paper title(s) -->
-										<h4 class="form_title">Keyword</h4>
+										<h4 class="form_title">Change</h4>
 										<div class="title_buttons">
 											<!-- add more fields for more keywords -->
 											<button class="add_title_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
