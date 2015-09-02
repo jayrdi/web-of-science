@@ -885,14 +885,6 @@
 
     include "data.html";
 
-    // echo "</br>ALL CITED DATA: </br>";
-    // print "<pre>\n";
-    // print_r($topCited);
-    // print "</pre>";
-    // echo "</br>ALL FUNDED DATA: </br>";
-    // print "<pre>\n";
-    // print_r($projects);
-    // print "</pre>";
 
     // ======================== //
     // ====== TIMING END ====== //

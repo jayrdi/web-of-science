@@ -40,7 +40,7 @@
 		<meta charset="UTF-8"/>
 		<!-- ensure proper rendering and touch zooming in mobile devices -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="X-UA-Compatible" content="IE=10" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Robert Dawson"/>
 
