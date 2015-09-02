@@ -873,17 +873,19 @@
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
 
-    // clear the output buffer
-    while (ob_get_status()) {
-        ob_end_clean();
-    };
+    // // clear the output buffer
+    // while (ob_get_status()) {
+    //     ob_end_clean();
+    // };
 
-    // call function to remove loading panel
-    echo "<script type='text/javascript'>
-              removePanel();
-          </script>";
+    // // call function to remove loading panel
+    // echo "<script type='text/javascript'>
+    //           removePanel();
+    //       </script>";
 
-    include "data.html";
+    // include "data.html";
+
+    file_put_contents("debug.log","[$date] $username - $message ($query)", FILE_APPEND);
 
     // ======================== //
     // ====== TIMING END ====== //
