@@ -469,11 +469,6 @@
     ob_flush(); // flush anything from the header output buffer
     flush(); // send contents so far to the browser
 
-    echo "</br>DATA: </br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
-
 
     // =========================================================== //
     // ========= ITERATE ALL GtR DATA & STORE IN ARRAY =========== //
@@ -734,6 +729,27 @@
 
     // close connection
     mysqli_close($connect);
+
+    echo "</br>ALL DATA: </br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
+    echo "</br>ALL DATA: </br>";
+    print "<pre>\n";
+    print_r($topCitedYears);
+    print "</pre>";
+    echo "</br>ALL DATA: </br>";
+    print "<pre>\n";
+    print_r($topCitedTen);
+    print "</pre>";
+    echo "</br>ALL DATA: </br>";
+    print "<pre>\n";
+    print_r($topCitedFive);
+    print "</pre>";
+    echo "</br>ALL DATA: </br>";
+    print "<pre>\n";
+    print_r($topCitedTwo);
+    print "</pre>";
     
 
     // // =========================================== //
