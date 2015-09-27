@@ -570,6 +570,11 @@
         }
     };
 
+    echo "</br>ALL DATA:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
+
 
     // ================================== //
     // =========== DATABASE  ============ //
