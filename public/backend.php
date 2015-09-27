@@ -731,7 +731,7 @@
 
     echo "</br>ALL DATA:</br>";
     print "<pre>\n";
-    print_r($$topCited);
+    print_r($topCited);
     print "</pre>";
     echo "</br>USER DEFINED:</br>";
     print "<pre>\n";
