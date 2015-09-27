@@ -570,11 +570,6 @@
         }
     };
 
-    echo "</br>ALL DATA:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
-
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -733,6 +728,15 @@
 
     // close connection
     mysqli_close($connect);
+
+    echo "</br>ALL DATA:</br>";
+    print "<pre>\n";
+    print_r($$topCited);
+    print "</pre>";
+    echo "</br>USER DEFINED:</br>";
+    print "<pre>\n";
+    print_r($topCitedYears);
+    print "</pre>";
     
 
     // // =========================================== //
