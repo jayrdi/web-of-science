@@ -729,10 +729,6 @@
     // close connection
     mysqli_close($connect);
 
-    echo "</br>ALL DATA:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
     echo "</br>USER DEFINED:</br>";
     print "<pre>\n";
     print_r($topCitedYears);
@@ -804,7 +800,7 @@
         }
     };
 
-    // create  a new array to process values
+    // create a new array to process values
     $valueArray = array_merge(array(), $recordArray);
 
     // sort array according to value
@@ -891,11 +887,6 @@
           </script>";
 
     include "data.html";
-
-    // ======================== //
-    // ====== TIMING END ====== //
-    // ======================== //
-
 
 ?>
 
