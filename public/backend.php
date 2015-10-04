@@ -1,6 +1,6 @@
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- local script -->
@@ -18,12 +18,18 @@
 <body>
 
 <?php
+    
+    // TIMING INITIALISE
+    $mtime = microtime();
+    $mtime = explode(" ",$mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    $starttime = $mtime; 
 
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
 
     // variable to store average time/record retrieval
-    $avg = 0.08; 
+    $avg = 0.015; 
 
     // initialise session in order to store data to session variable
     // session_start();
@@ -33,9 +39,8 @@
     // override default PHP memory limit
     ini_set('memory_limit', '-1');
 
-    // ================================================= //
-    // ============= WEB OF SCIENCE API ================ //
-    // ================================================= //
+    // ensures anything dumped out will be caught, output buffer
+    // ob_start();
 
     // set WSDL for authentication and create new SOAP client
     $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
@@ -79,10 +84,9 @@
         exit;
     };
 
-
-    // ============================================================== //
-    // ========= PASS IN PARAMETERS FOR SOAP REQUEST: WoS =========== //
-    // ============================================================== //
+    // =================================================================== //
+    // ============== PASS IN PARAMETERS FOR SOAP REQUEST ================ //
+    // =================================================================== //
 
     // data passed in from user via form in index.html
 
@@ -206,45 +210,21 @@
         )
     );
 
+    // =================================================================== //
+    // ==================== REST REQUEST FOR GTR ========================= //
+    // =================================================================== //
 
-    // ================================================================ //
-    // ========== PASS IN PARAMETERS FOR REST REQUEST: GtR ============ //
-    // ================================================================ //
-
-
-    // keyword(s)
-    // check if title1 field has been populated
-    if ($_POST["title1"] != "") {
-        $keyword1 = $_POST["title1"];
-    } else {
-        $keyword1 = "";
-    };
-
-    // check if title2 field has been populated
-    if (isset($_POST["title2"])) {
-        $keyword2 = $_POST["title2"];
-        $keyword2 = " OR " . $keyword2;
-    } else {
-        $keyword2 = "";
-    };
-
-    // check if title3 field has been populated
-    if (isset($_POST["title3"])) {
-        $keyword3 = $_POST["title3"];
-        $keyword3 = " OR " . $keyword3;
-    } else {
-        $keyword3 = "";
-    };
-
-    // replace any whitespace with %20 (url encoding)
-    $keyword1 = str_replace(" ", "%20", $keyword1);
-    $keyword2 = str_replace(" ", "%20", $keyword2);
-    $keyword3 = str_replace(" ", "%20", $keyword3);
+    // REST HTTP GET Request searching for people associated with keywords (term)
+    $GtRurl = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $_POST['title1'] "+" . $_POST["title2"] "+" . $_POST["title3"] . "&fetchSize=100";
+    // save results to a variable
+    $GtRresponse = file_get_contents($GtRurl);
+    // convert JSON to PHP variable
+    $GtRjson = json_decode($GtRresponse, true);
 
 
-    // =============================================================== //
-    // ===== PERFORM WoS SEARCH USING PARAMETERS & SOAP CLIENT ======= //
-    // =============================================================== //
+    // =================================================================== //
+    // ======== PERFORM SEARCH USING PARAMETERS & SOAP CLIENT ============ //
+    // =================================================================== //
 
 
     // try to store as a variable the 'search' method on the '$search_array' called on the SOAP client with associated SID
@@ -255,13 +235,22 @@
         echo $e->getMessage();
     };
 
+    // SOAP request and response data, for error handling, str_ireplace for easier viewing
+    // echo "AUTHENTICATION REQUEST: </br>" . htmlspecialchars($auth_client->__getLastRequest()) . "<br/><br/>";
+    // echo "AUTHENTICATION RESPONSE: </br>" . htmlspecialchars($auth_client->__getLastResponse()) . "<br/><br/>";
+    // echo "SEARCH REQUEST: </br>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/><br/>";
+    /* echo "SEARCH RESPONSE:";
+    print "<pre>\n";
+    print "\n" . htmlentities(str_ireplace('><', ">\n</br></br><", $search_client->__getLastResponse())) . "\n";
+    print "</pre>"; */
+
     // number of records found by search, used to finish loop (check if no records first)
     // if soap fault, i.e. no recordsFound then set $len to null to avoid undefined variable on line 205
     if (isset($search_response->return->recordsFound)) { 
         $len = $search_response->return->recordsFound;
     } else {
         $len = 0;
-    };
+    }
 
     // check if there has been a soap fault with the query OR if there are 0 records for the search
     if (is_soap_fault($search_client->__getLastResponse()) || $len == 0) {
@@ -286,39 +275,10 @@
     };
 
 
-    // ======================================================== //
-    // ===== PERFORM GtR SEARCH USING PARAMETERS & REST ======= //
-    // ======================================================== //
-
-
-    // REST HTTP GET Request searching for people associated with keywords (term)
-    $url = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100";
-
-    // save results to a variable
-    @$response = file_get_contents($url);
-
-    // convert JSON to PHP variable
-    $json = json_decode($response, true);
-
-    // store total number of projects returned by query for iteration count
-    $numProjects = $json['resourceHitCount'][0]['count'];
-
-    // total number of results pages
-    $pages = ceil($numProjects/100);
-
-    // set initial page so that each iteration adds to this to get next page
-    $page = 1;
-
-    // array to store id details for projects retured from search
-    $projects = [];
-
-    // initiate a counter to give records a number
-    $counter1 = 1;
-
-
-    // =========================================================== //
-    // ========= ITERATE ALL WoS DATA & STORE IN ARRAY =========== //
-    // =========================================================== //
+    // =================================================================== //
+    // ============ CREATE VARIABLES TO STORE REQUIRED DATA ============== //
+    // ================== FROM XML & DISPLAY IN TABLE ==================== //
+    // =================================================================== //
 
 
     // create an array to store data for each record per iteration
@@ -327,7 +287,7 @@
     // with less than 1 (4) citation(s)
     $ignore = array(0, 1, 2, 3);
     // create a counter variable to use for progress bar
-    $counter2 = 1;
+    $counter = 1;
 
     // create a variable to store time for loading screen
     $timeDecimal = round(($len*$avg), 2);
@@ -359,13 +319,6 @@
                           <strong>Cancel</strong>
                       </button>
                   </h2>
-              </div>
-              </br>
-              <div id='processing' hidden>
-                  <h4 class='text-primary'>Processing retrieved data...</h4>
-                  <div class='progress progress-striped active'>
-                      <div class='progress-bar' style='width: 100%''></div>
-                  </div>
               </div>
           </div>";
 
@@ -401,34 +354,24 @@
         $xml = new SimpleXMLElement($search_response->return->records);
 
         // save variable names for global use, author, citations and publication year
+        $author1 = "";
+        // $author2 = "";
+        // $author3 = "";
         $citations = "";
         $pubyear = "";
-        $country = "";
 
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($xml->REC as $record) {
-
-            // create array for this REC data
-            $authors = [];
 
             ob_flush(); // flush anything from the header output buffer
             flush(); // send contents so far to the browser
 
             echo "<script type='text/javascript'>
-                      setRecord(" .$counter2. ");
+                      setRecord(" .$counter. ");
                   </script>";
             
-            // authors
-            foreach($record->static_data->summary->names->name as $thisAuthor) {
-                array_push($authors, $thisAuthor->full_name);
-            }
-
-            // country (if exists)
-            if (isset($record->static_data->item->reprint_contact->address_spec->country)) {
-                $country = (string)$record->static_data->item->reprint_contact->address_spec->country;
-            } else {
-                $country = "";
-            };
+            // first author
+            $author1 = (string)$record->static_data->summary->names->name[0]->full_name;
             
             // publication year
             $pubyear = (string)$record->static_data->summary->pub_info->attributes()->pubyear;
@@ -441,9 +384,10 @@
             };
 
             // for this iteration map all the values recorded into a temporary array variable, aRecord (equivalent to one row of data in table)
-            $arecord = array("authors"=>$authors,
+            $arecord = array("author1"=>strtoupper($author1),
+                             // "author2"=>$author2,
+                             // "author3"=>$author3,
                              "pubyear"=>$pubyear,
-                             "country"=>$country,
                              "citations"=>$citations
                             );
 
@@ -451,80 +395,20 @@
             array_push($recordArray, $arecord) ;
         }
         // increment for next record
-        $counter2+=100; 
+        $counter+=100; 
     };
 
-    // need to replace single quotes to avoid char escape & other chars to help remove duplicates
+    // need to replace single quotes in text to avoid escaping when inserting to mysql, and other charas to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
-        foreach ($recordArray[$i]['authors'] as &$value) { // reference to variable so can be modified
-            $value = str_replace("'", "", $value);
-            $value = str_replace(".", " ", $value);
-            $value = str_replace(". ", " ", $value);
-        }
+        $recordArray[$i]['author1'] = str_replace("'", "", $recordArray[$i]['author1']);
+        $recordArray[$i]['author1'] = str_replace(".", " ", $recordArray[$i]['author1']);
+        $recordArray[$i]['author1'] = str_replace(". ", " ", $recordArray[$i]['author1']);
     };
 
-    // finished loading records, display 'processing' load bar
-    echo "<script type='text/javascript'>showLoadBar();</script>";
-    ob_flush(); // flush anything from the header output buffer
-    flush(); // send contents so far to the browser
-
-
-    // =========================================================== //
-    // ========= ITERATE ALL GtR DATA & STORE IN ARRAY =========== //
-    // =========================================================== //
-
-
-    // iterate data loading next page each time and adding new results to array
-    for($i = 1; $i <= $pages; $i++) {
-
-        // set page number to current iteration number
-        $page = $i;
-        // GET request each time with next page number
-        $thisUrl = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100&page=" . $page;
-        $thisResponse = file_get_contents($thisUrl);
-        $thisJson = json_decode($thisResponse, true);
-
-        // iterate results
-        foreach($thisJson['results'] as $project) {
-          // project title
-          $projTitle = $project['projectComposition']['project']['title'];
-          // value
-          $projFunds = $project['projectComposition']['project']['fund']['valuePounds'];
-          // year, only get first 4 chars for year
-          $projYear = substr(($project['projectComposition']['project']['fund']['start']), 0, 4);
-          // first name
-          $personFirstName = @$project['projectComposition']['personRole'][0]['firstName'];
-          // surname
-          $personSurname = @$project['projectComposition']['personRole'][0]['surname'];
-          // person ID
-          $personID = @$project['projectComposition']['personRole'][0]['id'];
-
-          // for this iteration map all the values recorded into a temporary array variable,
-          // aRecord (equivalent to one row of data in table)
-          $project = [
-                         "title"    =>  $projTitle,
-                         "author"   =>  $personFirstName . " " . $personSurname,
-                         "personID" =>  $personID,
-                         "year"     =>  $projYear,
-                         "funds"    =>  $projFunds
-                     ];
-          // pass the data from this iteration into the array '$projects', after all iterations,
-          // each element in $projects will be a single record for a single project
-          array_push($projects, $project) ;
-        };
-    };
-
-    // need to replace single quotes to avoid char escape
-    for ($i = 0; $i < count($projects); $i++) {
-        $projects[$i]['author'] = str_replace("'", "", $projects[$i]['author']);
-        $projects[$i]['title'] = str_replace("'", "", $projects[$i]['author']);
-    };
-
-
-    // ================================ //
-    // === ASSIGN VALUES TO RECORDS === //
-    // ================================ //
-
+    /*********************/
+    /*** ASSIGN VALUES ***/
+    /***** TO RECORDS ****/
+    /*********************/
 
     // iterate each element (publication) in $recordArray and assign value
     // according to citations vs publication date
@@ -571,193 +455,38 @@
     };
 
 
-    // ================================== //
-    // =========== DATABASE  ============ //
-    // ================================== //
+    /********* VALUES END ************/
 
-    $db_host = $_SERVER['WOS_MYSQL_HOST'];
-    $db_user = $_SERVER['WOS_MYSQL_USER'];
-    $db_password = $_SERVER['WOS_MYSQL_PASS'];
-    $db_database = $_SERVER['WOS_MYSQL_DB'];
+    /******* FREQUENCY OF AUTHOR *******/
 
-    // settings for unix socket on server, check if on server first
-    if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
-        ini_set('mysqli.default_socket', $_ENV['WOS_MYSQL_SOCKET']);
+    // iterate data and add 'frequency' to each element with value 1
+    for ($i = 0; $i < (count($recordArray)); $i++) {
+        $recordArray[$i]['frequency'] = 1;
     };
 
-    // create variable to store connection details, variables declared at start
-    $connect = mysqli_connect($db_host, $db_user, $db_password);
-    // check connection; quit if fail with error
-    if (!$connect)
-    {
-        die('Could not connect: ' . mysqli_error($connect));
-        exit();
-    };
-
-    // select database to work with using connection variable
-    mysqli_select_db($connect, $db_database);
-
-    // create the tables if they don't exist
-    // check if 'uid' can be selected (if it exists)
-    $selectTest1 = "SELECT author FROM searchresponse";
-    $con1 = mysqli_query($connect, $selectTest1);
-
-    if (empty($con1)) {
-        $query = "CREATE TABLE searchresponse (author VARCHAR(100) NOT NULL,
-                                               country VARCHAR(20),
-                                               year INT(4) NOT NULL,
-                                               citations INT(4) NOT NULL)";
-        mysqli_query($connect, $query);
-    };
-    // user defined data range
-    $selectTest2 = "SELECT author FROM userDefined";
-    $con2 = mysqli_query($connect, $selectTest2);
-
-    if (empty($con2)) {
-        $query = "CREATE TABLE userDefined (author VARCHAR(100) NOT NULL,
-                                            country VARCHAR(20),
-                                            year INT(4) NOT NULL,
-                                            citations INT(4) NOT NULL)";
-        mysqli_query($connect, $query);
-    };
-    // ten year data range
-    $selectTest3 = "SELECT author FROM tenYear";
-    $con3 = mysqli_query($connect, $selectTest3);
-
-    if (empty($con3)) {
-        $query = "CREATE TABLE tenYear (author VARCHAR(100) NOT NULL,
-                                        country VARCHAR(20),
-                                        year INT(4) NOT NULL,
-                                        citations INT(4) NOT NULL)";
-        mysqli_query($connect, $query);
-    };
-    // five year data range
-    $selectTest4 = "SELECT author FROM fiveYear";
-    $con4 = mysqli_query($connect, $selectTest4);
-
-    if (empty($con4)) {
-        $query = "CREATE TABLE fiveYear (author VARCHAR(100) NOT NULL,
-                                         country VARCHAR(20),
-                                         year INT(4) NOT NULL,
-                                         citations INT(4) NOT NULL)";
-        mysqli_query($connect, $query);
-    };
-    // two year data range
-    $selectTest5 = "SELECT author FROM twoYear";
-    $con5 = mysqli_query($connect, $selectTest5);
-
-    if (empty($con5)) {
-        $query = "CREATE TABLE twoYear (author VARCHAR(100) NOT NULL,
-                                        country VARCHAR(20),
-                                        year INT(4) NOT NULL,
-                                        citations INT(4) NOT NULL)";
-        mysqli_query($connect, $query);
-    };
-
-    // empty tables ready for new data, otherwise subsequent searches append data to end of existing
-    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
-    mysqli_query($connect, "TRUNCATE TABLE userDefined");
-    mysqli_query($connect, "TRUNCATE TABLE tenYear");
-    mysqli_query($connect, "TRUNCATE TABLE fiveYear");
-    mysqli_query($connect, "TRUNCATE TABLE twoYear");
-
-    // loop over the $recordArray (full data) and add data to MySQL table
-    for ($row = 0; $row < count($recordArray); $row++) {
-        foreach ($recordArray[$row]['authors'] as $value) {
-            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
-            // add to the query as 'value', each author, year & citation count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
-            $sql = rtrim($sql, ','); // remove the comma from the final value entry
-            $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
-            mysqli_query($connect, $sql);
-        }
-    };
-
-    // separate data into tables for each time scale
-    mysqli_query($connect, "INSERT INTO userDefined SELECT author, country, year, citations FROM searchresponse WHERE year BETWEEN " .$timeStart. " AND " .$timeEnd);
-    mysqli_query($connect, "INSERT INTO tenYear SELECT author, country, year, citations FROM searchresponse WHERE year BETWEEN " .(date("Y")-10). " AND " .date("Y"));
-    mysqli_query($connect, "INSERT INTO fiveYear SELECT author, country, year, citations FROM searchresponse WHERE year BETWEEN " .(date("Y")-5). " AND " .date("Y"));
-    mysqli_query($connect, "INSERT INTO twoYear SELECT author, country, year, citations FROM searchresponse WHERE year BETWEEN " .(date("Y")-2). " AND " .date("Y"));
-
-    // sum citations for duplicate authors
-    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE userdefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE tenyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE fiveyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE twoyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-
-    // get data back from SQL
-    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $twoArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM twoYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-
-    // populate arrays
-    $topCited = [];
-    while ($row_user = mysqli_fetch_assoc($allArrayGet)) {
-        $topCited[] = $row_user;
-    };
-    // populate arrays
-    $topCitedYears = [];
-    while ($row_user = mysqli_fetch_assoc($timeArrayGet)) {
-        $topCitedYears[] = $row_user;
-    };
-    // populate arrays
-    $topCitedTen = [];
-    while ($row_user = mysqli_fetch_assoc($tenArrayGet)) {
-        $topCitedTen[] = $row_user;
-    };
-    // populate arrays
-    $topCitedFive = [];
-    while ($row_user = mysqli_fetch_assoc($fiveArrayGet)) {
-        $topCitedFive[] = $row_user;
-    };
-    // populate arrays
-    $topCitedTwo = [];
-    while ($row_user = mysqli_fetch_assoc($twoArrayGet)) {
-        $topCitedTwo[] = $row_user;
-    };
-
-    // empty tables ready for new data, otherwise subsequent searches append data to end of existing
-    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
-    mysqli_query($connect, "TRUNCATE TABLE userDefined");
-    mysqli_query($connect, "TRUNCATE TABLE tenYear");
-    mysqli_query($connect, "TRUNCATE TABLE fiveYear");
-    mysqli_query($connect, "TRUNCATE TABLE twoYear");
-
-    // close connection
-    mysqli_close($connect);
-
-    echo "</br>USER DEFINED:</br>";
-    print "<pre>\n";
-    print_r($topCitedYears);
-    print "</pre>";
-    
-
-    // // =========================================== //
-    // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
-    // // =========================================== //
+    /**********************************/
 
 
+    // as length of $j loop will decrease each time because of 'unset' its elements, create a variable to dynamically store its length
+    $length = count($recordArray);
     $count = 0;
-    $length = count($projects);
 
-    // iterate each person in $projects, ignore last value otherwise would end up comparing it
-    // to itself in inner loop
-    for ($i = 0; $i < ($length - 1); $i++) {
-        // iterate each person in $projects a step ahead of the outer loop, compare each person
-        // with every other person in array
+    // iterate each author in $recordArray, ignore last value otherwise would end up comparing it to itself in inner loop
+    for ($i = 0; $i < (count($recordArray) - 1); $i++) {
+        // iterate each author in $recordArray a step ahead of the outer loop, compare each author with every other author in array
         for ($j = ($i + 1); $j < $length; $j++) {
-            // if there is a match between person IDs then:
-            // (@ignores undefined offset error occuring due to 'unset')
-            if ($projects[$i]['personID'] === $projects[$j]['personID']) {
+            // if there is a match between author names then (@ignores undefined offset error occuring due to 'unset'):
+            if ($recordArray[$i]['author1'] === $recordArray[$j]['author1']) {
                 // add second citations value to first
-                $projects[$i]['funds'] += $projects[$j]['funds'];
+                $recordArray[$i]['citations'] += $recordArray[$j]['citations'];
+                // add second value to first
+                $recordArray[$i]['values'] += $recordArray[$j]['values'];
                 // remove second instance
-                unset($projects[$j]);
+                unset($recordArray[$j]);
                 // add to a variable the number of times 'unset' has been used for this iteration of $i
                 $count++;
+                // add 1 to frequency for author
+                $recordArray[$i]['frequency'] += 1;
             }; // end if
         }; // end inner loop ($j)
         // decrease length of inner loop by $count, i.e. the number of elements that were removed in the last iteration, to make the length of the inner loop correct
@@ -765,43 +494,73 @@
         // reset $count for next iteration of $i
         $count = 0;
         // reset indices
-        $projects = array_values($projects);
+        $recordArray = array_values($recordArray);
     }; // end outer loop ($i)
 
+    /******************************************/
+    /******* PROCESS DATA ACCORDING TO ********/
+    /********* USER TIME SPAN INPUT ***********/
+    /******************************************/
 
-    // // ========================================= //
-    // // ======= PROCESS DATA ACCORDING TO ======= //
-    // // ========= USER TIME SPAN INPUT ========== //
-    // // ========================================= //
 
-
-    // create new array from $projects that only contains data from years
+    // create new array from $recordArray that only contains data from years
     // specified by user in Time Span in form input
-    $timeArrayFunds = array();
+    $timeArray = array();
     // create new arrays for previous 2, 5 and 10 years for dropdown menu
-    $tenArrayFunds = array();
-    $fiveArrayFunds = array();
-    $twoArrayFunds = array();
+    $tenArray = array();
+    $fiveArray = array();
+    $twoArray = array();
 
-    for ($i = 0; $i < count($projects); $i++) {
+    for ($i = 0; $i < count($recordArray); $i++) {
         // if the publication year of the current record is less than or equal to the end of the time span
         // AND greater than or equal to the start of the time span then include the full record in $timeArray
-        if (($projects[$i]['year'] <= $timeEnd) && ($projects[$i]['year'] >= $timeStart)) {
-            array_push($timeArrayFunds, $projects[$i]);
+        if (($recordArray[$i]['pubyear'] <= $timeEnd) && ($recordArray[$i]['pubyear'] >= $timeStart)) {
+            array_push($timeArray, $recordArray[$i]);
         }
-        if ($projects[$i]['year'] >= (date("Y")-10)) {
-            array_push($tenArrayFunds, $projects[$i]);
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-10)) {
+            array_push($tenArray, $recordArray[$i]);
         }
-        if ($projects[$i]['year'] >= (date("Y")-5)) {
-            array_push($fiveArrayFunds, $projects[$i]);
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-5)) {
+            array_push($fiveArray, $recordArray[$i]);
         }
-        if ($projects[$i]['year'] >= (date("Y")-2)) {
-            array_push($twoArrayFunds, $projects[$i]);
+        if ($recordArray[$i]['pubyear'] >= (date("Y")-2)) {
+            array_push($twoArray, $recordArray[$i]);
         }
     };
 
-    // create a new array to process values
+    // create  a new array to process values
     $valueArray = array_merge(array(), $recordArray);
+    $freqArray = array_merge(array(), $recordArray);
+
+    // sort array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($recordArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort time span array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($timeArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 10yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($tenArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 5yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($fiveArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
+
+    // sort 2yr array according to citations
+    // make sure that data is sorted correctly (value, high -> low)
+    usort($twoArray, function ($a, $b) {
+        return $b['citations'] - $a['citations'];
+    });
 
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
@@ -809,69 +568,38 @@
         return $b['values'] - $a['values'];
     });
 
-    // sort array according to funds
-    // make sure that data is sorted correctly (value, high -> low)
-    usort($projects, function ($a, $b) {
-        return $b['funds'] - $a['funds'];
+    // sort array according to frequency of author
+    usort($freqArray, function ($a, $b) {
+        return $b['frequency'] - $a['frequency'];
     });
 
-    // sort time span array according to funds
-    // make sure that data is sorted correctly (value, high -> low)
-    usort($timeArrayFunds, function ($a, $b) {
-        return $b['funds'] - $a['funds'];
-    });
+    // only include first ten elements in array
+    $recordArray = array_slice($recordArray, 0, 10);
+    $timeArray = array_slice($timeArray, 0, 10);
+    $tenArray = array_slice($tenArray, 0, 10);
+    $fiveArray = array_slice($fiveArray, 0, 10);
+    $twoArray = array_slice($twoArray, 0, 10);
+    $valueArray = array_slice($valueArray, 0, 10);
+    $freqArray = array_slice($freqArray, 0, 15);
 
-    // sort 10yr array according to funds
-    // make sure that data is sorted correctly (value, high -> low)
-    usort($tenArrayFunds, function ($a, $b) {
-        return $b['funds'] - $a['funds'];
-    });
+    // sort frequency data so that it only has 2 values for bubble chart (author & frequency)
+    for ($i = 0; $i <=(count($freqArray)); $i++) {
+        unset($freqArray[$i]['citations']);
+        unset($freqArray[$i]['values']);
+        unset($freqArray[$i]['pubyear']);
+    };
 
-    // sort 5yr array according to funds
-    // make sure that data is sorted correctly (value, high -> low)
-    usort($fiveArrayFunds, function ($a, $b) {
-        return $b['funds'] - $a['funds'];
-    });
-
-    // sort 2yr array according to funds
-    // make sure that data is sorted correctly (value, high -> low)
-    usort($twoArrayFunds, function ($a, $b) {
-        return $b['funds'] - $a['funds'];
-    });
-
-    // make funds more readable values (values are in millions)
-    for($i = 0; $i < count($projects); $i++) {
-        $projects[$i]['funds'] = ($projects[$i]['funds']/1000000);
-    }
-    for($i = 0; $i < count($timeArrayFunds); $i++) {
-        $timeArrayFunds[$i]['funds'] = ($timeArrayFunds[$i]['funds']/1000000);
-    }
-    for($i = 0; $i < count($tenArrayFunds); $i++) {
-        $tenArrayFunds[$i]['funds'] = ($tenArrayFunds[$i]['funds']/1000000);
-    }
-    for($i = 0; $i < count($fiveArrayFunds); $i++) {
-        $fiveArrayFunds[$i]['funds'] = ($fiveArrayFunds[$i]['funds']/1000000);
-    }
-    for($i = 0; $i < count($twoArrayFunds); $i++) {
-        $twoArrayFunds[$i]['funds'] = ($twoArrayFunds[$i]['funds']/1000000);
-    }  
-
-    // sort values data so that it only has 2 values for bubble chart (author & frequency)
     for ($i = 0; $i <=(count($valueArray)); $i++) {
         unset($valueArray[$i]['citations']);
         unset($valueArray[$i]['frequency']);
         unset($valueArray[$i]['pubyear']);
     };
 
-    // insert a separator between author names so easy to read on graph mouseover
-    foreach($valueArray as $key => $value) {
-        foreach($value['authors'] as $subKey => $subValue) {
-            // append appropriate char
-            @$valueArray[$key]['authors'][$subKey] .= "; ";
-        }
-    };
-
     // for data to work in d3 as bubble chart, needs to have parent and children
+    $frequencyJSON = array();
+    $frequencyJSON["name"] = "frequencyData";
+    $frequencyJSON["children"] = $freqArray;
+
     $valuesJSON = array();
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
@@ -881,29 +609,37 @@
         ob_end_clean();
     };
 
-    // call function to remove loading panel
+    // call function to remove panel
     echo "<script type='text/javascript'>
-              removePanel();
-          </script>";
+                      removePanel();
+                  </script>";
 
     include "data.html";
+
+
+    // =================================================== //
+    // ================ TIMING END ======================= //
+    // =================================================== //
+
+
+    $mtime = microtime();
+    $mtime = explode(" ",$mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    $endtime = $mtime;
+    $totaltime = ($endtime - $starttime);
+    // echo "This page was created in ".$totaltime." seconds";
 
 ?>
 
 <!-- create jscript variable here to use in graphs.js -->
 <script type="text/javascript">
-    var topCited = $.parseJSON('<?php echo json_encode($topCited)?>');
-    var topCitedYears = $.parseJSON('<?php echo json_encode($topCitedYears)?>');
-    var topCitedTen = $.parseJSON('<?php echo json_encode($topCitedTen)?>');
-    var topCitedFive = $.parseJSON('<?php echo json_encode($topCitedFive)?>');
-    var topCitedTwo = $.parseJSON('<?php echo json_encode($topCitedTwo)?>');
+    var topCited = $.parseJSON('<?php echo json_encode($recordArray)?>');
+    var topCitedYears = $.parseJSON('<?php echo json_encode($timeArray)?>');
+    var topCitedTen = $.parseJSON('<?php echo json_encode($tenArray)?>');
+    var topCitedFive = $.parseJSON('<?php echo json_encode($fiveArray)?>');
+    var topCitedTwo = $.parseJSON('<?php echo json_encode($twoArray)?>');
     var topValued = '<?php echo json_encode($valuesJSON)?>';
     var searchData = $.parseJSON('<?php echo json_encode($searchParams)?>');
-    var topFunded = $.parseJSON('<?php echo json_encode($projects)?>');
-    var topFundedYears = $.parseJSON('<?php echo json_encode($timeArrayFunds)?>');
-    var topFundedTen = $.parseJSON('<?php echo json_encode($tenArrayFunds)?>');
-    var topFundedFive = $.parseJSON('<?php echo json_encode($fiveArrayFunds)?>');
-    var topFundedTwo = $.parseJSON('<?php echo json_encode($twoArrayFunds)?>');
 </script>
 
 </body>
