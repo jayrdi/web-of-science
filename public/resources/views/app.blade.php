@@ -6,13 +6,15 @@
 	live on ResViz, remove the comment symbols on lines 10 & 16 --}}
 
 	{{-- USER LOGIN SECURITY --}}
-	{{-- require('redis-session.php');
+	<?php
+	require('redis-session.php');
     RedisSession::start();
 
-    @if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS']))
+    if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    @endif --}}
+    }
+	?>
 
 	<head>
 		{{-- this stops the default compatibility view for intranet sites in IE --}}
