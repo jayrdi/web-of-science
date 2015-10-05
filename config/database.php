@@ -2,7 +2,7 @@
 
 // settings for unix socket on server, check if on server first
 if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
-    ini_set('mysqli.default_socket', $_ENV['WOS_MYSQL_SOCKET']);
+    ini_set('mysqli.default_socket', $_SERVER['WOS_MYSQL_SOCKET']);
 };
 
 return [
