@@ -569,6 +569,11 @@
                 break;
         }
     };
+    
+    echo "</br>DATA PRE SQL:</br>";
+    print "<pre>\n";
+	print_r($projects);
+	print "</pre>";
 
 
     // ================================== //
@@ -733,6 +738,15 @@
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
+    
+    echo "</br>ALL DATA POST SQL:</br>";
+    print "<pre>\n";
+	print_r($topCited);
+	print "</pre>";
+	echo "</br>USER DEFINED DATA PRE SQL:</br>";
+    print "<pre>\n";
+	print_r($topCitedYears);
+	print "</pre>";
 
 
     $count = 0;
