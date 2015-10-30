@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    console.log(topCited);
+
     // different colour settings for graphs
     var palette1 = {
         fill: "steelblue",
