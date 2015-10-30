@@ -569,6 +569,11 @@
                 break;
         }
     };
+    
+ //   echo "</br>DATA PRE SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($recordArray);
+	// print "</pre>";
 
 
     // ================================== //
@@ -681,10 +686,10 @@
 
     // sum citations for duplicate authors
     mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE userdefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE tenyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE fiveyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE twoyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE userDefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE tenYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE fiveYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE twoYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
 
     // get data back from SQL
     $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
@@ -733,6 +738,15 @@
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
+    
+ //   echo "</br>ALL DATA POST SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($topCited);
+	// print "</pre>";
+	// echo "</br>USER DEFINED DATA PRE SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($topCitedYears);
+	// print "</pre>";
 
 
     $count = 0;
