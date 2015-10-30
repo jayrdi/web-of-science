@@ -2,20 +2,6 @@
 
 <html lang="en">
 
-	{{-- this section is commented out for localhost running, when
-	live on ResViz, remove the comment symbols on lines 10 & 16 --}}
-
-	{{-- USER LOGIN SECURITY --}}
-	<?php
-	require('redis-session.php');
-    RedisSession::start();
-
-    if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
-	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
-	    die();
-    }
-	?>
-
 	<head>
 		{{-- this stops the default compatibility view for intranet sites in IE --}}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
