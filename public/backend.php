@@ -572,7 +572,7 @@
     
     echo "</br>DATA PRE SQL:</br>";
     print "<pre>\n";
-	print_r($projects);
+	print_r($recordArray);
 	print "</pre>";
 
 
