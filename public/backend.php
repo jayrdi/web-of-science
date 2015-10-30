@@ -570,10 +570,10 @@
         }
     };
     
-    echo "</br>DATA PRE SQL:</br>";
-    print "<pre>\n";
-	print_r($recordArray);
-	print "</pre>";
+ //   echo "</br>DATA PRE SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($recordArray);
+	// print "</pre>";
 
 
     // ================================== //
@@ -660,11 +660,11 @@
     };
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
-    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
-    mysqli_query($connect, "TRUNCATE TABLE userDefined");
-    mysqli_query($connect, "TRUNCATE TABLE tenYear");
-    mysqli_query($connect, "TRUNCATE TABLE fiveYear");
-    mysqli_query($connect, "TRUNCATE TABLE twoYear");
+    //mysqli_query($connect, "TRUNCATE TABLE searchresponse");
+    //mysqli_query($connect, "TRUNCATE TABLE userDefined");
+    //mysqli_query($connect, "TRUNCATE TABLE tenYear");
+    //mysqli_query($connect, "TRUNCATE TABLE fiveYear");
+    //mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
@@ -739,14 +739,14 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-    echo "</br>ALL DATA POST SQL:</br>";
-    print "<pre>\n";
-	print_r($topCited);
-	print "</pre>";
-	echo "</br>USER DEFINED DATA PRE SQL:</br>";
-    print "<pre>\n";
-	print_r($topCitedYears);
-	print "</pre>";
+ //   echo "</br>ALL DATA POST SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($topCited);
+	// print "</pre>";
+	// echo "</br>USER DEFINED DATA PRE SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($topCitedYears);
+	// print "</pre>";
 
 
     $count = 0;
