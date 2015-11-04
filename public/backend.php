@@ -689,7 +689,6 @@
 
     // get data back from SQL
     $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
     $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
@@ -720,6 +719,11 @@
     while ($row_user = mysqli_fetch_assoc($twoArrayGet)) {
         $topCitedTwo[] = $row_user;
     };
+    
+    // sum values for duplicate authors
+    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
+    // get data back from SQL for values
+    $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY values DESC");
     
     // populate arrays
     $valueArray = [];
@@ -860,19 +864,19 @@
     }  
 
     // sort values data so that it only has 2 values for bubble chart (author & values)
-    for ($i = 0; $i <=(count($valueArray)); $i++) {
-        unset($valueArray[$i]['citations']);
-        unset($valueArray[$i]['frequency']);
-        unset($valueArray[$i]['pubyear']);
-    };
+    /* for ($i = 0; $i <=(count($valueArray)); $i++) {
+        //unset($valueArray[$i]['citations']);
+        //unset($valueArray[$i]['frequency']);
+        //unset($valueArray[$i]['pubyear']);
+    }; */
 
     // insert a separator between author names so easy to read on graph mouseover
-    foreach($valueArray as $key => $value) {
-        foreach($value['authors'] as $subKey => $subValue) {
+    /* foreach($valueArray as $key => $value) {
+        // foreach($value['authors'] as $subKey => $subValue) {
             // append appropriate char
-            @$valueArray[$key]['authors'][$subKey] .= "; ";
+            // @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
-    };
+    }; */
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
