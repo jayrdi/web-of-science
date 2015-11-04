@@ -809,7 +809,7 @@
         return $b['values'] - $a['values'];
     });
     
-    echo "</br>VALUES DATA:</br>";
+    echo "</br>BEFORE SUM:</br>";
     print "<pre>\n";
     print_r($valueArray);
     print "</pre>";
@@ -824,7 +824,7 @@
     for ($i = 0; $i < ($valueLen - 1); $i++) {
         // iterate each person in $valueArray a step ahead of the outer loop, compare each person
         // with every other person in array
-        for ($j = ($i + 1); $j < $length; $j++) {
+        for ($j = ($i + 1); $j < $valueLen; $j++) {
             // if there is a match between authors then:
             if ($valueArray[$i]['authors'] === $valueArray[$j]['authors']) {
                 // add second value to first
@@ -843,7 +843,7 @@
         $valueArray = array_values($valueArray);
     }; // end outer loop ($i)
     
-    echo "</br>VALUES DATA:</br>";
+    echo "</br>AFTER SUM:</br>";
     print "<pre>\n";
     print_r($valueArray);
     print "</pre>";
