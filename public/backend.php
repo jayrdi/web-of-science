@@ -561,7 +561,7 @@
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-9):
                 $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 2);
                 break;
-            case ($recordArray[$i]['puvaluesbyear']) == ((date('Y'))-10):
+            case ($recordArray[$i]['pubyear']) == ((date('Y'))-10):
                 $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 1);
                 break;
             default:
