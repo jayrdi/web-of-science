@@ -606,7 +606,8 @@
         $query = "CREATE TABLE searchresponse (author VARCHAR(100) NOT NULL,
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
-                                               citations INT(4) NOT NULL)";
+                                               citations INT(4) NOT NULL,
+                                               values INT(6) NOT NULL)";
         mysqli_query($connect, $query);
     };
     // user defined data range
@@ -664,9 +665,9 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
-            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
-            // add to the query as 'value', each author, year & citation count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
+            $sql = "INSERT INTO searchresponse (author, country, year, citations, values) VALUES (";
+            // add to the query as 'value', each author, year, citation & values count
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
@@ -688,6 +689,7 @@
 
     // get data back from SQL
     $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
     $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
@@ -717,6 +719,12 @@
     $topCitedTwo = [];
     while ($row_user = mysqli_fetch_assoc($twoArrayGet)) {
         $topCitedTwo[] = $row_user;
+    };
+    
+    // populate arrays
+    $valueArray = [];
+    while ($row_user = mysqli_fetch_assoc($valueArrayGet)) {
+        $valueArray[] = $row_user;
     };
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
@@ -794,14 +802,9 @@
             array_push($twoArrayFunds, $projects[$i]);
         }
     };
-    
-    // ========================================= //
-    // ======= SUM VALUES DATA FOR SAME ======== //
-    // ===== AUTHORS & REMOVE DUPLICATES ======= //
-    // ========================================= //
 
     // create  a new array to process values
-    $valueArray = array_merge(array(), $recordArray);
+    // $valueArray = array_merge(array(), $recordArray);
     
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
