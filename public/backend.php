@@ -808,45 +808,6 @@
     usort($valueArray, function ($a, $b) {
         return $b['values'] - $a['values'];
     });
-    
-    echo "</br>BEFORE SUM:</br>";
-    print "<pre>\n";
-    print_r($valueArray);
-    print "</pre>";
-    
-    // as length of $j loop will decrease each time because of 'unset' its elements, create a var to dynamically store its length
-    $valueLen = count($valueArray);
-    $valueCount = 0;
-    
-
-    // iterate each person in $projects, ignore last value otherwise would end up comparing it
-    // to itself in inner loop
-    for ($i = 0; $i < ($valueLen - 1); $i++) {
-        // iterate each person in $valueArray a step ahead of the outer loop, compare each person
-        // with every other person in array
-        for ($j = ($i + 1); $j < $valueLen; $j++) {
-            // if there is a match between authors then:
-            if ($valueArray[$i]['authors'] === $valueArray[$j]['authors']) {
-                // add second value to first
-                $valueArray[$i]['values'] += $valueArray[$j]['values'];
-                // remove second instance
-                unset($valueArray[$j]);
-                // add to a variable the number of times 'unset' has been used for this iteration of $i
-                $valueCount++;
-            }; // end if
-        }; // end inner loop ($j)
-        // decrease length of inner loop by $count, i.e. the number of elements that were removed in the last iteration, to make the length of the inner loop correct
-        $valueLen -= $valueCount;
-        // reset $count for next iteration of $i
-        $valueCount = 0;
-        // reset indices
-        $valueArray = array_values($valueArray);
-    }; // end outer loop ($i)
-    
-    echo "</br>AFTER SUM:</br>";
-    print "<pre>\n";
-    print_r($valueArray);
-    print "</pre>";
 
     // sort array according to funds
     // make sure that data is sorted correctly (value, high -> low)
