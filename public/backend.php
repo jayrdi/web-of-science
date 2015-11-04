@@ -869,19 +869,19 @@
     }  
 
     // sort values data so that it only has 2 values for bubble chart (author & values)
-    /* for ($i = 0; $i <=(count($valueArray)); $i++) {
-        //unset($valueArray[$i]['citations']);
-        //unset($valueArray[$i]['frequency']);
-        //unset($valueArray[$i]['pubyear']);
-    }; */
+    for ($i = 0; $i <=(count($valueArray)); $i++) {
+        unset($valueArray[$i]['citations']);
+        unset($valueArray[$i]['frequency']);
+        unset($valueArray[$i]['pubyear']);
+    };
 
     // insert a separator between author names so easy to read on graph mouseover
-    /* foreach($valueArray as $key => $value) {
-        // foreach($value['authors'] as $subKey => $subValue) {
+    foreach($valueArray as $key => $value) {
+        foreach($value['authors'] as $subKey => $subValue) {
             // append appropriate char
-            // @$valueArray[$key]['authors'][$subKey] .= "; ";
+            @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
-    }; */
+    };
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
