@@ -665,9 +665,9 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
-            $sql = "INSERT INTO searchresponse (author, country, year, citations, values) VALUES (";
+            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
             // add to the query as 'value', each author, year, citation & values count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
