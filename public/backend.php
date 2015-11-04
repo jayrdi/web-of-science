@@ -569,11 +569,6 @@
                 break;
         }
     };
-    
-    echo "</br>DATA PRE SQL:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
 
 
     // ================================== //
@@ -739,16 +734,7 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
- //   echo "</br>ALL DATA POST SQL:</br>";
- //   print "<pre>\n";
-	// print_r($topCited);
-	// print "</pre>";
-	// echo "</br>USER DEFINED DATA PRE SQL:</br>";
- //   print "<pre>\n";
-	// print_r($topCitedYears);
-	// print "</pre>";
-
-
+    
     $count = 0;
     $length = count($projects);
 
@@ -817,6 +803,11 @@
     usort($valueArray, function ($a, $b) {
         return $b['values'] - $a['values'];
     });
+    
+    echo "</br>VALUES DATA:</br>";
+    print "<pre>\n";
+    print_r($valueArray);
+    print "</pre>";
 
     // sort array according to funds
     // make sure that data is sorted correctly (value, high -> low)
@@ -865,7 +856,7 @@
         $twoArrayFunds[$i]['funds'] = ($twoArrayFunds[$i]['funds']/1000000);
     }  
 
-    // sort values data so that it only has 2 values for bubble chart (author & frequency)
+    // sort values data so that it only has 2 values for bubble chart (author & values)
     for ($i = 0; $i <=(count($valueArray)); $i++) {
         unset($valueArray[$i]['citations']);
         unset($valueArray[$i]['frequency']);
