@@ -570,10 +570,10 @@
         }
     };
     
- //   echo "</br>DATA PRE SQL:</br>";
- //   print "<pre>\n";
-	// print_r($recordArray);
-	// print "</pre>";
+    echo "</br>DATA PRE SQL:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
 
     // ================================== //
