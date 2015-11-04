@@ -532,40 +532,40 @@
         // check publication year against current year
         switch (date('Y')) {
             case ($recordArray[$i]['pubyear']) == (date('Y')):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 10);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 10);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-1):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 10);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 10);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-2):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 9);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 9);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-3):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 8);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 8);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-4):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 7);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 7);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-5):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 6);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 6);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-6):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 5);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 5);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-7):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 4);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 4);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-8):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 3);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 3);
                 break;
             case ($recordArray[$i]['pubyear']) == ((date('Y'))-9):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 2);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 2);
                 break;
-            case ($recordArray[$i]['pubyear']) == ((date('Y'))-10):
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 1);
+            case ($recordArray[$i]['puvaluesbyear']) == ((date('Y'))-10):
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 1);
                 break;
             default:
-                $recordArray[$i]['weight'] = (($recordArray[$i]['citations']) * 0);
+                $recordArray[$i]['values'] = (($recordArray[$i]['citations']) * 0);
                 break;
         }
     };
@@ -607,7 +607,7 @@
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
                                                citations INT(4) NOT NULL,
-                                               weight INT(6) NOT NULL)";
+                                               values INT(6) NOT NULL)";
         mysqli_query($connect, $query);
     };
     // user defined data range
@@ -665,9 +665,9 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
-            $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
+            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
             // add to the query as 'value', each author, year, citation & values count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['weight']. "',";
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
