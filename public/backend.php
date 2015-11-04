@@ -813,7 +813,7 @@
     };
 
     // create  a new array to process values
-    // $valueArray = array_merge(array(), $recordArray);
+    $valueArray = array_merge(array(), $recordArray);
     
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
