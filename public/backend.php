@@ -741,6 +741,11 @@
     // close connection
     mysqli_close($connect);
     
+    echo "</br>VALUES DATA:</br>";
+    print "<pre>\n";
+	print_r($valueArray);
+	print "</pre>";
+    
 
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
