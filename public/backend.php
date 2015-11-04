@@ -721,15 +721,15 @@
     };
     
     // sum values for duplicate authors
-    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
+    // mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
     // get data back from SQL for values
-    $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY values DESC");
+    // $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY values DESC");
     
     // populate arrays
-    $valueArray = [];
+    /* $valueArray = [];
     while ($row_user = mysqli_fetch_assoc($valueArrayGet)) {
         $valueArray[] = $row_user;
-    };
+    }; */
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
     mysqli_query($connect, "TRUNCATE TABLE searchresponse");
@@ -741,10 +741,10 @@
     // close connection
     mysqli_close($connect);
     
-    echo "</br>VALUES DATA:</br>";
-    print "<pre>\n";
-	print_r($valueArray);
-	print "</pre>";
+    //echo "</br>VALUES DATA:</br>";
+    //print "<pre>\n";
+    //print_r($valueArray);
+    //print "</pre>";
     
 
     // // =========================================== //
