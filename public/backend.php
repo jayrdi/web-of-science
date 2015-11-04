@@ -818,7 +818,7 @@
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['weight'] - $a['weight'];
+        return $b['values'] - $a['values'];
     });
 
     // sort array according to funds
