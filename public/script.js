@@ -78,11 +78,11 @@ $(document).ready(function() {
     ////  BUTTON    ////
     ////////////////////
 
-    var goBack = $(".back");
+    // var goBack = $(".back");
 
-    $(goBack).click(function(e) {
-        window.location.href='index.php';
-    });
+    // $(goBack).click(function(e) {
+    //     window.location.href='index.php';
+    // });
 
 })
 
