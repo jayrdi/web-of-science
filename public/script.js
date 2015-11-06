@@ -78,11 +78,11 @@ $(document).ready(function() {
     ////  BUTTON    ////
     ////////////////////
 
-    // var goBack = $(".back");
+    var goBack = $(".back");
 
-    // $(goBack).click(function(e) {
-    //     window.location.href='index.php';
-    // });
+    $(goBack).click(function(e) {
+        window.location.href='index.php';
+    });
 
 })
 
@@ -101,9 +101,9 @@ function setRecord(current) {
 };
 
 // function to redirect to index page
-function goBack() {
-    window.location.href = 'index.php';
-};
+// function goBack() {
+//     window.location.href = 'index.php';
+// };
 
 // function to remove the info panel once page has loaded
 function removePanel() {
