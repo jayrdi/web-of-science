@@ -101,9 +101,9 @@ function setRecord(current) {
 };
 
 // function to redirect to index page
-// function goBack() {
-//     window.location.href = 'index.php';
-// };
+function goBack() {
+    window.location.href = 'index.php';
+};
 
 // function to remove the info panel once page has loaded
 function removePanel() {
