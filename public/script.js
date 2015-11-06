@@ -100,10 +100,10 @@ function setRecord(current) {
     document.getElementById('progressPanel').innerHTML = "<strong>Loading record " + current + "</strong>";
 };
 
-function to redirect to index page
-function goBack() {
-    window.location.href = 'index.php';
-};
+// function to redirect to index page
+// function goBack() {
+//     window.location.href = 'index.php';
+// };
 
 // function to remove the info panel once page has loaded
 function removePanel() {
