@@ -354,7 +354,7 @@
                   <p id='progressPanel'></p>
                   <p>The <strong>maximum</strong> estimated time for this query is " .$minutes. " minutes & " .$seconds. " seconds</p>
                   <h2>
-                      <button type='submit' class='back btn btn-primary' onclick='goBack()'>
+                      <button type='submit' class='back btn btn-primary'>
                           <span class='glyphicon glyphicon-remove'></span>
                           <strong>Cancel</strong>
                       </button>
