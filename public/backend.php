@@ -661,11 +661,11 @@
     };
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
-    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
-    mysqli_query($connect, "TRUNCATE TABLE userDefined");
-    mysqli_query($connect, "TRUNCATE TABLE tenYear");
-    mysqli_query($connect, "TRUNCATE TABLE fiveYear");
-    mysqli_query($connect, "TRUNCATE TABLE twoYear");
+    //mysqli_query($connect, "TRUNCATE TABLE searchresponse");
+    //mysqli_query($connect, "TRUNCATE TABLE userDefined");
+    //mysqli_query($connect, "TRUNCATE TABLE tenYear");
+    //mysqli_query($connect, "TRUNCATE TABLE fiveYear");
+    //mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
@@ -726,11 +726,11 @@
     };
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
-    mysqli_query($connect, "TRUNCATE TABLE searchresponse");
-    mysqli_query($connect, "TRUNCATE TABLE userDefined");
-    mysqli_query($connect, "TRUNCATE TABLE tenYear");
-    mysqli_query($connect, "TRUNCATE TABLE fiveYear");
-    mysqli_query($connect, "TRUNCATE TABLE twoYear");
+    //mysqli_query($connect, "TRUNCATE TABLE searchresponse");
+    //mysqli_query($connect, "TRUNCATE TABLE userDefined");
+    //mysqli_query($connect, "TRUNCATE TABLE tenYear");
+    //mysqli_query($connect, "TRUNCATE TABLE fiveYear");
+    //mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
     // close connection
     mysqli_close($connect);
