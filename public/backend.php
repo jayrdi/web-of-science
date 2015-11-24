@@ -741,10 +741,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-	// echo "</br>USER DEFINED DATA PRE SQL:</br>";
- //   print "<pre>\n";
-	// print_r($topCitedYears);
-	// print "</pre>";
+    //echo "</br>DATA:</br>";
+    //print "<pre>\n";
+    //print_r($topCited);
+    //print "</pre>";
 
 
     $count = 0;
@@ -808,7 +808,7 @@
     };
 
     // create  a new array to process values
-    $valueArray = array_merge(array(), $recordArray);
+    $valueArray = array_merge(array(), $topCited);
 
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
