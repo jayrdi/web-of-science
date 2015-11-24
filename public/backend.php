@@ -741,9 +741,13 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-    echo "</br>DATA:</br>";
+    echo "</br>SQL DATA:</br>";
     print "<pre>\n";
     print_r($topCited);
+    print "</pre>";
+    echo "</br>ORIGINAL DATA:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
     print "</pre>";
 
 
@@ -808,12 +812,12 @@
     };
 
     // create  a new array to process values
-    $valueArray = array_merge(array(), $topCited);
+    $valueArray = array_merge(array(), $recordArray);
 
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['weight'] - $a['weight'];
+        return $b['values'] - $a['values'];
     });
 
     // sort array according to funds
