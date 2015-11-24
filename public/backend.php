@@ -694,7 +694,7 @@
     mysqli_query($connect, "UPDATE twoYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
 
     // get data back from SQL
-    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations, weight FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
