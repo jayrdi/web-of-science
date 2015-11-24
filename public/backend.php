@@ -866,18 +866,18 @@
     for($i = 0; $i < count($twoArrayFunds); $i++) {
         $twoArrayFunds[$i]['funds'] = ($twoArrayFunds[$i]['funds']/1000000);
     }
+
+    // sort values data so that it only has 2 values for bubble chart (author & frequency)
+    for ($i = 0; $i <=(count($valueArray)); $i++) {
+        unset($valueArray[$i]['citations']);
+        unset($valueArray[$i]['country']);
+        unset($valueArray[$i]['year']);
+    };
     
     echo "</br>VALUES DATA:</br>";
     print "<pre>\n";
     print_r($valueArray);
     print "</pre>";
-
-    // sort values data so that it only has 2 values for bubble chart (author & frequency)
-    for ($i = 0; $i <=(count($valueArray)); $i++) {
-        unset($valueArray[$i]['citations']);
-        unset($valueArray[$i]['frequency']);
-        unset($valueArray[$i]['pubyear']);
-    };
 
     // insert a separator between author names so easy to read on graph mouseover
     /* foreach($valueArray as $key => $value) {
