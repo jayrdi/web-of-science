@@ -887,10 +887,10 @@
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
     
-    echo "</br>VALUES DATA:</br>";
-    print "<pre>\n";
-    print_r($valuesJSON);
-    print "</pre>";
+    //echo "</br>VALUES DATA:</br>";
+    //print "<pre>\n";
+    //print_r($valuesJSON);
+    //print "</pre>";
 
     // clear the output buffer
     while (ob_get_status()) {
