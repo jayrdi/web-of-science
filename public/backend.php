@@ -741,10 +741,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-    //echo "</br>DATA:</br>";
-    //print "<pre>\n";
-    //print_r($topCited);
-    //print "</pre>";
+    echo "</br>DATA:</br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
 
 
     $count = 0;
