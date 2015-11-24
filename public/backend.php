@@ -873,11 +873,6 @@
         unset($valueArray[$i]['country']);
         unset($valueArray[$i]['year']);
     };
-    
-    echo "</br>VALUES DATA:</br>";
-    print "<pre>\n";
-    print_r($valueArray);
-    print "</pre>";
 
     // insert a separator between author names so easy to read on graph mouseover
     /* foreach($valueArray as $key => $value) {
@@ -891,6 +886,11 @@
     $valuesJSON = array();
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
+    
+    echo "</br>VALUES DATA:</br>";
+    print "<pre>\n";
+    print_r($valuesJSON);
+    print "</pre>";
 
     // clear the output buffer
     while (ob_get_status()) {
