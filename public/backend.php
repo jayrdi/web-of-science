@@ -741,10 +741,6 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-    echo "</br>ALL DATA POST SQL:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
 	// echo "</br>USER DEFINED DATA PRE SQL:</br>";
  //   print "<pre>\n";
 	// print_r($topCitedYears);
@@ -817,7 +813,7 @@
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['values'] - $a['values'];
+        return $b['weight'] - $a['weight'];
     });
 
     // sort array according to funds
