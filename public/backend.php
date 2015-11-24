@@ -741,14 +741,14 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-    echo "</br>SQL DATA:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
-    echo "</br>ORIGINAL DATA:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
+    //echo "</br>SQL DATA:</br>";
+    //print "<pre>\n";
+    //print_r($topCited);
+    //print "</pre>";
+    //echo "</br>ORIGINAL DATA:</br>";
+    //print "<pre>\n";
+    //print_r($recordArray);
+    //print "</pre>";
 
 
     $count = 0;
@@ -812,12 +812,12 @@
     };
 
     // create  a new array to process values
-    $valueArray = array_merge(array(), $recordArray);
+    $valueArray = array_merge(array(), $topCited);
 
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['values'] - $a['values'];
+        return $b['weight'] - $a['weight'];
     });
 
     // sort array according to funds
@@ -875,12 +875,12 @@
     };
 
     // insert a separator between author names so easy to read on graph mouseover
-    foreach($valueArray as $key => $value) {
+    /* foreach($valueArray as $key => $value) {
         foreach($value['authors'] as $subKey => $subValue) {
             // append appropriate char
             @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
-    };
+    }; */
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
