@@ -687,6 +687,7 @@
 
     // sum citations for duplicate authors
     mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(weight) AS weight, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.weight = grp.weight");
     mysqli_query($connect, "UPDATE userDefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
     mysqli_query($connect, "UPDATE tenYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
     mysqli_query($connect, "UPDATE fiveYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
