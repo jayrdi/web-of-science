@@ -611,8 +611,7 @@
         $query = "CREATE TABLE searchresponse (author VARCHAR(100) NOT NULL,
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
-                                               citations INT(4) NOT NULL,
-                                               weight INT(5))";
+                                               citations INT(4) NOT NULL)";
         mysqli_query($connect, $query);
     };
     // user defined data range
