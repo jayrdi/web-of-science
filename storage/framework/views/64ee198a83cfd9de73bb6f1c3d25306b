@@ -1,0 +1,104 @@
+<?php /* this HTML is inserted into app.blade.php as content */ ?>
+
+
+<?php $__env->startSection('content'); ?>
+
+<?php /* local script */ ?>
+<?php echo HTML::script('js/script.js'); ?>
+
+
+<div class="row">
+	<?php /* search form */ ?>
+	<?php /* using Illuminate\Html\HtmlServiceProvider package */ ?>
+	<?php echo Form::open(['url' => 'data', 'id' => 'form']); ?>
+
+		<fieldset>
+			<div class="form-group">
+				<?php /* see http://getbootstrap.com/css/#grid for explanation of Bootstrap grid system */ ?>
+				<div class="col-lg-6 well bs-component">
+					<?php /* 'journal(s) section of form' */ ?>
+					<div class="journal_fields_wrap">
+						<?php /* 'journal(s)' section header */ ?>
+						<h4 class="form_title">Journal</h4>
+						<?php /* buttons above 'journal(s)' input boxes */ ?>
+						<div class="journal_buttons">
+							<?php /* loads a list of journals on Web of Science */ ?>
+							<a class="btn btn-success" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
+							    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
+							<?php /* add extra input field for journals */ ?>
+							<?php echo Form::button('<span class="glyphicon glyphicon-plus"></span>    Add more fields', ['class' => 'add_journal_field_button btn btn-info']); ?>
+
+						</div> <?php /* journal_buttons */ ?>
+						<?php /* input box for journal(s) */ ?>
+						<div class="form_field">
+							<?php /* parameters: textbox(name, default value, options array) */ ?>
+							<?php echo Form::text('journal1', null, ['class' => 'form-control', 'data-toggle' => 'tooltip-right', 'title' => 'Please enter only one journal per box']); ?>
+
+						</div> <?php /* form_field */ ?>
+					</div> <?php /* journal_fields_wrap */ ?>
+
+					<?php /* 'keyword(s)' section of form' */ ?>
+					<div class="title_fields_wrap">
+						<?php /* 'keyword(s)' section header */ ?>
+						<h4 class="form_title">Keyword</h4>
+						<?php /* buttons above 'keyword(s)' input boxes */ ?>
+						<div class="title_buttons">
+							<?php /* add extra input field for keywords */ ?>
+							<?php echo Form::button('<span class="glyphicon glyphicon-plus"></span>    Add more fields', ['class' => 'add_title_field_button btn btn-info']); ?>
+
+						</div> <?php /* title_buttons */ ?>
+						<?php /* input box for keyword(s) */ ?>
+						<div class="form_field">
+							<?php /* parameters: textbox(name, default value, options array) */ ?>
+							<?php echo Form::text('title1', null, ['class' => 'form-control', 'data-toggle' => 'tooltip-right', 'title' => 'Please enter only one title per box']); ?>
+
+						</div> <?php /* form_field */ ?>
+					</div> <?php /* title_fields_wrap */ ?>
+
+					<?php /* 'time span' section of form; header */ ?>
+					<h4 class="form_title">Time Span</h4></br>
+					<?php /* 'From:' header */ ?>
+					<?php echo Form::label('select', 'From:', ['class' => 'col-lg-2 control-label']); ?>
+
+					<div class="col-lg-3">
+						<?php /* parameters: selectbox(name, [data], default, [options]) */ ?>
+						<?php /* data (years) provided by script.js */ ?>
+					    <?php echo Form::select('timeStart', [], 'Select', ['class' => 'form-control', 'id' => 'select']); ?>
+
+					</div> <?php /* col-lg-3 */ ?>
+					<?php /* 'To:' header */ ?>
+					<?php echo Form::label('select', 'To:', ['class' => 'col-lg-2 control-label']); ?>
+
+					<div class="col-lg-3">
+						<?php /* as other select box above */ ?>
+					    <?php echo Form::select('timeEnd', [], 'Select', ['class' => 'form-control', 'id' => 'select']); ?>
+
+					</div> <?php /* col-lg-3 --}
+					<br/><br/>
+
+					{{-- execute search; submit button */ ?>
+					<?php /* parameters: button(text on button, [options]) */ ?>
+					<?php echo Form::button('<strong>Submit</strong><span class="glyphicon glyphicon-transfer"></span>', ['type' => 'submit', 'class' => 'btn btn-primary btn-lg', 'id' => 'submit']); ?>
+
+
+				</div> <?php /* col-lg-6 */ ?>
+
+				<div class="col-lg-6 well bs-component">
+					<?php /* bootstrap window */ ?>
+					<div class="modal-dialog">
+						<h4>Notes</h4>
+						<p>This application is optimised for Chrome.</p>
+						<p>In order to get the best results from your search,<br/>enter one or more journals.</p>
+						<p>Keywords and time spans are optional but can be<br/>used to refine your search.</p>
+					</div> <?php /* modal-dialog */ ?>
+
+				</div> <?php /* col-lg-6 */ ?>
+
+			</div> <?php /* form-group */ ?>
+		</fieldset>
+	<?php echo Form::close(); ?>
+
+</div> <?php /* row */ ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
