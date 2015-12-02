@@ -552,7 +552,7 @@ $(document).ready(function() {
             var bubble = d3.layout.pack()
                            .sort(null)
                            .value(function (d) {
-                               return d.values;  
+                               return d.weight;  
                            })
                            .size([width, height]);
                            // .padding(3);
@@ -643,7 +643,7 @@ $(document).ready(function() {
                 // .attr("stroke-width", 5)
                 // display author name when hover over circle
                 .on("mouseover", function (d) {
-                  tooltip.text(d.authors);
+                  tooltip.text(d.author);
                   tooltip.style("visibility", "visible");
                 })
                 // when move mouse around circle, keep tooltip affixed to same place relative to pointer
@@ -656,7 +656,7 @@ $(document).ready(function() {
                 // when click on bar, performs Google search according to author name
                 .on("click", function (d) {
                     // variable stores url for google and adds author name relevant to bar that was clicked
-                    var url = "https://www.google.co.uk/#q=" + d.authors;
+                    var url = "https://www.google.co.uk/#q=" + d.author;
                     // add an href html element with the url attached
                     $(location).attr("href", url);
                     window.location = url;

@@ -607,7 +607,11 @@
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
                                                citations INT(4) NOT NULL,
+<<<<<<< HEAD
                                                values INT(6) NOT NULL)";
+=======
+                                               weight INT(5) NOT NULL)";
+>>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
         mysqli_query($connect, $query);
     };
     // user defined data range
@@ -665,9 +669,15 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
+<<<<<<< HEAD
             $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
             // add to the query as 'value', each author, year, citation & values count
             $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
+=======
+            $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
+            // add to the query as 'value', each author, year & citation count
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
+>>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
@@ -682,13 +692,14 @@
 
     // sum citations for duplicate authors
     mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(weight) AS weight, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.weight = grp.weight");
     mysqli_query($connect, "UPDATE userDefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
     mysqli_query($connect, "UPDATE tenYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
     mysqli_query($connect, "UPDATE fiveYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
     mysqli_query($connect, "UPDATE twoYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
 
     // get data back from SQL
-    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations, weight FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
@@ -751,7 +762,20 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
+<<<<<<< HEAD
     
+=======
+    //echo "</br>SQL DATA:</br>";
+    //print "<pre>\n";
+    //print_r($topCited);
+    //print "</pre>";
+    //echo "</br>ORIGINAL DATA:</br>";
+    //print "<pre>\n";
+    //print_r($recordArray);
+    //print "</pre>";
+
+
+>>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
     $count = 0;
     $length = count($projects);
 
@@ -813,12 +837,17 @@
     };
 
     // create  a new array to process values
+<<<<<<< HEAD
     $valueArray = array_merge(array(), $recordArray);
     
+=======
+    $valueArray = array_merge(array(), $topCited);
+
+>>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['values'] - $a['values'];
+        return $b['weight'] - $a['weight'];
     });
 
     // sort array according to funds
@@ -866,27 +895,32 @@
     }
     for($i = 0; $i < count($twoArrayFunds); $i++) {
         $twoArrayFunds[$i]['funds'] = ($twoArrayFunds[$i]['funds']/1000000);
-    }  
+    }
 
     // sort values data so that it only has 2 values for bubble chart (author & values)
     for ($i = 0; $i <=(count($valueArray)); $i++) {
         unset($valueArray[$i]['citations']);
-        unset($valueArray[$i]['frequency']);
-        unset($valueArray[$i]['pubyear']);
+        unset($valueArray[$i]['country']);
+        unset($valueArray[$i]['year']);
     };
 
     // insert a separator between author names so easy to read on graph mouseover
-    foreach($valueArray as $key => $value) {
+    /* foreach($valueArray as $key => $value) {
         foreach($value['authors'] as $subKey => $subValue) {
             // append appropriate char
             @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
-    };
+    }; */
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
+    
+    //echo "</br>VALUES DATA:</br>";
+    //print "<pre>\n";
+    //print_r($valuesJSON);
+    //print "</pre>";
 
     // clear the output buffer
     while (ob_get_status()) {
