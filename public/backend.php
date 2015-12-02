@@ -569,6 +569,11 @@
                 break;
         }
     };
+    
+ //   echo "</br>DATA PRE SQL:</br>";
+ //   print "<pre>\n";
+	// print_r($recordArray);
+	// print "</pre>";
 
 
     // ================================== //
@@ -607,11 +612,7 @@
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
                                                citations INT(4) NOT NULL,
-<<<<<<< HEAD
-                                               values INT(6) NOT NULL)";
-=======
                                                weight INT(5) NOT NULL)";
->>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
         mysqli_query($connect, $query);
     };
     // user defined data range
@@ -669,15 +670,9 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
-<<<<<<< HEAD
-            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
-            // add to the query as 'value', each author, year, citation & values count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
-=======
             $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
             // add to the query as 'value', each author, year & citation count
             $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
->>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
@@ -730,17 +725,6 @@
     while ($row_user = mysqli_fetch_assoc($twoArrayGet)) {
         $topCitedTwo[] = $row_user;
     };
-    
-    // sum values for duplicate authors
-    // mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(values) AS values, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.values = grp.values");
-    // get data back from SQL for values
-    // $valueArrayGet = mysqli_query($connect, "SELECT author, values FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY values DESC");
-    
-    // populate arrays
-    /* $valueArray = [];
-    while ($row_user = mysqli_fetch_assoc($valueArrayGet)) {
-        $valueArray[] = $row_user;
-    }; */
 
     // empty tables ready for new data, otherwise subsequent searches append data to end of existing
     mysqli_query($connect, "TRUNCATE TABLE searchresponse");
@@ -752,19 +736,11 @@
     // close connection
     mysqli_close($connect);
     
-    //echo "</br>VALUES DATA:</br>";
-    //print "<pre>\n";
-    //print_r($valueArray);
-    //print "</pre>";
-    
 
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
     
-<<<<<<< HEAD
-    
-=======
     //echo "</br>SQL DATA:</br>";
     //print "<pre>\n";
     //print_r($topCited);
@@ -775,7 +751,6 @@
     //print "</pre>";
 
 
->>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
     $count = 0;
     $length = count($projects);
 
@@ -805,10 +780,10 @@
     }; // end outer loop ($i)
 
 
-    // ========================================= //
-    // ======= PROCESS DATA ACCORDING TO ======= //
-    // ========= USER TIME SPAN INPUT ========== //
-    // ========================================= //
+    // // ========================================= //
+    // // ======= PROCESS DATA ACCORDING TO ======= //
+    // // ========= USER TIME SPAN INPUT ========== //
+    // // ========================================= //
 
 
     // create new array from $projects that only contains data from years
@@ -837,13 +812,8 @@
     };
 
     // create  a new array to process values
-<<<<<<< HEAD
-    $valueArray = array_merge(array(), $recordArray);
-    
-=======
     $valueArray = array_merge(array(), $topCited);
 
->>>>>>> refs/remotes/origin/dev-resviz.ncl.ac.uk
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
@@ -897,7 +867,7 @@
         $twoArrayFunds[$i]['funds'] = ($twoArrayFunds[$i]['funds']/1000000);
     }
 
-    // sort values data so that it only has 2 values for bubble chart (author & values)
+    // sort values data so that it only has 2 values for bubble chart (author & frequency)
     for ($i = 0; $i <=(count($valueArray)); $i++) {
         unset($valueArray[$i]['citations']);
         unset($valueArray[$i]['country']);
