@@ -601,6 +601,13 @@
 
     // select database to work with using connection variable
     mysqli_select_db($connect, $db_database);
+    
+    // temp delete tables to force recreation
+    mysqli_query($connect, "DROP TABLE searchresponse");
+    mysqli_query($connect, "DROP TABLE userDefined");
+    mysqli_query($connect, "DROP TABLE tenYear");
+    mysqli_query($connect, "DROP TABLE fiveYear");
+    mysqli_query($connect, "DROP TABLE twoYear");
 
     // create the tables if they don't exist
     // check if 'uid' can be selected (if it exists)
