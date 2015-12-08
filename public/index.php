@@ -38,7 +38,7 @@
 
 		<!-- META -->
 
-		<meta charset="UTF-8"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<!-- ensure proper rendering and touch zooming in mobile devices -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
