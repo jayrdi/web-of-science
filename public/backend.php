@@ -299,6 +299,11 @@
 
     // convert JSON to PHP variable
     $json = json_decode($response, true);
+    
+    echo "</br>GtR JSON data:</br>";
+    print "<pre>\n";
+    print_r($json);
+    print "</pre>";
 
     // store total number of projects returned by query for iteration count
     $numProjects = $json['resourceHitCount'][0]['count'];
@@ -570,8 +575,8 @@
         }
     };
     
- //   echo "</br>DATA PRE SQL:</br>";
- //   print "<pre>\n";
+ 	// echo "</br>DATA PRE SQL:</br>";
+ 	// print "<pre>\n";
 	// print_r($recordArray);
 	// print "</pre>";
 
