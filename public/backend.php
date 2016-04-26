@@ -19,6 +19,8 @@
 
 <?php
 
+    echo "IS THIS WORKING?!";
+
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
 
