@@ -464,6 +464,8 @@
             $value = str_replace(". ", " ", $value);
         }
     };
+    
+    echo "LINE 468";
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
@@ -475,7 +477,7 @@
     // ========= ITERATE ALL GtR DATA & STORE IN ARRAY =========== //
     // =========================================================== //
 
-    echo "THIS IS STILL WORKING";
+    echo "LINE 480";
 
     // iterate data loading next page each time and adding new results to array
     for($i = 1; $i <= $pages; $i++) {
