@@ -499,7 +499,7 @@
         print "</pre>";
 
         // iterate results
-        foreach($thisJson['results'] as $project) {
+        foreach($thisJson['searchResult']['results'] as $project) {
           // project title
           $projTitle = $project['projectComposition']['project']['title'];
           // value
