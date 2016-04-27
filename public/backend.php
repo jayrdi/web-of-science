@@ -299,11 +299,6 @@
 
     // convert JSON to PHP variable
     $json = json_decode($response, true);
-    
-    echo "</br>REST request:</br>";
-    print "<pre>\n";
-    print_r($json);
-    print "</pre>";
 
     // store total number of projects returned by query for iteration count
     $numProjects = $json['resourceHitCount'][0]['count'];
@@ -518,6 +513,11 @@
           array_push($projects, $project) ;
         };
     };
+    
+    echo "</br>GtR Data:</br>";
+    print "<pre>\n";
+    print_r($projects);
+    print "</pre>";
 
     // need to replace single quotes to avoid char escape
     for ($i = 0; $i < count($projects); $i++) {
