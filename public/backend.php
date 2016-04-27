@@ -301,11 +301,11 @@
     $json = json_decode($response, true);
 
     // store total number of projects returned by query for iteration count
-    $numProjects = $json['resourceHitCount'][0]['count'];
+    $numProjects = $json['searchResult']['resourceHitCount'][0]['count'];
     
     echo "</br>Number of projects found:</br>";
     print "<pre>\n";
-    print_r($numProjects);
+    print ($numProjects);
     print "</pre>";
 
     // total number of results pages
