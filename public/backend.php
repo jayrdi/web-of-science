@@ -19,8 +19,6 @@
 
 <?php
 
-    echo "IS THIS WORKING?!";
-
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
 
@@ -304,7 +302,7 @@
     
     echo "</br>GtR JSON data:</br>";
     print "<pre>\n";
-    print_r($json);
+    print ($json);
     print "</pre>";
 
     // store total number of projects returned by query for iteration count
