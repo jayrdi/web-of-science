@@ -481,6 +481,10 @@
         $page = $i;
         // GET request each time with next page number
         $thisUrl = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100&page=" . $page;
+        echo "</br>REST request:</br>";
+        print "<pre>\n";
+        print ($thisUrl);
+        print "</pre>";
         $thisResponse = file_get_contents($thisUrl);
         $thisJson = json_decode($thisResponse, true);
 
@@ -513,11 +517,6 @@
           array_push($projects, $project) ;
         };
     };
-    
-    echo "</br>GtR Data:</br>";
-    print "<pre>\n";
-    print_r($projects);
-    print "</pre>";
 
     // need to replace single quotes to avoid char escape
     for ($i = 0; $i < count($projects); $i++) {
