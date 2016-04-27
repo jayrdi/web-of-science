@@ -18,7 +18,8 @@
 <body>
 
 <?php
-    echo "LINE 21";
+
+    echo "LINE 22";
 
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
@@ -491,6 +492,11 @@
         $thisUrl = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100&page=" . $page;
         $thisResponse = file_get_contents($thisUrl);
         $thisJson = json_decode($thisResponse, true);
+        
+        echo "</br>Data:</br>";
+        print "<pre>\n";
+        print_r($thisJson);
+        print "</pre>";
 
         // iterate results
         foreach($thisJson['results'] as $project) {
