@@ -302,6 +302,11 @@
 
     // store total number of projects returned by query for iteration count
     $numProjects = $json['resourceHitCount'][0]['count'];
+    
+    echo "</br>Number of projects found:</br>";
+    print "<pre>\n";
+    print_r($numProjects);
+    print "</pre>";
 
     // total number of results pages
     $pages = ceil($numProjects/100);
@@ -514,10 +519,10 @@
         };
     };
     
-    echo "</br>GtR Data:</br>";
-    print "<pre>\n";
-    print_r($projects);
-    print "</pre>";
+    // echo "</br>GtR Data:</br>";
+    // print "<pre>\n";
+    // print_r($projects);
+    // print "</pre>";
 
     // need to replace single quotes to avoid char escape
     for ($i = 0; $i < count($projects); $i++) {
