@@ -301,7 +301,7 @@
     $json = json_decode($response, true);
 
     // store total number of projects returned by query for iteration count
-    $numProjects = $json['resourceHitCount'][0]['count'];
+    $numProjects = $json['searchResult']['resourceHitCount'][0]['count'];
 
     // total number of results pages
     $pages = ceil($numProjects/100);
@@ -485,7 +485,7 @@
         $thisJson = json_decode($thisResponse, true);
 
         // iterate results
-        foreach($thisJson['results'] as $project) {
+        foreach($thisJson['searchResult']['results'] as $project) {
           // project title
           $projTitle = $project['projectComposition']['project']['title'];
           // value
