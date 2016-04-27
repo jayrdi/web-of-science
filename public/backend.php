@@ -492,10 +492,10 @@
         $thisResponse = file_get_contents($thisUrl);
         $thisJson = json_decode($thisResponse, true);
         
-        echo "</br>Data:</br>";
+        /* echo "</br>Data:</br>";
         print "<pre>\n";
         print_r($thisJson);
-        print "</pre>";
+        print "</pre>"; */
 
         // iterate results
         foreach($thisJson['searchResult']['results'] as $project) {
