@@ -67,7 +67,7 @@
 		<!-- TITLE BAR -->
 		<div class="sg-titlebar">
 			<h1><a title="Newcastle University Homepage" accesskey="1" href="http://www.ncl.ac.uk/"/><span title="Newcastle University">Newcastle University</span></a></h1>
-			<h2><a href="https://resviz.ncl.ac.uk/wos/">Academic Intelligence KJHVJKH (Dev Site)</a></h2>
+			<h2><a href="https://resviz.ncl.ac.uk/wos/">Academic Intelligence (Dev Site)</a></h2>
 		</div> 
 
 		<!-- this is not used as a navigation bar but is part of the corporate style -->
