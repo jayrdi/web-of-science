@@ -470,8 +470,8 @@
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
-    ob_flush(); // flush anything from the header output buffer
-    flush(); // send contents so far to the browser
+    // ob_flush(); // flush anything from the header output buffer
+    // flush(); // send contents so far to the browser
 
 
     // =========================================================== //
@@ -746,6 +746,7 @@
     // close connection
     mysqli_close($connect);
     
+    echo "LINE 749";
 
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
