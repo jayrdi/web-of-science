@@ -18,8 +18,7 @@
 <body>
 
 <?php
-
-    echo "LINE 22";
+    echo "LINE 21";
 
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
