@@ -19,7 +19,7 @@
 
 <?php
 
-    echo "THIS IS WORKING";
+    echo "LINE 22";
 
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
