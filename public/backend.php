@@ -475,18 +475,19 @@
     // ========= ITERATE ALL GtR DATA & STORE IN ARRAY =========== //
     // =========================================================== //
 
+    echo "THIS IS STILL WORKING";
 
     // iterate data loading next page each time and adding new results to array
     for($i = 1; $i <= $pages; $i++) {
+    	echo "</br>LOOP#:</br>";
+        print "<pre>\n";
+        print ($i);
+        print "</pre>";
 
         // set page number to current iteration number
         $page = $i;
         // GET request each time with next page number
         $thisUrl = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100&page=" . $page;
-        echo "</br>REST request:</br>";
-        print "<pre>\n";
-        print ($thisUrl);
-        print "</pre>";
         $thisResponse = file_get_contents($thisUrl);
         $thisJson = json_decode($thisResponse, true);
 
