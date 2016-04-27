@@ -293,17 +293,17 @@
 
     // REST HTTP GET Request searching for people associated with keywords (term)
     $url = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100";
-    
-    echo "</br>REST request:</br>";
-    print "<pre>\n";
-    print ($url);
-    print "</pre>";
 
     // save results to a variable
     @$response = file_get_contents($url);
 
     // convert JSON to PHP variable
     $json = json_decode($response, true);
+    
+    echo "</br>REST request:</br>";
+    print "<pre>\n";
+    print_r($json);
+    print "</pre>";
 
     // store total number of projects returned by query for iteration count
     $numProjects = $json['resourceHitCount'][0]['count'];
