@@ -469,8 +469,8 @@
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
-    // ob_flush(); // flush anything from the header output buffer
-    // flush(); // send contents so far to the browser
+    ob_flush(); // flush anything from the header output buffer
+    flush(); // send contents so far to the browser
 
 
     // =========================================================== //
@@ -528,6 +528,8 @@
         $projects[$i]['author'] = str_replace("'", "", $projects[$i]['author']);
         $projects[$i]['title'] = str_replace("'", "", $projects[$i]['author']);
     };
+    ob_flush(); // flush anything from the header output buffer
+    flush(); // send contents so far to the browser
 
 
     // ================================ //
