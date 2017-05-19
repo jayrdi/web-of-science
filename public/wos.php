@@ -479,10 +479,10 @@
         $recordArray[$i]['author1'] = str_replace(". ", " ", $recordArray[$i]['author1']);
     };
 
-    /* echo "</br>RETRIEVED DATA: </br>";
+    echo "</br>TEST: </br>";
     print "<pre>\n";
     print_r($recordArray);
-    print "</pre>"; */
+    print "</pre>";
 
 
     /*********************/
