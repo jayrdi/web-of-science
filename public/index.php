@@ -100,7 +100,7 @@
 									<!-- section for 'journal' related elements -->
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
-										<h4 class="form_title">Journal</h4>
+										<h4 class="form_title">Test</h4>
 										<div class="journal_buttons">
 											<!-- link to journal list on Web of Science site -->
 											<a class="btn btn-success" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
