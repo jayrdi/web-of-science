@@ -1,6 +1,6 @@
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- local script -->
@@ -19,13 +19,17 @@
 
 <?php
 
-    error_reporting(E_ERROR);
+    // // TIMING INITIALISE
+    // $mtime = microtime();
+    // $mtime = explode(" ",$mtime);
+    // $mtime = $mtime[1] + $mtime[0];
+    // $starttime = $mtime; 
 
     // prevent browser from using cached data
     header('Cache-Control: no-cache');
 
     // variable to store average time/record retrieval
-    $avg = 0.06; 
+    $avg = 0.08; 
 
     // initialise session in order to store data to session variable
     // session_start();
@@ -35,127 +39,117 @@
     // override default PHP memory limit
     ini_set('memory_limit', '-1');
 
+    // ensures anything dumped out will be caught, output buffer
+    // ob_start();
+
     // ================================================= //
     // ============= WEB OF SCIENCE API ================ //
     // ================================================= //
 
     // set WSDL for authentication and create new SOAP client
-    // $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
+    $auth_url  = "http://search.webofknowledge.com/esti/wokmws/ws/WOKMWSAuthenticate?wsdl";
     // array options are temporary and used to track request & response data
-    // $auth_client = @new SoapClient($auth_url, array(
-    //                  "trace" => 1,
-    //                  "exceptions" => 0));
+    $auth_client = @new SoapClient($auth_url, array(
+                     "trace" => 1,
+                     "exceptions" => 0));
     // run 'authenticate' method and store as variable
-    // $auth_response = $auth_client->authenticate();
+    $auth_response = $auth_client->authenticate();
 
     // set WSDL for search and create new SOAP client
-    // $search_url = "http://search.webofknowledge.com/esti/wokmws/ws/WokSearch?wsdl";
+    $search_url = "http://search.webofknowledge.com/esti/wokmws/ws/WokSearch?wsdl";
     // array options are temporary and used to track request & response data
-    // $search_client = @new SoapClient($search_url, array(
-    //                  "trace" => 1,
-    //                  "exceptions" => 0));
+    $search_client = @new SoapClient($search_url, array(
+                     "trace" => 1,
+                     "exceptions" => 0));
     // call 'setCookie' method on '$search_client' storing SID (Session ID) as the response (value) given from the 'authenticate' method
     // check if an SID has been set, if not it means Throttle server has stopped the query, therefore display error message
-    // if (isset($auth_response->return)) {
-    //   $search_client->__setCookie('SID',$auth_response->return);
-    // } else {
-    //     echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
-    //                <div class='panel-heading'>
-    //                    <h1 class='panel-title'>
-    //                        ALERT<span class='glyphicon glyphicon-exclamation-sign'></span>
-    //                    </h1>
-    //                </div>
-    //                <div class='panel-body'>
-    //                    <p>Request has been denied by Throttle server.</p>
-    //                    <p>Web of Science enforces a limit of 5 requests in as many minutes, 
-    //                       if you exceed this then the query will fail.</p>
-    //                    <p><strong>This will include queries from other computers on campus.</strong></p>
-    //                    <h2>
-    //                        <button type='button' class='back btn btn-danger'>
-    //                            <span class='glyphicon glyphicon-fast-backward'></span>
-    //                            <strong>Click here to return to search page</strong>
-    //                        </button>
-    //                    </h2>
-    //                </div>
-    //            </div>");
-    //     exit;
-    // };
+    if (isset($auth_response->return)) {
+      $search_client->__setCookie('SID',$auth_response->return);
+    } else {
+        echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
+                   <div class='panel-heading'>
+                       <h1 class='panel-title'>
+                           ALERT<span class='glyphicon glyphicon-exclamation-sign'></span>
+                       </h1>
+                   </div>
+                   <div class='panel-body'>
+                       <p>Request has been denied by Throttle server.</p>
+                       <p>Web of Science enforces a limit of 5 requests in as many minutes, 
+                          if you exceed this then the query will fail.</p>
+                       <p><strong>This will include queries from other computers on campus.</strong></p>
+                       <h2>
+                           <button type='button' class='back btn btn-danger'>
+                               <span class='glyphicon glyphicon-fast-backward'></span>
+                               <strong>Click here to return to search page</strong>
+                           </button>
+                       </h2>
+                   </div>
+               </div>");
+        exit;
+    };
 
 
-    // ================================================== //
-    // ========= PASS IN PARAMETERS FOR QUERY =========== //
-    // ================================================== //
+    // ============================================================== //
+    // ========= PASS IN PARAMETERS FOR SOAP REQUEST: WoS =========== //
+    // ============================================================== //
 
-    // data passed in from user via form in index.php
+    // data passed in from user via form in index.html
 
-    // search type for journals (source title)
-    $queryType1 = "SRCTITLE";
+    // search type for journals (publication name)
+    $queryType1 = "SO";
 
     // keyword(s)
     // check if journal1 field has been populated, if not entered then set to blank
     if ($_POST["journal1"] != "") {
-        $queryJournal1 = "Journal 1: " .$_POST["journal1"];
-        $searchJournal1 = "%28". $queryType1. "%28" .$_POST["journal1"]. "%29";
-        // $searchJournal1 = $queryType1. "%28" .$searchJournal1;
+        $queryJournal1 = $_POST["journal1"];
+        $queryJournal1 = $queryType1. "=" .$queryJournal1;
     } else {
         $queryJournal1 = "";
-        $searchJournal1 = NULL;
     };
 
     // check if journal2 field has been populated, if not entered then set to blank
     if (isset($_POST["journal2"])) {
-        $queryJournal2 = "Journal 2: " .$_POST["journal2"];
+        $queryJournal2 = $_POST["journal2"];
+        $queryJournal2 = " OR " .$queryType1. "=" .$queryJournal2;
         // for search params
         $searchJournal2 = $_POST["journal2"];
-        $searchJournal2 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal2. "%29";
     } else {
         $queryJournal2 = "";
-        $searchJournal2 = NULL;
+        $searchJournal2 = "";
     };
 
     // check if journal3 field has been populated
     if (isset($_POST["journal3"])) {
-        $queryJournal3 = "Journal 3: " .$_POST["journal3"];
+        $queryJournal3 = $_POST["journal3"];
+        $queryJournal3 = " OR " .$queryType1. "=" .$queryJournal3;
         // for search params
         $searchJournal3 = $_POST["journal3"];
-        $searchJournal3 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal3. "%29";
     } else {
         $queryJournal3 = "";
-        $searchJournal3 = NULL;
+        $searchJournal3 = "";
     };
 
-    // check where to put the closing bracket for journal query
-    // if ((isset($searchJournal1)) && ($searchJournal2 == NULL)) {
-    //     $searchJournal1 .= "%29";
-    // } elseif ((isset($_POST["journal1"])) && (isset($_POST["journal2"])) && ($searchJournal3 == NULL)) {
-    //     $searchJournal2 .= "%29";
-    // } elseif ((isset($_POST["journal1"])) && (isset($_POST["journal2"])) &&  (isset($_POST["journal3"]))) {
-    //     $searchJournal3 .= "%29";
-    // };
+    // search type for titles
+    $queryType2 = "TI";
 
-    // search type for KEYWORDS (article title)
-    $queryType2 = "TITLE";
-    
     // keyword(s)
     // check if title1 field has been populated
     if (($_POST["title1"] != "") && ($_POST["journal1"] != "")) {
-        $queryTitle1 = "Keyword 1: " .$_POST["title1"];
-        $searchTitle1 = $_POST["title1"];
-        $searchTitle1 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle1. "%29";
+        $queryTitle1 = $_POST["title1"];
+        $queryTitle1 = " AND " .$queryType2. "=" .$queryTitle1;
     } elseif (($_POST["title1"] != "") && ($_POST["journal1"] == "")) {
-        $queryTitle1 = "Keyword 1: " .$_POST["title1"];
-        $searchTitle1 = $_POST["title1"];
-        $searchTitle1 = $queryType2. "%28%28" .$searchTitle1. "%29";
+        $queryTitle1 = $_POST["title1"];
+        $queryTitle1 = $queryType2. "=" .$queryTitle1;
     } else {
         $queryTitle1 = "";
-        $searchTitle1 = "";
     };
 
     // check if title2 field has been populated
     if (isset($_POST["title2"])) {
-        $queryTitle2 = "Keyword 2: " .$_POST["title2"];
+        $queryTitle2 = $_POST["title2"];
+        $queryTitle2 = " OR " .$queryType2. "=" .$queryTitle2;
+        // for search params
         $searchTitle2 = $_POST["title2"];
-        $searchTitle2 = "%20%20OR%20%20" .$queryType2. "%28" .$searchTitle2. "%29";
     } else {
         $queryTitle2 = "";
         $searchTitle2 = "";
@@ -163,16 +157,17 @@
 
     // check if title3 field has been populated
     if (isset($_POST["title3"])) {
-        $queryTitle3 = "Keyword 3: " .$_POST["title3"];
+        $queryTitle3 = $_POST["title3"];
+        $queryTitle3 = " OR " .$queryType2. "=" .$queryTitle3;
+        // for search params
         $searchTitle3 = $_POST["title3"];
-        $searchTitle3 = "%20%20OR%20%20" .$queryType2. "%28" .$searchTitle3. "%29";
     } else {
         $queryTitle3 = "";
         $searchTitle3 = "";
     };
     
     // sort type
-    $sortType = "PUBYEAR";
+    $sortType = "TC";
 
     // check if timespan fields have been populated
     if ((isset($_POST["timeStart"])) && (isset($_POST["timeEnd"]))) {
@@ -182,51 +177,43 @@
         $timeStart = $_POST["timeStart"];
         $timeEnd = date("Y");
     } elseif ((!isset($_POST["timeStart"])) && (isset($_POST["timeEnd"]))) {
-        $timeStart = "1990";
+        $timeStart = "1970";
         $timeEnd = $_POST["timeEnd"];
     } else {
-        $timeStart = "1990";
+        $timeStart = "1970";
         $timeEnd = date("Y");
     };
 
-    // replace any whitespace with %20 (url encoding)
-    $searchJournal1 = str_replace(" ", "%20AND%20", $searchJournal1);
-    $searchJournal2 = str_replace(" ", "%20AND%20", $searchJournal2);
-    $searchJournal3 = str_replace(" ", "%20AND%20", $searchJournal3);
-    $searchTitle1   = str_replace(" ", "%20AND%20", $searchTitle1);
-    $searchTitle2   = str_replace(" ", "%20AND%20", $searchTitle2);
-    $searchTitle3   = str_replace(" ", "%20AND%20", $searchTitle3);
-
     // create an array to store all the search parameters to pass to data.html to display with the graph
     // journals and titles 2 & 3 are not always set so can't use $_POST
-    $searchParams = array('journal1' => $queryJournal1,
-                          'journal2' => $queryJournal2,
-                          'journal3' => $queryJournal3,
-                          'title1' => $queryTitle1,
-                          'title2' => $queryTitle2,
-                          'title3' => $queryTitle3,
+    $searchParams = array('journal1' => $_POST['journal1'],
+                          'journal2' => $searchJournal2,
+                          'journal3' => $searchJournal3,
+                          'title1' => $_POST['title1'],
+                          'title2' => $searchTitle2,
+                          'title3' => $searchTitle3,
                           'from' => $timeStart,
                           'to' => $timeEnd,
                          );
-
+    
     // pass in relevant parameters for search, this is the format necessary for Web of Science Web Service
     // perform search for all time, process different time scales later
-    // $search_array = array(
-    //     'queryParameters' => array(
-    //         'databaseId' => 'WOS',
-    //         'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
-    //         'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-    //         'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
-    //         'queryLanguage' => 'en'
-    //     ),
-    //     'retrieveParameters' => array(
-    //         'count' => '100',
-    //         'sortField' => array(
-    //             array('name' => $sortType, 'sort' => 'D')
-    //         ),
-    //         'firstRecord' => '1'
-    //     )
-    // );
+    $search_array = array(
+        'queryParameters' => array(
+            'databaseId' => 'WOS',
+            'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
+            'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
+            'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
+            'queryLanguage' => 'en'
+        ),
+        'retrieveParameters' => array(
+            'count' => '100',
+            'sortField' => array(
+                array('name' => $sortType, 'sort' => 'D')
+            ),
+            'firstRecord' => '1'
+        )
+    );
 
 
     // ================================================================ //
@@ -245,7 +232,7 @@
     // check if title2 field has been populated
     if (isset($_POST["title2"])) {
         $keyword2 = $_POST["title2"];
-        $keyword2 = "%20OR%20" . $keyword2;
+        $keyword2 = " OR " . $keyword2;
     } else {
         $keyword2 = "";
     };
@@ -253,29 +240,15 @@
     // check if title3 field has been populated
     if (isset($_POST["title3"])) {
         $keyword3 = $_POST["title3"];
-        $keyword3 = "%20OR%20" . $keyword3;
+        $keyword3 = " OR " . $keyword3;
     } else {
         $keyword3 = "";
     };
 
-    // ==================================================== //
-    // ============= SCOPUS INITIAL SEARCH ================ //
-    // ==================================================== //
-
-    // api key
-    $apiKey = "&apiKey=7804b8bef2d4dc6e5a85ef2dfb84a87c";
-
-    // GET Request searching for people associated with keywords (term)
-    $searchLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE";
-
-    // save results to a variable
-    $searchResponse = file_get_contents($searchLink);
-
-    // convert JSON to PHP variable
-    $searchJson = json_decode($searchResponse, true);
-
-    // get total number of results for query to know when to stop iterating data in loop
-    $len = $searchJson['search-results']['opensearch:totalResults'];
+    // replace any whitespace with %20 (url encoding)
+    $keyword1 = str_replace(" ", "%20", $keyword1);
+    $keyword2 = str_replace(" ", "%20", $keyword2);
+    $keyword3 = str_replace(" ", "%20", $keyword3);
 
 
     // =============================================================== //
@@ -285,22 +258,31 @@
 
     // try to store as a variable the 'search' method on the '$search_array' called on the SOAP client with associated SID
     // if it fails, redirect back to index.php with error message
-    // try {
-    //     $search_response = $search_client->search($search_array);
-    // } catch (Exception $e) {  
-    //     echo $e->getMessage();
-    // };
+    try {
+        $search_response = $search_client->search($search_array);
+    } catch (Exception $e) {  
+        echo $e->getMessage();
+    };
+
+    // SOAP request and response data, for error handling, str_ireplace for easier viewing
+    // echo "AUTHENTICATION REQUEST: </br>" . htmlspecialchars($auth_client->__getLastRequest()) . "<br/><br/>";
+    // echo "AUTHENTICATION RESPONSE: </br>" . htmlspecialchars($auth_client->__getLastResponse()) . "<br/><br/>";
+    // echo "SEARCH REQUEST: </br>" . htmlspecialchars($search_client->__getLastRequest()) . "<br/><br/>";
+    /* echo "SEARCH RESPONSE:";
+    print "<pre>\n";
+    print "\n" . htmlentities(str_ireplace('><', ">\n</br></br><", $search_client->__getLastResponse())) . "\n";
+    print "</pre>"; */
 
     // number of records found by search, used to finish loop (check if no records first)
     // if soap fault, i.e. no recordsFound then set $len to null to avoid undefined variable on line 205
-    // if (isset($search_response->return->recordsFound)) { 
-    //     $len = $search_response->return->recordsFound;
-    // } else {
-    //     $len = 0;
-    // };
+    if (isset($search_response->return->recordsFound)) { 
+        $len = $search_response->return->recordsFound;
+    } else {
+        $len = 0;
+    };
 
     // check if there has been a soap fault with the query OR if there are 0 records for the search
-    if ($len == 0) {
+    if (is_soap_fault($search_client->__getLastResponse()) || $len == 0) {
         echo ("<div class='panel panel-danger col-lg-3' id='alertBox' role='alert'>
                    <div class='panel-heading'>
                        <h1 class='panel-title'>
@@ -352,13 +334,13 @@
     $counter1 = 1;
 
 
-    // ==================================================== //
-    // ========= ITERATE  DATA & STORE IN ARRAY =========== //
-    // ==================================================== //
+    // =========================================================== //
+    // ========= ITERATE ALL WoS DATA & STORE IN ARRAY =========== //
+    // =========================================================== //
 
 
     // create an array to store data for each record per iteration
-    $recordArray = [];
+    $recordArray = array();
     // create an array to represent citation values to ignore, i.e. not interested in any publications
     // with less than 1 (4) citation(s)
     $ignore = array(0, 1, 2, 3);
@@ -405,93 +387,82 @@
               </div>
           </div>";
 
-    // iterate through all records, perform search for each 25 records (max per call) and tabulate data
-    for ($i = 1; $i <= $len; $i+=25) {
+    // $xml2 = new SimpleXMLElement($search_response->return->records);
+    // print "<pre>\n";
+    // print "XML Data: \n";
+    // print_r($xml2);
+    // print "</pre>";
+
+    // iterate through all records, perform search for each 100 records (max per call) and tabulate data
+    for ($i = 1; $i <= $len; $i+=100) {
 
         // set search parameters for current iteration (first record = 1, 101, 201, 301 etc.)
-        // $search_array = array(
-        //     'queryParameters' => array(
-        //         'databaseId' => 'WOS',
-        //         'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
-        //         'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
-        //         'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
-        //         'queryLanguage' => 'en'
-        //     ),
-        //     'retrieveParameters' => array(
-        //         'count' => '100',
-        //         'sortField' => array(
-        //             array('name' => $sortType, 'sort' => 'D')
-        //         ),
-        //         'firstRecord' => $i
-        //     )
-        // );
+        $search_array = array(
+            'queryParameters' => array(
+                'databaseId' => 'WOS',
+                'userQuery' => $queryJournal1 . $queryJournal2 . $queryJournal3 . $queryTitle1 . $queryTitle2 . $queryTitle3,
+                'editions' => array('collection' => 'WOS', 'edition' => 'SCI'),
+                'timeSpan' => array('begin' => "1970-01-01", 'end' => (date("Y-m-d"))),
+                'queryLanguage' => 'en'
+            ),
+            'retrieveParameters' => array(
+                'count' => '100',
+                'sortField' => array(
+                    array('name' => $sortType, 'sort' => 'D')
+                ),
+                'firstRecord' => $i
+            )
+        );
 
         // gather search response for current iteration
-        // try {
-        //     $search_response = $search_client->search($search_array);
-        // } catch (Exception $e) {  
-        //     echo $e->getMessage(); 
-        // };
+        try {
+            $search_response = $search_client->search($search_array);
+        } catch (Exception $e) {  
+            echo $e->getMessage(); 
+        };
 
         // turn Soap Client object from current response into SimpleXMLElement
-        // $xml = new SimpleXMLElement($search_response->return->records);
-
-        // REST HTTP GET Request searching for people associated with keywords (term)
-        $eachLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE&start=" . $i;
-
-        // save results to a variable
-        $eachResponse = file_get_contents($eachLink);
-
-        $eachJson = json_decode($eachResponse, true);
+        $xml = new SimpleXMLElement($search_response->return->records);
 
         // save variable names for global use, author, citations and publication year
-        // $citations  = "";
-        // $pubyear    = "";
+        $citations = "";
+        $pubyear = "";
+        $country = "";
 
         // iterate through current data set and tabulate onto webpage plus store in variable
-        foreach($eachJson['search-results']['entry'] as $record) {
+        foreach($xml->REC as $record) {
 
-            // create arrays for authors and countries
+            // create array for this REC data
             $authors = [];
-            // $countries = [];
 
-            // ob_flush(); // flush anything from the header output buffer
-            // flush(); // send contents so far to the browser
+            ob_flush(); // flush anything from the header output buffer
+            flush(); // send contents so far to the browser
 
             echo "<script type='text/javascript'>
                       setRecord(" .$counter2. ");
                   </script>";
             
-            // iterate each author subset
-            foreach ($record['author'] as $thisAuthor) {
-                // check if there is a value first
-                if (isset($thisAuthor['surname'])) {
-                    // populate array with author name
-                    array_push($authors, ($thisAuthor['initials'] . " " . $thisAuthor['surname']));
-                };
-            };
+            // authors
+            foreach($record->static_data->summary->names->name as $thisAuthor) {
+                array_push($authors, $thisAuthor->full_name);
+            }
 
-            // iterate each country subset
-            // foreach ($record['affiliation'] as $thisCountry) {
-            //     // check if there is a value first
-            //     if (isset($thisCountry['affiliation-country'])) {
-            //         // populate array with author name
-            //         array_push($countries, ($thisCountry['affiliation-country']));
-            //     };
-            // };
-            // country data is stored in seperate section to authors and not always populated
-            // difficult to pull out and match with author so postponed for now
-            $country = "";
+            // country (if exists)
+            if (isset($record->static_data->item->reprint_contact->address_spec->country)) {
+                $country = (string)$record->static_data->item->reprint_contact->address_spec->country;
+            } else {
+                $country = "";
+            };
             
             // publication year
-            $pubyear = substr($record['prism:coverDate'], 0, 4);
+            $pubyear = (string)$record->static_data->summary->pub_info->attributes()->pubyear;
 
-            // citations, if less than 4 then break out of iteration
-            if (!in_array(($citations = $record['citedby-count']), $ignore)) {
-                $citations = $record['citedby-count'];
+            // number of citations, if zero then finish populating array then 'break' out of loop entirely (not interested in zero cited records)
+            if (!in_array($record->dynamic_data->citation_related->tc_list->silo_tc->attributes(), $ignore)) {
+                $citations = (string)$record->dynamic_data->citation_related->tc_list->silo_tc->attributes();
             } else {
                 break 2;
-            }
+            };
 
             // for this iteration map all the values recorded into a temporary array variable, aRecord (equivalent to one row of data in table)
             $arecord = array("authors"=>$authors,
@@ -504,7 +475,7 @@
             array_push($recordArray, $arecord) ;
         }
         // increment for next record
-        $counter2+=25; 
+        $counter2+=100; 
     };
 
     // need to replace single quotes to avoid char escape & other chars to help remove duplicates
@@ -514,14 +485,6 @@
             $value = str_replace(".", " ", $value);
             $value = str_replace(". ", " ", $value);
         }
-    };
-
-    // for some reason Scopus returns duplicate authors for same record
-    // this will remove duplicates within the same paper
-    for ($i = 0; $i < count($recordArray); $i++) {
-        $recordArray[$i]['authors'] = array_unique($recordArray[$i]['authors']);
-        // reset indices for array
-        $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
 
     // finished loading records, display 'processing' load bar
@@ -546,7 +509,7 @@
         $thisJson = json_decode($thisResponse, true);
 
         // iterate results
-        foreach($thisJson['searchResult']['results'] as $project) {
+        foreach($thisJson['results'] as $project) {
           // project title
           $projTitle = $project['projectComposition']['project']['title'];
           // value
@@ -631,15 +594,19 @@
         }
     };
 
+    // print "<pre>\n";
+    // print "RecordArray: \n";
+    // print_r($recordArray);
+    // print "</pre>";
+
+
     // ================================== //
     // =========== DATABASE  ============ //
     // ================================== //
 
-    $db_host = $_SERVER['WOS_MYSQL_HOST'];
-    $db_user = $_SERVER['WOS_MYSQL_USER'];
-    $db_password = $_SERVER['WOS_MYSQL_PASS'];
-    $db_database = $_SERVER['WOS_MYSQL_DB'];
-
+    $db_host = "localhost";
+    $db_user = "root";
+    $db_password = "Akira200";
 
     // settings for unix socket on server, check if on server first
     if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
@@ -656,7 +623,7 @@
     };
 
     // select database to work with using connection variable
-    mysqli_select_db($connect, $db_database);
+    mysqli_select_db($connect, 'wos');
 
     // create the tables if they don't exist
     // check if 'uid' can be selected (if it exists)
@@ -667,8 +634,7 @@
         $query = "CREATE TABLE searchresponse (author VARCHAR(100) NOT NULL,
                                                country VARCHAR(20),
                                                year INT(4) NOT NULL,
-                                               citations INT(4) NOT NULL),
-                                               weight INT(5) NOT NULL)";
+                                               citations INT(4) NOT NULL)";
         mysqli_query($connect, $query);
     };
     // user defined data range
@@ -726,17 +692,14 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
-            $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
+            $sql = "INSERT INTO searchresponse (author, country, year, citations) VALUES (";
             // add to the query as 'value', each author, year & citation count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
         }
     };
-
-    // remove data pre 1990
-    mysqli_query($connect, "DELETE FROM searchresponse WHERE (year < 1990)");
 
     // separate data into tables for each time scale
     mysqli_query($connect, "INSERT INTO userDefined SELECT author, country, year, citations FROM searchresponse WHERE year BETWEEN " .$timeStart. " AND " .$timeEnd);
@@ -746,18 +709,17 @@
 
     // sum citations for duplicate authors
     mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE searchresponse AS r JOIN(SELECT author, SUM(weight) AS weight, COUNT(author) AS n FROM searchresponse GROUP BY author) AS grp ON grp.author = r.author SET r.weight = grp.weight");
-    mysqli_query($connect, "UPDATE userDefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userDefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE tenYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE fiveYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
-    mysqli_query($connect, "UPDATE twoYear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoYear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE userdefined AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM userdefined GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE tenyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM tenyear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE fiveyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM fiveyear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
+    mysqli_query($connect, "UPDATE twoyear AS r JOIN(SELECT author, SUM(citations) AS citations, COUNT(author) AS n FROM twoyear GROUP BY author) AS grp ON grp.author = r.author SET r.citations = grp.citations");
 
     // get data back from SQL
-    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations, weight FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userDefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
-    $twoArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM twoYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $allArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM searchresponse ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $timeArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM userdefined ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $tenArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM tenyear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveyear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
+    $twoArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM twoyear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
 
     // populate arrays
     $topCited = [];
@@ -830,10 +792,10 @@
     }; // end outer loop ($i)
 
 
-    // ========================================= //
-    // ======= PROCESS DATA ACCORDING TO ======= //
-    // ========= USER TIME SPAN INPUT ========== //
-    // ========================================= //
+    // // ========================================= //
+    // // ======= PROCESS DATA ACCORDING TO ======= //
+    // // ========= USER TIME SPAN INPUT ========== //
+    // // ========================================= //
 
 
     // create new array from $projects that only contains data from years
@@ -862,13 +824,18 @@
     };
 
     // create a new array to process values
-    $valueArray = array_merge(array(), $topCited);
+    $valueArray = array_merge(array(), $recordArray);
 
     // sort array according to value
     // make sure that data is sorted correctly (value, high -> low)
     usort($valueArray, function ($a, $b) {
-        return $b['weight'] - $a['weight'];
+        return $b['values'] - $a['values'];
     });
+
+    print "<pre>\n";
+    print "ValueArray: \n";
+    print_r($valueArray);
+    print "</pre>";
 
     // sort array according to funds
     // make sure that data is sorted correctly (value, high -> low)
@@ -920,27 +887,22 @@
     // sort values data so that it only has 2 values for bubble chart (author & frequency)
     for ($i = 0; $i <=(count($valueArray)); $i++) {
         unset($valueArray[$i]['citations']);
-        unset($valueArray[$i]['country']);
-        unset($valueArray[$i]['year']);
+        unset($valueArray[$i]['frequency']);
+        unset($valueArray[$i]['pubyear']);
     };
 
     // insert a separator between author names so easy to read on graph mouseover
-    /* foreach($valueArray as $key => $value) {
+    foreach($valueArray as $key => $value) {
         foreach($value['authors'] as $subKey => $subValue) {
             // append appropriate char
             @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
-    }; */
+    };
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
-
-    // echo "</br>Values for Node graph:</br>";
-    // print "<pre>\n";
-    // print_r($$valuesJSON);
-    // print "</pre>";
 
     // clear the output buffer
     while (ob_get_status()) {
@@ -954,6 +916,23 @@
 
     include "data.html";
 
+    // echo "</br>json topcited: </br>";
+    // print "<pre>\n";
+    // print_r(json_encode($topCited));
+    // print "</pre>";
+    
+
+    // ======================== //
+    // ====== TIMING END ====== //
+    // ======================== //
+
+
+    // $mtime = microtime();
+    // $mtime = explode(" ",$mtime);
+    // $mtime = $mtime[1] + $mtime[0];
+    // $endtime = $mtime;
+    // $totaltime = ($endtime - $starttime);
+    // echo "This page was created in ".$totaltime." seconds";
 ?>
 
 <!-- create jscript variable here to use in graphs.js -->

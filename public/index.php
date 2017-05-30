@@ -6,20 +6,19 @@
 	     live on ResViz, remove the comment symbols on lines 9, 11
 	     17 and 19 -->
 	<!-- USER LOGIN SECURITY -->
-	<?php
+	<!-- <?php
 
-	require('redis-session.php');
+	/* require('redis-session.php');
     RedisSession::start();
 
     if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    }
+    } */
 
-    ?>
+    ?> -->
 
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<title>Academic Intelligence</title>
 
 		<!-- LINKS -->
@@ -38,9 +37,10 @@
 
 		<!-- META -->
 
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta charset="UTF-8"/>
 		<!-- ensure proper rendering and touch zooming in mobile devices -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=10" />
 		<meta name="description" content="A means of querying the Thomson Reuters Web of Science database using their API with SOAP HTTPS exchanges"/>
 		<meta name="author" content="John Robert Dawson"/>
 
@@ -100,11 +100,11 @@
 									<!-- section for 'journal' related elements -->
 									<div class="journal_fields_wrap">
 										<!-- keyword(s) for journal name(s) -->
-										<h4 class="form_title">Test</h4>
+										<h4 class="form_title">Journal</h4>
 										<div class="journal_buttons">
 											<!-- link to journal list on Web of Science site -->
-											<a class="btn btn-success" target="_blank" href="http://ip-science.thomsonreuters.com/cgi-bin/jrnlst/jloptions.cgi?PC=D"
-											    data-toggle="tooltip-down" title="Search Thomson Reuters for journals">Journal List</a>
+											<a class="btn btn-success" target="_blank" href="https://www.elsevier.com/solutions/scopus/content"
+											    data-toggle="tooltip-down" title="Search Scopus for journals">Journal List</a>
 											<!-- add more fields for more journals -->
 											<button class="add_journal_field_button btn btn-info" type="button"><span class="glyphicon glyphicon-plus"></span>    Add more fields</button>
 										</div> <!-- journal_buttons -->
@@ -140,7 +140,7 @@
 										    <script type="text/javascript">
 										    	// get current year and then use loop to populate options
 										    	var year = new Date().getFullYear();
-										        for(i = year; i >= 1970; i--) {
+										        for(i = year; i >= 1990; i--) {
 										            document.write('<option value="' + i + '">' + i + '</option>');
 										        };
 										    </script>
@@ -154,7 +154,7 @@
 									    	<option value="" selected disabled>Select</option>
 										    <script type="text/javascript">
 										    	// get current year and then use loop to populate options
-										        for(i = year; i >= 1970; i--) {
+										        for(i = year; i >= 1990; i--) {
 										            document.write('<option value="' + i + '">' + i + '</option>');
 										        };
 										    </script>

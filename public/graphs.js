@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     // set title for user defined graph
     var graphTitle = $(".userTitle");
-    $(graphTitle).prepend(searchData.from + " to " + searchData.to);
+    graphTitle.prepend(searchData.from + " to " + searchData.to);
     
     // change graph according to dropdown choice
     var wrapperG = $(".graph_fields_wrap1"); // wrapper for div containing citations graphs
@@ -91,12 +91,12 @@ $(document).ready(function() {
             // remove currently displayed graph, 0th child of div
             $($(wrapperG).children()[0]).remove();
             // load new graph before other graph (0th child of div)
-            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1970)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button' disabled>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
+            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1990)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button' disabled>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
         } else {
             // remove currently displayed graph, 0th child of div
             $($(wrapperG).children()[0]).remove();
             // load new graph before other graph (0th child of div)
-            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1970)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
+            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1990)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
         }
     });
 
@@ -112,12 +112,12 @@ $(document).ready(function() {
             // remove currently displayed graph, 0th child of div
             $($(wrapperG).children()[0]).remove();
             // load new graph before other graph (0th child of div)
-            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1970)</h4><button class='pager' id='previous1' type='button' disabled><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
+            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1990)</h4><button class='pager' id='previous1' type='button' disabled><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
         } else {
             // remove currently displayed graph, 0th child of div
             $($(wrapperG).children()[0]).remove();
             // load new graph before other graph (0th child of div)
-            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1970)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
+            $(wrapperG).prepend("<div class='col-lg-6'><h3 class='titles'>Ranked Author Citations</h3><h4 class='titles'>All time (from 1990)</h4><button class='pager' id='previous1' type='button'><span class='glyphicon glyphicon-chevron-left'></span> previous</button><button class='pager indexer' type='button' disabled>" + (from1+1) + " - " + to1 + "</button><button class='pager' id='next1' type='button'>next <span class='glyphicon glyphicon-chevron-right'></span></button><div class='chart1 well bs-component'></div></div>").loadGraph((topCited.slice(from1,to1)), "chart1", palette1);
         }
     });
 
@@ -184,7 +184,7 @@ $(document).ready(function() {
         }
     });
 
-    // // optional cited, previous author set
+    // optional cited, previous author set
     $(wrapperG).on("click", "#previous2", function (e) {
         // ignore default action for this event
         e.preventDefault();
@@ -292,7 +292,7 @@ $(document).ready(function() {
 
             // maximum height of y axis is maximum number of citations/values (first element)
             if (graphSelect == "chart3") {
-                var citedMaxY = graphData[0].values;
+                var citedMaxY = graphData[0].weight;
             } else if (fundedCharts.indexOf(graphSelect) != -1) {
                 var citedMaxY = graphData[0].funds;
             } else {
@@ -350,6 +350,7 @@ $(document).ready(function() {
                                                $(location).attr("href", url);
                                                window.location = url;
                                                break;
+                                           // special case for funded graphs, can use ID for better results
                                            default:
                                                // variable stores url for google and adds ID relevant to bar that was clicked
                                                var url = "https://www.google.co.uk/#q=" + d.personID + " " + d.author;
@@ -383,7 +384,7 @@ $(document).ready(function() {
                                         .duration(200)
                                         .attr("y", function (d) {
                                             if (graphSelect == "chart3") {
-                                                return height - citedLinearScale(d.values);
+                                                return height - citedLinearScale(d.weight);
                                             } else if (fundedCharts.indexOf(graphSelect) != -1) {
                                                 return height - citedLinearScale(d.funds);
                                             } else {
@@ -392,7 +393,7 @@ $(document).ready(function() {
                                         })
                                         .attr("height", function (d) {
                                             if (graphSelect == "chart3") {
-                                                return citedLinearScale(d.values);
+                                                return citedLinearScale(d.weight);
                                             } else if (fundedCharts.indexOf(graphSelect) != -1) {
                                                 return citedLinearScale(d.funds);
                                             } else {
@@ -412,7 +413,7 @@ $(document).ready(function() {
                                        })
                                        .attr("y", function (d) {
                                            if (graphSelect == "chart3") {
-                                               return height - (citedLinearScale(d.values)) -5;
+                                               return height - (citedLinearScale(d.weight)) -5;
                                            } else if (fundedCharts.indexOf(graphSelect) != -1) {
                                                return height - (citedLinearScale(d.funds)) -5;   
                                            } else {
@@ -421,7 +422,7 @@ $(document).ready(function() {
                                        })
                                        .text(function (d) {
                                            if (graphSelect == "chart3") {
-                                               return d.values;
+                                               return d.weight;
                                            } else {
                                                return d.citations; // value to display, citations value (number)  
                                            }
@@ -588,6 +589,9 @@ $(document).ready(function() {
                               .filter(function (d) {
                                   return !d.children; 
                               });
+
+            console.log("BUBBLE DATA:");
+            console.log(nodes);
 
             var node = canvas.selectAll(".node")
                              .data(nodes)
