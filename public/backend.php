@@ -455,8 +455,8 @@
             $authors = [];
             // $countries = [];
 
-            // ob_flush(); // flush anything from the header output buffer
-            // flush(); // send contents so far to the browser
+            ob_flush(); // flush anything from the header output buffer
+            flush(); // send contents so far to the browser
 
             echo "<script type='text/javascript'>
                       setRecord(" .$counter2. ");
