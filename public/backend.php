@@ -411,7 +411,7 @@
           </div>";
 
     // iterate through all records, perform search for each 25 records (max per call) and tabulate data
-    for ($i = 1; $i <= $len; $i+=25) {
+    for ($i = 0; $i <= $len; $i+=25) {
 
         // set search parameters for current iteration (first record = 1, 101, 201, 301 etc.)
         // $search_array = array(
