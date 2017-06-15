@@ -449,6 +449,11 @@
 
         $eachJson = json_decode($eachResponse, true);
 
+        echo "</br>SCOPUS DATA " . $i . ":</br>";
+        print "<pre>\n";
+        print_r($eachJson);
+        print "</pre>";
+
         // save variable names for global use, author, citations and publication year
         // $citations  = "";
         // $pubyear    = "";
@@ -528,11 +533,6 @@
         // reset indices for array
         $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
-
-    echo "</br>SCOPUS DATA:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
