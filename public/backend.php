@@ -279,11 +279,6 @@
     // convert JSON to PHP variable
     $searchJson = json_decode($searchResponse, true);
 
-    echo "</br>SCOPUS DATA:</br>";
-    print "<pre>\n";
-    print_r($searchJson);
-    print "</pre>";
-
     // get total number of results for query to know when to stop iterating data in loop
     $len = $searchJson['search-results']['opensearch:totalResults'];
 
@@ -533,6 +528,11 @@
         // reset indices for array
         $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
+
+    echo "</br>SCOPUS DATA:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
