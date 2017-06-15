@@ -330,6 +330,11 @@
     // REST HTTP GET Request searching for people associated with keywords (term)
     $url = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100";
 
+    echo "</br>URL:</br>";
+    print "<pre>\n";
+    print_r($url);
+    print "</pre>";
+
     // save results to a variable
     @$response = file_get_contents($url);
 
