@@ -336,6 +336,11 @@
     // convert JSON to PHP variable
     $json = json_decode($response, true);
 
+    echo "</br>SCOPUS DATA:</br>";
+    print "<pre>\n";
+    print_r($json);
+    print "</pre>";
+
     // store total number of projects returned by query for iteration count
     $numProjects = $json['searchResult']['resourceHitCount'][0]['count'];
 
@@ -936,11 +941,6 @@
     $valuesJSON = array();
     $valuesJSON["name"] = "rankedData";
     $valuesJSON["children"] = $valueArray;
-
-    // echo "</br>Values for Node graph:</br>";
-    // print "<pre>\n";
-    // print_r($$valuesJSON);
-    // print "</pre>";
 
     // clear the output buffer
     while (ob_get_status()) {
