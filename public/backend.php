@@ -268,11 +268,21 @@
     // GET Request searching for people associated with keywords (term)
     $searchLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE";
 
+    echo "</br>URL:</br>";
+    print "<pre>\n";
+    print_r($searchLink);
+    print "</pre>";
+
     // save results to a variable
     $searchResponse = file_get_contents($searchLink);
 
     // convert JSON to PHP variable
     $searchJson = json_decode($searchResponse, true);
+
+    echo "</br>SCOPUS DATA:</br>";
+    print "<pre>\n";
+    print_r($searchJson);
+    print "</pre>";
 
     // get total number of results for query to know when to stop iterating data in loop
     $len = $searchJson['search-results']['opensearch:totalResults'];
@@ -330,21 +340,11 @@
     // REST HTTP GET Request searching for people associated with keywords (term)
     $url = "http://gtr.rcuk.ac.uk/search/project.json?term=" . $keyword1 . $keyword2 . $keyword3 . "&fetchSize=100";
 
-    echo "</br>URL:</br>";
-    print "<pre>\n";
-    print_r($url);
-    print "</pre>";
-
     // save results to a variable
     @$response = file_get_contents($url);
 
     // convert JSON to PHP variable
     $json = json_decode($response, true);
-
-    echo "</br>SCOPUS DATA:</br>";
-    print "<pre>\n";
-    print_r($json);
-    print "</pre>";
 
     // store total number of projects returned by query for iteration count
     $numProjects = $json['searchResult']['resourceHitCount'][0]['count'];
