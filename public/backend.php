@@ -478,7 +478,6 @@
                 if (isset($thisAuthor['surname'])) {
                     // populate array with author name
                     array_push($authors, ($thisAuthor['initials'] . " " . $thisAuthor['surname']));
-                    echo $thisAuthor['surname'];
                 };
             };
 
@@ -501,7 +500,6 @@
             if (!in_array(($citations = $record['citedby-count']), $ignore)) {
                 $citations = $record['citedby-count'];
             } else {
-                echo "***====**!BREAK HERE!**====***";
                 break 2;
             }
 
@@ -519,11 +517,6 @@
         $counter2+=25; 
     };
 
-    echo "</br>SCOPUS DATA:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
-
     // need to replace single quotes to avoid char escape & other chars to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
         foreach ($recordArray[$i]['authors'] as &$value) { // reference to variable so can be modified
@@ -540,6 +533,11 @@
         // reset indices for array
         $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
+
+    echo "</br>SCOPUS DATA:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
