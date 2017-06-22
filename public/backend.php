@@ -449,10 +449,10 @@
 
         $eachJson = json_decode($eachResponse, true);
 
-        // echo "</br>SCOPUS DATA " . $i . ":</br>";
-        // print "<pre>\n";
-        // print_r($eachJson);
-        // print "</pre>";
+        echo "</br>SCOPUS DATA " . $i . ":</br>";
+        print "<pre>\n";
+        print_r($eachJson);
+        print "</pre>";
 
         // save variable names for global use, author, citations and publication year
         // $citations  = "";
