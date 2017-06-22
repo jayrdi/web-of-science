@@ -461,11 +461,6 @@
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($eachJson['search-results']['entry'] as $record) {
 
-            echo "</br>EACH RECORD:</br>";
-            print "<pre>\n";
-            print_r($record);
-            print "</pre>";
-
             // create arrays for authors and countries
             $authors = [];
             // $countries = [];
@@ -505,6 +500,7 @@
             if (!in_array(($citations = $record['citedby-count']), $ignore)) {
                 $citations = $record['citedby-count'];
             } else {
+                echo "***====**!BREAK HERE!**====***";
                 break 2;
             }
 
@@ -521,6 +517,11 @@
         // increment for next record
         $counter2+=25; 
     };
+
+    echo "</br>SCOPUS DATA:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // need to replace single quotes to avoid char escape & other chars to help remove duplicates
     for ($i = 0; $i < count($recordArray); $i++) {
