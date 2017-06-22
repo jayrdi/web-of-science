@@ -478,6 +478,7 @@
                 if (isset($thisAuthor['surname'])) {
                     // populate array with author name
                     array_push($authors, ($thisAuthor['initials'] . " " . $thisAuthor['surname']));
+                    echo $thisAuthor['surname'];
                 };
             };
 
