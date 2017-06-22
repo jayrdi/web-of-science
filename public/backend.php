@@ -411,7 +411,7 @@
           </div>";
 
     // iterate through all records, perform search for each 25 records (max per call) and tabulate data
-    for ($i = 0; $i < $len; $i+=25) {
+    for ($i = 0; $i <= $len; $i+=25) {
 
         // set search parameters for current iteration (first record = 1, 101, 201, 301 etc.)
         // $search_array = array(
@@ -449,10 +449,10 @@
 
         $eachJson = json_decode($eachResponse, true);
 
-        echo "</br>SCOPUS DATA " . $i . ":</br>";
-        print "<pre>\n";
-        print_r($eachJson);
-        print "</pre>";
+        // echo "</br>SCOPUS DATA " . $i . ":</br>";
+        // print "<pre>\n";
+        // print_r($eachJson);
+        // print "</pre>";
 
         // save variable names for global use, author, citations and publication year
         // $citations  = "";
@@ -460,6 +460,11 @@
 
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($eachJson['search-results']['entry'] as $record) {
+
+            echo "</br>EACH RECORD:</br>";
+            print "<pre>\n";
+            print_r($record);
+            print "</pre>";
 
             // create arrays for authors and countries
             $authors = [];
