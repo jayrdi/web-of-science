@@ -109,6 +109,7 @@
         // for search params
         $searchJournal2 = $_POST["journal2"];
         $searchJournal2 = " OR ". $queryType1. "(" .$searchJournal2. ")";
+        urlencode($searchJournal2);
     } else {
         $queryJournal2 = "";
         $searchJournal2 = NULL;
@@ -120,6 +121,7 @@
         // for search params
         $searchJournal3 = $_POST["journal3"];
         $searchJournal3 = " OR ". $queryType1. "(" .$searchJournal3. ")";
+        urlencode($searchJournal3);
     } else {
         $queryJournal3 = "";
         $searchJournal3 = NULL;
@@ -143,6 +145,7 @@
         $queryTitle1 = "Keyword 1: " .$_POST["title1"];
         $searchTitle1 = $_POST["title1"];
         $searchTitle1 = " AND " .$queryType2. "(" .$searchTitle1. ")";
+        urlencode($searchTitle1);
     } elseif (($_POST["title1"] != "") && ($_POST["journal1"] == "")) {
         $queryTitle1 = "Keyword 1: " .$_POST["title1"];
         $searchTitle1 = $_POST["title1"];
@@ -157,6 +160,7 @@
         $queryTitle2 = "Keyword 2: " .$_POST["title2"];
         $searchTitle2 = $_POST["title2"];
         $searchTitle2 = " AND " .$queryType2. "(" .$searchTitle2. ")";
+        urlencode($searchTitle2);
     } else {
         $queryTitle2 = "";
         $searchTitle2 = "";
@@ -167,6 +171,7 @@
         $queryTitle3 = "Keyword 3: " .$_POST["title3"];
         $searchTitle3 = $_POST["title3"];
         $searchTitle3 = " AND " .$queryType2. "(" .$searchTitle3. ")";
+        urlencode($searchTitle3);
     } else {
         $queryTitle3 = "";
         $searchTitle3 = "";
