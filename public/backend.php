@@ -107,7 +107,7 @@
         $queryJournal2 = "Journal 2: " .$_POST["journal2"];
         // for search params
         $searchJournal2 = $_POST["journal2"];
-        $searchJournal2 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal2. "%29";
+        $searchJournal2 = "%20OR%20". $queryType1. "%28" .$searchJournal2. "%29";
     } else {
         $queryJournal2 = "";
         $searchJournal2 = NULL;
@@ -118,7 +118,7 @@
         $queryJournal3 = "Journal 3: " .$_POST["journal3"];
         // for search params
         $searchJournal3 = $_POST["journal3"];
-        $searchJournal3 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal3. "%29";
+        $searchJournal3 = "%20OR%20". $queryType1. "%28" .$searchJournal3. "%29";
     } else {
         $queryJournal3 = "";
         $searchJournal3 = NULL;
