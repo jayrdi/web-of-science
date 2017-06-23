@@ -155,7 +155,7 @@
     if (isset($_POST["title2"])) {
         $queryTitle2 = "Keyword 2: " .$_POST["title2"];
         $searchTitle2 = $_POST["title2"];
-        $searchTitle2 = "%20%20OR%20%20" .$queryType2. "%28" .$searchTitle2. "%29";
+        $searchTitle2 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle2. "%29";
     } else {
         $queryTitle2 = "";
         $searchTitle2 = "";
@@ -165,7 +165,7 @@
     if (isset($_POST["title3"])) {
         $queryTitle3 = "Keyword 3: " .$_POST["title3"];
         $searchTitle3 = $_POST["title3"];
-        $searchTitle3 = "%20%20OR%20%20" .$queryType2. "%28" .$searchTitle3. "%29";
+        $searchTitle3 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle3. "%29";
     } else {
         $queryTitle3 = "";
         $searchTitle3 = "";
@@ -810,10 +810,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    echo "</br>SCOPUS DATA:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
+    // echo "</br>SCOPUS DATA:</br>";
+    // print "<pre>\n";
+    // print_r($topCited);
+    // print "</pre>";
 
     $count = 0;
     $length = count($projects);
