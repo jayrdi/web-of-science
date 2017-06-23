@@ -97,7 +97,7 @@
         $queryJournal1 = "Journal 1: " .$_POST["journal1"];
         $searchJournal1 = "(". $queryType1. "(" .$_POST["journal1"]. ")";
         urlencode($searchJournal1);
-        // $searchJournal1 = $queryType1. "%28" .$searchJournal1;
+        // $searchJournal1 = $queryType1. "(" .$searchJournal1;
     } else {
         $queryJournal1 = "";
         $searchJournal1 = NULL;
@@ -108,7 +108,7 @@
         $queryJournal2 = "Journal 2: " .$_POST["journal2"];
         // for search params
         $searchJournal2 = $_POST["journal2"];
-        $searchJournal2 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal2. "%29";
+        $searchJournal2 = " OR ". $queryType1. "(" .$searchJournal2. ")";
     } else {
         $queryJournal2 = "";
         $searchJournal2 = NULL;
@@ -119,7 +119,7 @@
         $queryJournal3 = "Journal 3: " .$_POST["journal3"];
         // for search params
         $searchJournal3 = $_POST["journal3"];
-        $searchJournal3 = "%20%20OR%20%20". $queryType1. "%28" .$searchJournal3. "%29";
+        $searchJournal3 = " OR ". $queryType1. "(" .$searchJournal3. ")";
     } else {
         $queryJournal3 = "";
         $searchJournal3 = NULL;
@@ -127,11 +127,11 @@
 
     // check where to put the closing bracket for journal query
     // if ((isset($searchJournal1)) && ($searchJournal2 == NULL)) {
-    //     $searchJournal1 .= "%29";
+    //     $searchJournal1 .= ")";
     // } elseif ((isset($_POST["journal1"])) && (isset($_POST["journal2"])) && ($searchJournal3 == NULL)) {
-    //     $searchJournal2 .= "%29";
+    //     $searchJournal2 .= ")";
     // } elseif ((isset($_POST["journal1"])) && (isset($_POST["journal2"])) &&  (isset($_POST["journal3"]))) {
-    //     $searchJournal3 .= "%29";
+    //     $searchJournal3 .= ")";
     // };
 
     // search type for KEYWORDS (article title)
@@ -142,11 +142,11 @@
     if (($_POST["title1"] != "") && ($_POST["journal1"] != "")) {
         $queryTitle1 = "Keyword 1: " .$_POST["title1"];
         $searchTitle1 = $_POST["title1"];
-        $searchTitle1 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle1. "%29";
+        $searchTitle1 = " AND " .$queryType2. "(" .$searchTitle1. ")";
     } elseif (($_POST["title1"] != "") && ($_POST["journal1"] == "")) {
         $queryTitle1 = "Keyword 1: " .$_POST["title1"];
         $searchTitle1 = $_POST["title1"];
-        $searchTitle1 = $queryType2. "%28%28" .$searchTitle1. "%29";
+        $searchTitle1 = $queryType2. "((" .$searchTitle1. ")";
     } else {
         $queryTitle1 = "";
         $searchTitle1 = "";
@@ -156,7 +156,7 @@
     if (isset($_POST["title2"])) {
         $queryTitle2 = "Keyword 2: " .$_POST["title2"];
         $searchTitle2 = $_POST["title2"];
-        $searchTitle2 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle2. "%29";
+        $searchTitle2 = " AND " .$queryType2. "(" .$searchTitle2. ")";
     } else {
         $queryTitle2 = "";
         $searchTitle2 = "";
@@ -166,7 +166,7 @@
     if (isset($_POST["title3"])) {
         $queryTitle3 = "Keyword 3: " .$_POST["title3"];
         $searchTitle3 = $_POST["title3"];
-        $searchTitle3 = "%20%20AND%20%20" .$queryType2. "%28" .$searchTitle3. "%29";
+        $searchTitle3 = " AND " .$queryType2. "(" .$searchTitle3. ")";
     } else {
         $queryTitle3 = "";
         $searchTitle3 = "";
@@ -267,7 +267,7 @@
     $apiKey = "&apiKey=7804b8bef2d4dc6e5a85ef2dfb84a87c";
 
     // GET Request searching for people associated with keywords (term)
-    $searchLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE";
+    $searchLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . ")" . $apiKey . "&sort=citedby-count&view=COMPLETE";
 
     echo "</br>URL:</br>";
     print "<pre>\n";
@@ -443,7 +443,7 @@
         // $xml = new SimpleXMLElement($search_response->return->records);
 
         // REST HTTP GET Request searching for people associated with keywords (term)
-        $eachLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE&start=" . $i;
+        $eachLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . ")" . $apiKey . "&sort=citedby-count&view=COMPLETE&start=" . $i;
 
         // save results to a variable
         $eachResponse = file_get_contents($eachLink);
