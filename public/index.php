@@ -176,6 +176,7 @@
 										<p>This application is optimised for Chrome.</p>
 										<p>In order to get the best results from your search,<br/>enter one or more journals.</p>
 										<p>Keywords and time spans are optional but can be<br/>used to refine your search.</p>
+										<p>Please omit the word <strong>and</strong> fromany searches</p>
 									</div> <!-- modal-dialog -->
 
 								</div> <!-- col-lg-6 -->
