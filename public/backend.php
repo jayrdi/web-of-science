@@ -641,10 +641,11 @@
         }
     };
 
-    // echo "</br>BEFORE SQL:</br>";
-    // print "<pre>\n";
-    // print_r($recordArray);
-    // print "</pre>";
+    echo "</br>BEFORE SQL:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
+    
     echo "</br>TRIGGER 1</br>";
 
     // ================================== //
