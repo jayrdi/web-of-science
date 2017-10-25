@@ -970,7 +970,7 @@
               removePanel();
           </script>";
 
-    include "data.html";
+    // include "data.html";
 
 ?>
 
