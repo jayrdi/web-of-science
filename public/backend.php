@@ -645,6 +645,7 @@
     // print "<pre>\n";
     // print_r($recordArray);
     // print "</pre>";
+    echo "</br>TRIGGER 1</br>";
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -655,6 +656,7 @@
     $db_password = $_SERVER['WOS_MYSQL_PASS'];
     $db_database = $_SERVER['WOS_MYSQL_DB'];
 
+    echo "</br>TRIGGER 2</br>";
 
     // settings for unix socket on server, check if on server first
     if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
@@ -806,6 +808,8 @@
     mysqli_query($connect, "TRUNCATE TABLE tenYear");
     mysqli_query($connect, "TRUNCATE TABLE fiveYear");
     mysqli_query($connect, "TRUNCATE TABLE twoYear");
+
+    echo "</br>TRIGGER 3</br>";
 
     // close connection
     mysqli_close($connect);
