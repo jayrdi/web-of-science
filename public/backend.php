@@ -740,11 +740,10 @@
 
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
-        foreach ($recordArray[$row]['authors'] as $author) {
-            print_r($author);
+        foreach ($recordArray[$row]['authors'] as $value) {
             $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
             // add to the query as 'value', each author, year & citation count
-            $sql .= "'" .$author. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
+            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
@@ -816,10 +815,11 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    // echo "</br>SQL RESULTS:</br>";
-    // print "<pre>\n";
-    // print_r($topCited);
-    // print "</pre>";
+    $reversed = array_reverse($topCited)
+    echo "</br>SQL RESULTS (reversed):</br>";
+    print "<pre>\n";
+    print_r($reverse);
+    print "</pre>";
 
     $count = 0;
     $length = count($projects);
