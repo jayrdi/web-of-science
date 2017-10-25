@@ -946,10 +946,10 @@
         }
     }; */
 
-    echo "</br>SQL RESULTS:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
+    // echo "</br>SQL RESULTS:</br>";
+    // print "<pre>\n";
+    // print_r($topCited);
+    // print "</pre>";
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
