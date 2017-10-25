@@ -461,11 +461,6 @@
         // iterate through current data set and tabulate onto webpage plus store in variable
         foreach($eachJson['search-results']['entry'] as $record) {
 
-            echo "</br>RECORD:</br>";
-            print "<pre>\n";
-            print_r($record);
-            print "</pre>";
-
             // create arrays for authors and countries
             $authors = [];
             // $countries = [];
@@ -538,6 +533,11 @@
         // reset indices for array
         $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
+
+    echo "</br>RECORDS:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
