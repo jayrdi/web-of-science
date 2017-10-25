@@ -645,6 +645,7 @@
     // print "<pre>\n";
     // print_r($recordArray);
     // print "</pre>";
+    echo "</br>WORKS?</br>";
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -655,6 +656,7 @@
     $db_password = $_SERVER['WOS_MYSQL_PASS'];
     $db_database = $_SERVER['WOS_MYSQL_DB'];
 
+    echo "</br>WORKS?</br>";
 
     // settings for unix socket on server, check if on server first
     if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
@@ -807,6 +809,8 @@
     mysqli_query($connect, "TRUNCATE TABLE fiveYear");
     mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
+    echo "</br>WORKS?</br>";
+
     // close connection
     mysqli_close($connect);
     
@@ -815,11 +819,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    foreach ($topCited as $publication) { // reference to variable so can be modified
-        print "<pre>\n";
-        print ($publication);
-        print "</pre>";
-    }
+    echo "</br>SQL RESULTS:</br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
 
     $count = 0;
     $length = count($projects);
