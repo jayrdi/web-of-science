@@ -262,6 +262,9 @@ $(document).ready(function() {
                           "chart11"
                       ];
 
+    console.log("CITED DATA:");
+    console.log(topCited);
+
     // Immediately Invoked Function Expression: allows '$' to work with any other plugins
     (function ($) {
         // add function to '$.fn' object (contains all jQuery object methods)

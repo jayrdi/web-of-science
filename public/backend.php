@@ -774,11 +774,6 @@
     $fiveArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM fiveYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
     $twoArrayGet = mysqli_query($connect, "SELECT author, country, year, citations FROM (SELECT * FROM twoYear ORDER BY year DESC) AS r GROUP BY author ORDER BY citations DESC");
 
-    echo "</br>SQL RESULTS:</br>";
-    print "<pre>\n";
-    print_r($allArrayGet);
-    print "</pre>";
-
     // populate arrays
     $topCited = [];
     while ($row_user = mysqli_fetch_assoc($allArrayGet)) {
@@ -950,6 +945,11 @@
             @$valueArray[$key]['authors'][$subKey] .= "; ";
         }
     }; */
+
+    echo "</br>SQL RESULTS:</br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
 
     // for data to work in d3 as bubble chart, needs to have parent and children
     $valuesJSON = array();
