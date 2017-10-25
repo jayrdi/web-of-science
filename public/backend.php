@@ -815,7 +815,7 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    $reversed = array_reverse($topCited)
+    $reversed = array_reverse($topCited);
     echo "</br>SQL RESULTS (reversed):</br>";
     print "<pre>\n";
     print_r($reverse);
