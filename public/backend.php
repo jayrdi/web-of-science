@@ -815,6 +815,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
+    foreach ($topCited as $publication) { // reference to variable so can be modified
+        print_r($publication);
+    }
+
     $count = 0;
     $length = count($projects);
 
