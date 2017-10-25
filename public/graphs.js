@@ -593,8 +593,8 @@ $(document).ready(function() {
                                   return !d.children; 
                               });
 
-            console.log("BUBBLE DATA:");
-            console.log(nodes);
+            // console.log("BUBBLE DATA:");
+            // console.log(nodes);
 
             var node = canvas.selectAll(".node")
                              .data(nodes)
