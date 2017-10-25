@@ -816,7 +816,9 @@
     // // =========================================== //
 
     foreach ($topCited as $publication) { // reference to variable so can be modified
-        print_r($publication);
+        print "<pre>\n";
+        print ($publication);
+        print "</pre>";
     }
 
     $count = 0;
@@ -970,7 +972,7 @@
               removePanel();
           </script>";
 
-    // include "data.html";
+    include "data.html";
 
 ?>
 
