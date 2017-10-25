@@ -645,7 +645,6 @@
     // print "<pre>\n";
     // print_r($recordArray);
     // print "</pre>";
-    echo "</br>WORKS?</br>";
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -656,7 +655,6 @@
     $db_password = $_SERVER['WOS_MYSQL_PASS'];
     $db_database = $_SERVER['WOS_MYSQL_DB'];
 
-    echo "</br>WORKS?</br>";
 
     // settings for unix socket on server, check if on server first
     if (isset($_SERVER['WOS_MYSQL_SOCKET'])) {
@@ -742,10 +740,11 @@
 
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
-        foreach ($recordArray[$row]['authors'] as $value) {
+        foreach ($recordArray[$row]['authors'] as $author) {
+            print_r($author);
             $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
             // add to the query as 'value', each author, year & citation count
-            $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
+            $sql .= "'" .$author. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
             $sql = rtrim($sql, ','); // remove the comma from the final value entry
             $sql .= ");"; // end query, now has format ... VALUES ('value1','value2','value3');
             mysqli_query($connect, $sql);
@@ -809,8 +808,6 @@
     mysqli_query($connect, "TRUNCATE TABLE fiveYear");
     mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
-    echo "</br>WORKS?</br>";
-
     // close connection
     mysqli_close($connect);
     
@@ -819,10 +816,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    echo "</br>SQL RESULTS:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
+    // echo "</br>SQL RESULTS:</br>";
+    // print "<pre>\n";
+    // print_r($topCited);
+    // print "</pre>";
 
     $count = 0;
     $length = count($projects);
