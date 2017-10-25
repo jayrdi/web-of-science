@@ -534,11 +534,6 @@
         $recordArray[$i]['authors'] = array_values($recordArray[$i]['authors']);
     };
 
-    echo "</br>RECORDS:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
-
     // finished loading records, display 'processing' load bar
     echo "<script type='text/javascript'>showLoadBar();</script>";
     ob_flush(); // flush anything from the header output buffer
@@ -645,6 +640,11 @@
                 break;
         }
     };
+
+    echo "</br>BEFORE SQL:</br>";
+    print "<pre>\n";
+    print_r($recordArray);
+    print "</pre>";
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -815,10 +815,10 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    // echo "</br>SCOPUS DATA:</br>";
-    // print "<pre>\n";
-    // print_r($topCited);
-    // print "</pre>";
+    echo "</br>AFTER SQL:</br>";
+    print "<pre>\n";
+    print_r($topCited);
+    print "</pre>";
 
     $count = 0;
     $length = count($projects);
