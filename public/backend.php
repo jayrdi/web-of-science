@@ -641,10 +641,10 @@
         }
     };
 
-    echo "</br>BEFORE SQL:</br>";
-    print "<pre>\n";
-    print_r($recordArray);
-    print "</pre>";
+    // echo "</br>BEFORE SQL:</br>";
+    // print "<pre>\n";
+    // print_r($recordArray);
+    // print "</pre>";
 
     // ================================== //
     // =========== DATABASE  ============ //
@@ -741,6 +741,11 @@
     // loop over the $recordArray (full data) and add data to MySQL table
     for ($row = 0; $row < count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
+            echo "</br>SQL AUTHOR:</br>";
+            print "<pre>\n";
+            print_r($value);
+            print "</pre>";
+
             $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
             // add to the query as 'value', each author, year & citation count
             $sql .= "'" .$value. "','" .$recordArray[$row]['country']. "','" .$recordArray[$row]['pubyear']. "','" .$recordArray[$row]['citations']. "','" .$recordArray[$row]['values']. "',";
@@ -814,11 +819,6 @@
     // // =========================================== //
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
-
-    echo "</br>AFTER SQL:</br>";
-    print "<pre>\n";
-    print_r($topCited);
-    print "</pre>";
 
     $count = 0;
     $length = count($projects);
