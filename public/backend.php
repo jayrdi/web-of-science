@@ -734,7 +734,7 @@
     mysqli_query($connect, "TRUNCATE TABLE twoYear");
 
     // loop over the $recordArray (full data) and add data to MySQL table
-    for ($row = 0; $row < count($recordArray); $row++) {
+    for ($row = 0; $row <= count($recordArray); $row++) {
         foreach ($recordArray[$row]['authors'] as $value) {
             $sql = "INSERT INTO searchresponse (author, country, year, citations, weight) VALUES (";
             // add to the query as 'value', each author, year & citation count
