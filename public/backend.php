@@ -268,10 +268,10 @@
     // GET Request searching for people associated with keywords (term)
     $searchLink = "https://api.elsevier.com/content/search/scopus?query=" . $searchJournal1 . $searchJournal2 . $searchJournal3 . $searchTitle1 . $searchTitle2 . $searchTitle3 . "%29" . $apiKey . "&sort=citedby-count&view=COMPLETE";
 
-    echo "</br>URL:</br>";
-    print "<pre>\n";
-    print_r($searchLink);
-    print "</pre>";
+    // echo "</br>URL:</br>";
+    // print "<pre>\n";
+    // print_r($searchLink);
+    // print "</pre>";
 
     // save results to a variable
     $searchResponse = file_get_contents($searchLink);
