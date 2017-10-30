@@ -810,11 +810,11 @@
     // // ======== SUM FUNDS FOR SAME PEOPLE ======== //
     // // =========================================== //
 
-    $reversed = array_reverse($topCited);
-    echo "</br>SQL RESULTS (reversed):</br>";
-    print "<pre>\n";
-    print_r($reversed);
-    print "</pre>";
+    // $reversed = array_reverse($topCited);
+    // echo "</br>SQL RESULTS (reversed):</br>";
+    // print "<pre>\n";
+    // print_r($reversed);
+    // print "</pre>";
 
     $count = 0;
     $length = count($projects);

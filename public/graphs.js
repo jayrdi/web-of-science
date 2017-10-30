@@ -267,8 +267,8 @@ $(document).ready(function() {
         // add function to '$.fn' object (contains all jQuery object methods)
         $.fn.loadGraph = function(graphData, graphSelect, graphColour) {
 
-            console.log("CITED DATA:");
-            console.log(graphData);
+            // console.log("CITED DATA:");
+            // console.log(graphData);
 
             // ERROR CHECKING if no data, display message
             if (graphData.length == 0) {
