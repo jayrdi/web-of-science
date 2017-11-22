@@ -6,17 +6,17 @@
 	     live on ResViz, remove the comment symbols on lines 9, 11
 	     17 and 19 -->
 	<!-- USER LOGIN SECURITY -->
-	<!-- <?php
+	<?php
 
-	/* require('redis-session.php');
-    RedisSession::start();
+	require('redis-session.php');
+    	RedisSession::start();
 
-    if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
+    	if (!isset($_SESSION['HTTP_SHIB_EP_EMAILADDRESS'])) {
 	    header('Location: https://resviz.ncl.ac.uk/signin?redirect=https://resviz.ncl.ac.uk/wos/index.php');
 	    die();
-    } */
+    	}
 
-    ?> -->
+    	?>
 
 	<head>
 		<title>Academic Intelligence</title>
